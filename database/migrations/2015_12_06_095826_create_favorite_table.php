@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateFavoriteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,10 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('favorite', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('password', 60)->nullable();
-            $table->integer('twitter_id')->nullable();
-            $table->integer('facebook_id')->nullable();
-            $table->rememberToken();
+            $table->integer('user_id');
+            $table->integer('favorite_user_id');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::drop('favorite');
     }
 }
