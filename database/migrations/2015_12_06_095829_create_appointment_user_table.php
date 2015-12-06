@@ -17,7 +17,7 @@ class CreateAppointmentUserTable extends Migration
             $table->integer('user_id');
             $table->timestamp('reply_time')->nullable();
             $table->enum('answer', array('approved', 'denied'));   
-            $table->timestamp('');
+            $table->timestamps();
         });
     }
 

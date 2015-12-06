@@ -19,7 +19,7 @@ class CreateProfileTable extends Migration
             $table->text('description');
             $table->integer('payment_id');
             $table->string('profile_image_url');
-            $table->timestamp();
+            $table->timestamps();
         });
     }
 
