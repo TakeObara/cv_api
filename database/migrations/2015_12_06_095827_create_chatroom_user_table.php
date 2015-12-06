@@ -15,8 +15,7 @@ class CreateChatroomUserTable extends Migration
         Schema::create('chatroom_user', function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('chatroom_id');
-            $table->timestamp('created_at');
-            $table->timestamp('leaved_at')->nullable();
+            $table->timestamp();
         });
     }
 

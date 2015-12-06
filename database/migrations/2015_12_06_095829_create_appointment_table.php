@@ -17,7 +17,7 @@ class CreateAppointmentTable extends Migration
             $table->string('place');
             $table->timestamp('meeting_time');
             $table->integer('host_user_id');
-            $table->timestamp('created_at');
+            $table->timestamp();
             $table->timestamp('cancelled_at')->nullable();
         });
     }
