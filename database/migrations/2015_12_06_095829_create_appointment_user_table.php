@@ -13,10 +13,11 @@ class CreateAppointmentUserTable extends Migration
     public function up()
     {
         Schema::create('appointment_user', function (Blueprint $table) {
+            $table->increments('id');   
             $table->integer('appointment_id');
             $table->integer('user_id');
+            $table->boolean('answer');   
             $table->timestamp('reply_time')->nullable();
-            $table->enum('answer', array('approved', 'denied'));   
             $table->timestamps();
         });
     }

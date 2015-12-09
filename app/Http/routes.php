@@ -12,5 +12,13 @@
 */
 
 Route::get('/', function () {
-    return response()->json("fsd");
+    return response()->json("try /api/v1/profile");
+});
+
+Route::group(['prefix' => '/api/v1'], function () {
+
+    Route::post('auth/login', 'Auth\AuthController@login');
+    Route::post('auth/register', 'Auth\AuthController@register');
+
+    Route::resource('profile', 'ProfileController');
 });

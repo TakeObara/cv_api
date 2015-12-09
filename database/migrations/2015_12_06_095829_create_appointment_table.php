@@ -12,13 +12,13 @@ class CreateAppointmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('appointment', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('place');
-            $table->timestamp('meeting_time');
             $table->integer('host_user_id');
-            $table->timestamps();
+            $table->timestamp('meeting_time');
             $table->timestamp('cancelled_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateAppointmentTable extends Migration
      */
     public function down()
     {
-        Schema::drop('appointment');
+        Schema::drop('appointments');
     }
 }

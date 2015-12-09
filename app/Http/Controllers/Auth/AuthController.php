@@ -2,11 +2,14 @@
 
 namespace Cv\Http\Controllers\Auth;
 
-use Cv\User;
+use Illuminate\Http\Request;
+
+use Auth;
 use Validator;
 use Cv\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+use Cv\Service\AuthService;
+
 
 class AuthController extends Controller
 {
@@ -21,45 +24,31 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AuthService $auth)
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->auth = $auth;
+        // $this->middleware('guest', ['except' => 'getLogout']);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+    public function login(Request $request) {
+        Auth::loginUsingId(1);
+
+        return response()->json('success');
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+    public function register(Request $request) {
+
+        $data = $request->all();
+
+        $user = $this->auth->registerUser($data["name"], $data["email"],$data["password"]);
+
+        return response()->json($user);
     }
+
+    
 }

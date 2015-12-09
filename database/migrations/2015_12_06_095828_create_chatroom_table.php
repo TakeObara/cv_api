@@ -12,7 +12,7 @@ class CreateChatroomTable extends Migration
      */
     public function up()
     {
-        Schema::create('chatroom', function (Blueprint $table) {
+        Schema::create('chatrooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->timestamps();
@@ -26,6 +26,6 @@ class CreateChatroomTable extends Migration
      */
     public function down()
     {
-        Schema::drop('chatroom');
+        Schema::drop('chatrooms');
     }
 }
