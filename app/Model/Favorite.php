@@ -4,11 +4,11 @@ namespace Cv;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Favorite extends Model
 {
     
     public function user(){
-    	return $this->hasOne('Cv\User');
+    	return $this->belongsTo('Cv\User');
     }
-
+    
 }

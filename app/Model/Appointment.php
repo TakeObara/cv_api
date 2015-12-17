@@ -4,11 +4,10 @@ namespace Cv;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Appointment extends Model
 {
     
     public function user(){
-    	return $this->hasOne('Cv\User');
+    	return $this->belongsToMany('Cv\User');
     }
-
 }
