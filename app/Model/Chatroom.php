@@ -1,6 +1,6 @@
 <?php
 
-namespace Cv;
+namespace Cv\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,11 +8,11 @@ class Chatroom extends Model
 {
     
     public function message(){
-    	return $this->hasMany('Cv\Message');
+    	return $this->hasMany('Cv\Model\Message');
     }
 
     public function user(){
-    	return $this->belongsToMany('Cv\User');
+    	return $this->belongsToMany('Cv\Model\User');
     }
     
 }
