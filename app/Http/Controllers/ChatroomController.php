@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Cv\Http\Requests;
 use Cv\Http\Controllers\Controller;
 
+use Cv\Model;
+
 class ChatroomController extends Controller
 {
     /**
@@ -26,7 +28,9 @@ class ChatroomController extends Controller
      */
     public function create()
     {
-        //
+        $chatroom = new Chatroom;
+        $chatroom->title = $title;
+        $chatroom->save();
     }
 
     /**
@@ -59,7 +63,8 @@ class ChatroomController extends Controller
      */
     public function edit($id)
     {
-        //
+        $chatroom = Chatroom::find($id);
+        // 処理
     }
 
     /**
@@ -71,7 +76,11 @@ class ChatroomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = \Validator::make($request->all(), []);
+        $chatroom = Chatroom::find($id);
+        // 処理
+        $chatroom->save();
+
     }
 
     /**
@@ -82,6 +91,6 @@ class ChatroomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Chatroom::findOrFail($id)->delete();
     }
 }

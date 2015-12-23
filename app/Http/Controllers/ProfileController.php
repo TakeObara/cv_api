@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Cv\Http\Requests;
 use Cv\Http\Controllers\Controller;
 
+use Cv\Model;
+
 class ProfileController extends Controller
 {
 
@@ -43,9 +45,11 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+        $profile = Profile::find($id);
+        var_dump($profile->name);
+        var_dump($profile->description);
+        var_dump($profile->profile_image_url);
 
-        
     }
 
     /**
@@ -57,7 +61,12 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $profile = new Profile;
+        $profile->id = $id;
+        $profile->name = $request['name'];
+        $profile->description = $request['description'];
+        $profile->profile_image_url = $request['profile_image_url'];
+        $profile->save();
     }
 
     /**
