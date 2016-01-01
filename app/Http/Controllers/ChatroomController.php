@@ -9,13 +9,8 @@ use Cv\Http\Controllers\Controller;
 
 use Cv\Model;
 
-class ProfileController extends Controller
+class ChatroomController extends Controller
 {
-
-    public function __construct() {
-
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +18,19 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $chatroom = new Chatroom;
+        $chatroom->title = $title;
+        $chatroom->save();
     }
 
     /**
@@ -45,11 +52,19 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $profile = Profile::find($id);
-        var_dump($profile->name);
-        var_dump($profile->description);
-        var_dump($profile->profile_image_url);
+        //
+    }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $chatroom = Chatroom::find($id);
+        // 処理
     }
 
     /**
@@ -61,12 +76,11 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $profile = new Profile;
-        $profile->id = $id;
-        $profile->name = $request['name'];
-        $profile->description = $request['description'];
-        $profile->profile_image_url = $request['profile_image_url'];
-        $profile->save();
+        $validator = \Validator::make($request->all(), []);
+        $chatroom = Chatroom::find($id);
+        // 処理
+        $chatroom->save();
+
     }
 
     /**
@@ -77,6 +91,6 @@ class ProfileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Chatroom::findOrFail($id)->delete();
     }
 }
