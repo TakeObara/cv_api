@@ -24,7 +24,28 @@ class AppController extends Controller
             ]);
     }
 
-    public function getAbout() 
+    public function getProfile()
+    {
+        return view('app.index', [
+                'react' => $this->react
+            ]);   
+    } 
+
+    public function getFavourite() 
+    {
+        return view('app.index', [
+                'react' => $this->react
+            ]);
+    }
+
+    public function getMessages() 
+    {
+        return view('app.index', [
+                'react' => $this->react
+            ]);
+    }
+
+    public function getAppointment() 
     {
         return view('app.index', [
                 'react' => $this->react

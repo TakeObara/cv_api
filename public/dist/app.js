@@ -1,16 +1,39 @@
 "use strict";
 
+var Appointment = React.createClass({
+    displayName: "Appointment",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            { className: "users-group" },
+            React.createElement("div", { className: "users-item" })
+        );
+    }
+});
+"use strict";
+
 var Header = React.createClass({
     displayName: "Header",
 
     render: function render() {
         return React.createElement(
             "header",
-            null,
+            { className: "clearfix" },
             React.createElement(
                 "div",
                 { className: "logo" },
-                "CONNECTION VENDOR"
+                React.createElement(
+                    "span",
+                    { className: "white" },
+                    "CONNECTION"
+                ),
+                " VENDOR"
+            ),
+            React.createElement(
+                "div",
+                { className: "btn-right" },
+                "ログアウト"
             )
         );
     }
@@ -27,12 +50,21 @@ var Main = React.createClass({
             React.createElement(Header, null),
             React.createElement(
                 "div",
-                { className: "container" },
+                { className: "container clearfix" },
                 React.createElement(Sidebar, null),
                 React.createElement(
                     "div",
                     { className: "inner-container" },
-                    this.props.children
+                    React.createElement(
+                        "div",
+                        { className: "half-container" },
+                        this.props.children
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "half-container" },
+                        React.createElement(UserList, null)
+                    )
                 )
             )
         );
@@ -59,47 +91,49 @@ var Sidebar = (function (ReactRouter) {
 
     return React.createClass({
         render: function render() {
+
+            var activeStyle = {
+                'opacity': '1',
+                'backgroundColor': 'white'
+            };
+
             return React.createElement(
-                "div",
-                null,
+                'ul',
+                { className: 'sidebar' },
                 React.createElement(
-                    "ul",
+                    'li',
                     null,
                     React.createElement(
-                        "li",
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: "/profile" },
-                            React.createElement("img", { src: "/assets/imgs/ic_people.png" })
-                        )
-                    ),
+                        Link,
+                        { to: '/profile', activeStyle: activeStyle },
+                        React.createElement('img', { src: '/assets/imgs/ic_people.png' })
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
                     React.createElement(
-                        "li",
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: "/favourite" },
-                            React.createElement("img", { src: "/assets/imgs/ic_star.png" })
-                        )
-                    ),
+                        Link,
+                        { to: '/favourite', activeStyle: activeStyle },
+                        React.createElement('img', { src: '/assets/imgs/ic_star.png' })
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
                     React.createElement(
-                        "li",
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: "/messages" },
-                            React.createElement("img", { src: "/assets/imgs/ic_bubble.png" })
-                        )
-                    ),
+                        Link,
+                        { to: '/messages', activeStyle: activeStyle },
+                        React.createElement('img', { src: '/assets/imgs/ic_bubble.png' })
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
                     React.createElement(
-                        "li",
-                        null,
-                        React.createElement(
-                            Link,
-                            { to: "/profile" },
-                            React.createElement("img", { src: "/assets/imgs/ic_memo.png" })
-                        )
+                        Link,
+                        { to: '/appointment', activeStyle: activeStyle },
+                        React.createElement('img', { src: '/assets/imgs/ic_memo.png' })
                     )
                 )
             );
@@ -108,72 +142,29 @@ var Sidebar = (function (ReactRouter) {
 })(ReactRouter);
 "use strict";
 
-var Message = React.createClass({
-    displayName: "Message",
+var UserItem = React.createClass({
+    displayName: "UserItem",
 
     render: function render() {
-        return React.createElement(
-            "p",
-            null,
-            "This is message genereted by ReactJS"
-        );
+        return React.createElement("div", { className: "user-item" });
     }
+
 });
+"use strict";
 
-var About = React.createClass({
-    displayName: "About",
+var UserList = React.createClass({
+    displayName: "UserList",
 
-    render: function render() {
-        return React.createElement(
-            "div",
-            null,
-            React.createElement(
-                "h2",
-                null,
-                "About"
-            ),
-            React.createElement(
-                ReactRouter.Link,
-                { to: "/" },
-                "Go Top"
-            )
-        );
-    }
-});
-
-var Timer = React.createClass({
-    displayName: "Timer",
-
-    getInitialState: function getInitialState() {
-        return { secondsElapsed: 0 };
-    },
-    tick: function tick() {
-        this.setState({ secondsElapsed: this.state.secondsElapsed + 1 });
-    },
-    componentDidMount: function componentDidMount() {
-        this.interval = setInterval(this.tick, 1000);
-    },
-    componentWillUnmount: function componentWillUnmount() {
-        clearInterval(this.interval);
-    },
     render: function render() {
         return React.createElement(
             "div",
-            null,
-            React.createElement(Message, null),
-            React.createElement(
-                "p",
-                null,
-                "Seconds Elapsed: ",
-                this.state.secondsElapsed
-            ),
-            this.props.children
+            { className: "user-group" },
+            React.createElement(UserItem, null),
+            React.createElement(UserItem, null),
+            React.createElement(UserItem, null)
         );
     }
 });
-
-// ReactDOM.render(React.createElement(HelloMessage, { name: "John" }), mountNode);
-// ReactDOM.render(<Timer />, document.getElementById('main'));
 "use strict";
 
 var routesMap = (function (ReactRouter) {
@@ -188,7 +179,10 @@ var routesMap = (function (ReactRouter) {
         React.createElement(
             Route,
             { path: "/", component: Main },
-            React.createElement(Route, { path: "profile", component: Profile })
+            React.createElement(Route, { path: "profile", component: Profile }),
+            React.createElement(Route, { path: "favourite", component: Profile }),
+            React.createElement(Route, { path: "messages", component: Profile }),
+            React.createElement(Route, { path: "appointment", component: Appointment })
         )
     );
 })(ReactRouter);

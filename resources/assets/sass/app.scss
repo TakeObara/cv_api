@@ -8,8 +8,109 @@ body, html {
     min-height: 100%;
 }
 
-#main {
+.clearfix:after {
+  content: "."; 
+  display: block; 
+  height: 0; 
+  font-size:0;    
+  clear: both; 
+  visibility:hidden;
+}
+
+.clearfix { display: inline-block; } 
+
+
+#main, #main > div {
     min-width: 100%;
     height: 100%;
     min-height: 100%;   
+    position: relative;
+}
+
+$header-height: 50px;
+header {
+    height: $header-height;
+    background-color: #009bdf;
+    width: 100%;
+
+    > .logo {
+        float: left;
+        margin-left: 80px;
+        display: block;
+        height: $header-height;
+        line-height: $header-height;
+        vertical-align: middle;
+        font-size: 28px;
+
+        > .white {
+            color: #cccccc;
+        }
+    }
+
+    > .btn-right {
+        float: right;
+        display: block;
+        width: 120px;
+        height: $header-height;
+        line-height: $header-height;
+        vertical-align: middle;
+        background-color: #192299;
+        color: white;
+        text-align: center;
+    }
+}
+
+.container {
+
+    $sidebar-width: 60px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    margin-top: $header-height;
+    height: calc(100% - #{$header-height});
+
+    .sidebar {
+        float: left;
+        background-color: #c9c9c9;
+        list-style-type: none;
+        padding: 0;
+        height: 100%;
+        width: $sidebar-width;
+        margin: 0;
+
+        > li {
+            display: block;
+            width: $sidebar-width;
+            height: $sidebar-width;
+
+            > a {
+                padding: 8px;
+                width: calc(100% - 16px);
+                height: calc(100% - 16px);
+            }
+
+            > a, img{
+                opacity: 0.6;
+                display: block;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .inner-container {
+        float: left;
+        height: 100%;
+        width: calc(100% - #{$sidebar-width});
+
+        .half-container {
+            width: 50%;
+            float: left;
+            height: 100%;
+        }
+    }
 }

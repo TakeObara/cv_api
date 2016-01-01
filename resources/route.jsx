@@ -9,6 +9,9 @@ var routesMap = (function(ReactRouter) {
         <Router history={BrowserHistory}>
             <Route path="/" component={Main}>
                 <Route path="profile" component={Profile} />
+                <Route path="favourite" component={Profile} />
+                <Route path="messages" component={Profile} />
+                <Route path="appointment" component={Appointment} />
             </Route>
         </Router>
     );

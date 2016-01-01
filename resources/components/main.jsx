@@ -4,10 +4,15 @@ var Main =  React.createClass({
         return (
             <div>
                 <Header />
-                <div className="container">
+                <div className="container clearfix">
                     <Sidebar />
                     <div className="inner-container">
-                    {this.props.children}
+                        <div className="half-container">
+                            {this.props.children}    
+                        </div>
+                        <div className="half-container">
+                            <UserList />
+                        </div>
                     </div>
                 </div>
             </div>
