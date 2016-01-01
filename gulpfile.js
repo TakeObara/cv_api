@@ -1,4 +1,9 @@
-var elixir = require('laravel-elixir');
+var gulp        = require('gulp');
+var elixir      = require('laravel-elixir');
+var requireDir  = require( 'require-dir' );
+
+// Require all tasks.
+requireDir( './resources/gulp', { recurse: true } );
 
 /*
  |--------------------------------------------------------------------------
@@ -12,5 +17,7 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
+    // 2nd paramter, define watcher path
+    mix.task('babel', 'resources/**/*.jsx');
     mix.sass('app.scss');
 });

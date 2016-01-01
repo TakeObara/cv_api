@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return response()->json("try /api/v1/profile");
-});
 
 Route::group(['prefix' => '/api/v1'], function () {
 
@@ -22,3 +19,5 @@ Route::group(['prefix' => '/api/v1'], function () {
 
     Route::resource('profile', 'ProfileController');
 });
+
+Route::controller('/', 'AppController');
