@@ -16,6 +16,7 @@ class ReactService {
 
         // reactJS library
         $react = [];
+        $react[] = 'var __SERVER = {};';
         $react[] = file_get_contents(public_path('js/react.js'));
         $react[] = file_get_contents(public_path('js/react-dom.js'));
         $react[] = file_get_contents(public_path('js/react-dom-server.js'));
@@ -56,7 +57,7 @@ class ReactService {
         // variable in routesMap 
         $scripts = [ 
 
-        'ReactRouter.match({routesMap, location: "'.$path.'"}, function(error, redirectLocation, renderProps) {',
+        'ReactRouter.match({__SERVER.routesMap, location: "'.$path.'"}, function(error, redirectLocation, renderProps) {',
             'if(error) throw error;',
             'print(ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, React.__spread({},  renderProps))));',
         '});'

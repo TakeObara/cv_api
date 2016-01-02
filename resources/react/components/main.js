@@ -1,6 +1,11 @@
-var Main =  React.createClass({
+import Header from "./header";
+import Sidebar from "./sidebar";
+import UserList from "./userList";
 
-    render: function() {
+
+export default class Main extends React.Component{
+
+    render() {
         return (
             <div>
                 <Header />
@@ -18,5 +23,5 @@ var Main =  React.createClass({
             </div>
         );
     }
-});
+}
 

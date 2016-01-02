@@ -1,6 +1,10 @@
+// prevent notification
+process.env.DISABLE_NOTIFIER = true;
+
 var gulp        = require('gulp');
 var elixir      = require('laravel-elixir');
 var requireDir  = require( 'require-dir' );
+// var browserify  = require('laravel-elixir-browserify');
 
 // Require all tasks.
 requireDir( './resources/gulp', { recurse: true } );
@@ -17,7 +21,23 @@ requireDir( './resources/gulp', { recurse: true } );
  */
 
 elixir(function(mix) {
+
+    // browserify.init();
+
+    elixir.config.assetsPath = "resources";
+    elixir.config.js.folder = "react";
+    elixir.config.js.outputFolder = 'dist';
+    elixir.config.js.browserify.transformers = [{
+        name: 'babelify',
+        options: {
+            presets: ['es2015','react']
+        }
+    }];
+ 
+    mix.browserify("app.js");
+
+
     // 2nd paramter, define watcher path
-    mix.task('babel', 'resources/**/*.jsx');
+    // mix.task('babel', 'resources/**/*.jsx');
     mix.sass('app.scss');
 });

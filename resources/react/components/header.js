@@ -1,5 +1,8 @@
-var Header = React.createClass({
-    render: function() {
+'use strict';
+
+export default class Header extends React.Component {
+
+    render() {
         return (
             <header className="clearfix">
                 <div className="logo"><span className="white">CONNECTION</span> VENDOR</div>
@@ -7,5 +10,5 @@ var Header = React.createClass({
             </header>
         );
     }
-});
+}
 

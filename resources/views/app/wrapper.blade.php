@@ -19,7 +19,6 @@
     <script src="/js/react-dom.js"></script>
     <script src="/js/react-router.js"></script>
     <script src="/dist/app.js"></script>
-    <script>ReactDOM.render(routesMap, document.getElementById("main"));</script>
     @yield('scripts')
 </body>
 </html>

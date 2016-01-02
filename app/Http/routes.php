@@ -12,6 +12,20 @@
 */
 
 
+// Route::get('/', function () {
+//     return response()->json("try /api/v1/profile");
+// });
+
+// Authentication Routes
+Route::get('auth/login', 'Auth\AuthController@login_form');
+Route::post('auth/login', 'Auth\AuthController@login');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration Routes
+Route::get('auth/register', 'Auth\AuthController@register_form');
+Route::post('auth/register', 'Auth\AuthController@register');
+
+
 Route::group(['prefix' => '/api/v1'], function () {
 
     Route::post('auth/login', 'Auth\AuthController@login');
@@ -21,3 +35,4 @@ Route::group(['prefix' => '/api/v1'], function () {
 });
 
 Route::controller('/', 'AppController');
+

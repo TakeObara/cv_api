@@ -1,6 +1,7 @@
-var UserItem = React.createClass({
+
+export default class UserItem extends React.Component{
     
-    render: function() {
+    render() {
         return (
             <div className="user-item">
                 
@@ -8,4 +9,4 @@ var UserItem = React.createClass({
         )
     } 
 
-});
+}

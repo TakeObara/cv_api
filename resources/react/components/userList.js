@@ -1,6 +1,7 @@
+import UserItem from './userItem';
 
-var UserList = React.createClass({
-    render: function() {
+export default class UserList extends React.Component {
+    render() {
         return (
             <div className="user-group">
                 <UserItem />
@@ -9,4 +10,4 @@ var UserList = React.createClass({
             </div>
         );
     }
-});
+}

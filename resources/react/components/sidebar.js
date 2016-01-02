@@ -1,11 +1,10 @@
 'use strict';
 
-var Sidebar = (function(ReactRouter) {
-
 var Link = ReactRouter.Link;
 
-return React.createClass({
-    render: function() {
+export default class Sidebar extends React.Component {
+
+    render() {
 
         var activeStyle = {
             'opacity': '1',
@@ -23,6 +22,4 @@ return React.createClass({
 
         );
     }
-});
-
-})(ReactRouter);
+}
