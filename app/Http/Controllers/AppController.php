@@ -51,4 +51,11 @@ class AppController extends Controller
                 'react' => $this->react
             ]);
     }
+
+    public function getInfo() 
+    {
+        return view('app.index', [
+                'react' => $this->react
+            ]);
+    }
 }

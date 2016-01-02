@@ -1,21 +1,20 @@
 import UserAction from "../actions/userAction"
 import UserStore from "../stores/userStore"
 
-import AppointmentStore from "../stores/appointmentStore";
-import AppointmentAction from "../actions/appointmentAction";
+import FavouriteAction from "../actions/favouriteAction"
+import FavouriteStore from "../stores/favouriteStore"
 
-
-export default class Appointment extends React.Component {
+export default class Favourite extends React.Component{
 
     constructor() {
         super();
 
         UserAction.loadMyProfile();
-        // AppointmentAction.loadAll();
+        FavouriteAction.loadAll();
 
         this.state = {
             me: UserStore.getMyProfile(),
-            list: AppointmentStore.getAll(),
+            favourites: FavouriteStore.getAll(),
         };
 
         this._onUserChange = this._onUserChange.bind(this);
@@ -25,12 +24,12 @@ export default class Appointment extends React.Component {
 
     componentDidMount() {
         UserStore.addChangeListener(this._onUserChange);
-        AppointmentStore.addChangeListener(this._onChange);
+        FavouriteStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount() {
         UserStore.removeChangeListener(this._onUserChange);
-        AppointmentStore.removeChangeListener(this._onChange);
+        FavouriteStore.removeChangeListener(this._onChange);
     }
 
     _onUserChange() {
@@ -43,7 +42,7 @@ export default class Appointment extends React.Component {
     _onChange() {
         console.log("favourite component in _onChange");
         var _state = this.state;
-        _state.list = AppointmentStore.getAll();
+        _state.favourites = FavouriteStore.getAll();
         this.setState(_state);
     }
 
@@ -51,10 +50,10 @@ export default class Appointment extends React.Component {
 
         var profileCoverStyle = { backgroundImage: 'url('+this.state.me.profile_image_url+')' };
 
-        var list = [];
-        for (var i = 0; i < this.state.list.length; i++) {
-            var _favour = this.state.list[i];
-            list.push(
+        var favouriteList = [];
+        for (var i = 0; i < this.state.favourites.length; i++) {
+            var _favour = this.state.favourites[i];
+            favouriteList.push(
                 <div key={i} className="clearfix favouriteItem">
                     <img className="profileImg" src={_favour.profile.profile_image_url}/>
                     <div className="profileMeta">
@@ -70,13 +69,13 @@ export default class Appointment extends React.Component {
                 <div className="halfPage-cover profile-cover" style={profileCoverStyle}></div>
                 <div className="halfPage-cover dark-cover"></div>
                 <div className="content">
-                    <div className="halfPage-title">APPOINTMENT</div>
+                    <div className="halfPage-title">BOOKMARK</div>
                     <div className="favouriteList">
-                        {list}
+                        {favouriteList}
                     </div>
                 </div>
             </div>
         );
     }
-}
 
+}

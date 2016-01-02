@@ -8,6 +8,12 @@ body, html {
     min-height: 100%;
 }
 
+* {
+    font-family: 'ヒラギノ角ゴ Pro Regular', Roboto, Verdana, sans-serif;
+}
+
+$gold-color: #cc9966;
+
 .clearfix:after {
   content: "."; 
   display: block; 
@@ -19,7 +25,12 @@ body, html {
 
 .clearfix { display: inline-block; } 
 
-
+.right {
+    float: right;
+}
+.scrollable {
+    overflow: scroll;
+}
 #main, #main > div {
     min-width: 100%;
     height: 100%;
@@ -47,8 +58,7 @@ header {
         }
     }
 
-    > .btn-right {
-        float: right;
+    > .btn {
         display: block;
         width: 120px;
         height: $header-height;
@@ -57,6 +67,7 @@ header {
         background-color: #192299;
         color: white;
         text-align: center;
+        text-decoration: none;
     }
 }
 
@@ -114,3 +125,115 @@ header {
         }
     }
 }
+
+
+.halfPage {
+    
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .halfPage-cover {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .dark-cover {
+        background-color: black;
+        opacity: 0.75;
+    }
+
+    .profile-cover {
+        background-size: 100% auto;   
+        background-repeat: no-repeat;
+    }
+
+    .halfPage-title {
+        color: $gold-color;
+        padding-top: 10px;
+    }
+
+    .halfPage-group {
+        margin-top: 15px;
+    }
+
+    .content {
+        padding: 20px;
+        color: white;
+        position: relative;
+        z-index: 1;
+        line-height: 24px;
+        font-size: 16px;
+
+        input, textarea {
+            margin-top: 7px;
+            display: block;
+            width: calc(100% - 24px);
+            padding: 7px 12px;
+            font-size: 16px;
+            border: 0;
+            background-color: #dbdbdb;
+        }
+
+        .btn {
+            color: $gold-color;
+            border: 1px solid $gold-color;
+            display: block;
+            margin-top: 15px;
+            width: 150px;
+            text-align: center;
+            background-color: transparent;
+            padding: 7px;
+            font-size: 16px;
+
+        }
+
+        .favouriteItem {
+            width: 100%;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.3);
+
+            .profileImg {
+                width: 100px;
+                height: 100px;
+                display: block;
+                float: left;
+            }
+            .profileMeta {
+                float: left;
+                margin-left: 15px;
+            }
+        }
+    }
+}
+
+.userListPage {
+    > .userItem {
+        float: left;
+        width: 150px;
+        height: 230px;
+        display: block;
+
+        > img {
+            display: block;
+            width: 100%;
+        }
+
+        > .userMeta {
+            text-align: center;
+
+            .line {
+                display: inline-block;
+                height: 2px;
+                line-height: 2px;
+                width: 80%;
+                background-color: #0099cc;
+            }
+
+            .userDesc {
+                font-size: 70%;
+            }
+        }
+    }
+}    

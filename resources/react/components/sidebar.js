@@ -18,6 +18,7 @@ export default class Sidebar extends React.Component {
                 <li><Link to="/favourite"   activeStyle={activeStyle} ><img src="/assets/imgs/ic_star.png" /></Link></li>
                 <li><Link to="/messages"    activeStyle={activeStyle} ><img src="/assets/imgs/ic_bubble.png" /></Link></li>
                 <li><Link to="/appointment" activeStyle={activeStyle} ><img src="/assets/imgs/ic_memo.png" /></Link></li>
+                <li><Link to="/info"        activeStyle={activeStyle} ><img src="/assets/imgs/ic_hatena.png" /></Link></li>
             </ul>
 
         );

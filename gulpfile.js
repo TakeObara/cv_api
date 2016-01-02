@@ -23,7 +23,7 @@ requireDir( './resources/gulp', { recurse: true } );
 elixir(function(mix) {
 
     // browserify.init();
-
+    elixir.config.sourcemaps = true;
     elixir.config.assetsPath = "resources";
     elixir.config.js.folder = "react";
     elixir.config.js.outputFolder = 'dist';

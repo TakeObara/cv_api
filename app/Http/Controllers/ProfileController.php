@@ -76,7 +76,7 @@ class ProfileController extends Controller
             return response()->json("no permission", 403);
         }
 
-        $updatedProfile = $this->profile->update($userId, $request);
+        $updatedProfile = $this->profile->save($userId, $request);
         
         return response()->json($updatedProfile, 200);
     }

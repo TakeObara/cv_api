@@ -32,14 +32,14 @@ class ProfileService {
         $loginedUser = $this->auth->getLoginedUser();
 
         // only current user are allow to modify profile
-        return $loginedUser->id === $userId;
+        return $loginedUser->id == $userId;
     }
 
     public function save($userId, $data)
     {
         $profile = Profile::where("user_id","=",$userId)->first();
         $profile->name              = $data['name'];
-        $profile->description       = $request['description'];
+        $profile->description       = $data['description'];
         $profile->save();
 
         return $profile;

@@ -15,7 +15,7 @@ export default class Main extends React.Component{
                         <div className="half-container">
                             {this.props.children}    
                         </div>
-                        <div className="half-container">
+                        <div className="scrollable half-container">
                             <UserList />
                         </div>
                     </div>
