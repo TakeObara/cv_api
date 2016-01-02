@@ -10,7 +10,7 @@ class Profile extends Model
 	protected $table = "profiles";
     
     public function user(){
-    	return $this->hasOne('Cv\Model\User');
+    	return $this->belongsTo('Cv\Model\User');
     }
 
 }

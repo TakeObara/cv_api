@@ -4,16 +4,23 @@ namespace Cv\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Cv\Http\Requests;
 use Cv\Http\Controllers\Controller;
 
-use Cv\Model;
+
 
 class ProfileController extends Controller
 {
 
-    public function __construct() {
+    private $profile;
+    private $auth;
 
+    public function __construct(
+        \Cv\Service\ProfileService $profile,
+        \Cv\Service\AuthService $auth
+    ) 
+    {
+        $this->profile = $profile;
+        $this->auth = $auth;
     }
 
     /**
@@ -24,17 +31,20 @@ class ProfileController extends Controller
     public function index()
     {
         //
+        $limit = 10;
+
+        $profiles = $this->profile->all($limit);
+
+        return response()->json($profiles);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function loginedInfo()
     {
-        //
+        $me = $this->auth->getLoginedUser();
+
+        $loginedUserProfile = $this->profile->getProfileByUserId($me->id);
+
+        return response()->json($loginedUserProfile);
     }
 
     /**
@@ -43,13 +53,14 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($userId)
     {
-        $profile = Profile::find($id);
-        var_dump($profile->name);
-        var_dump($profile->description);
-        var_dump($profile->profile_image_url);
+        $profile = $this->profile->getProfileByUserId($userId);
 
+        if(is_null($profile)) {
+            return response()->json("not found",404);
+        }
+        return response()->json($profile, 200);
     }
 
     /**
@@ -59,24 +70,15 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $userId)
     {
-        $profile = new Profile;
-        $profile->id = $id;
-        $profile->name = $request['name'];
-        $profile->description = $request['description'];
-        $profile->profile_image_url = $request['profile_image_url'];
-        $profile->save();
+        if(!$this->profile->haveModifyPermission($userId)) {
+            return response()->json("no permission", 403);
+        }
+
+        $updatedProfile = $this->profile->update($userId, $request);
+        
+        return response()->json($updatedProfile, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

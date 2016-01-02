@@ -8,8 +8,6 @@ use Auth;
 use Validator;
 use Cv\Http\Controllers\Controller;
 
-use Cv\Service\AuthService;
-
 
 class AuthController extends Controller
 {
@@ -29,19 +27,45 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct(AuthService $auth)
+    public function __construct(\Cv\Service\AuthService $auth)
     {
         $this->auth = $auth;
         // $this->middleware('guest', ['except' => 'getLogout']);
     }
 
+    // for developing purpose
+    public function fakeLogin(Request $request) {
+        if(!\Config::get('app.debug')) {
+            return response(400);
+        }
+
+        $data = $request->all();
+
+        $user = $this->auth->login($data['email'], $data['pwd']);
+
+        if(is_null($user)) {
+            return response()->json("failed to login", 401);
+        }
+
+        // load profile data
+        $user->load('profile');
+
+        return response()->json($user, 200);
+    }
+
     public function login(Request $request) {
         $data = $request->all();
-        return $this->auth->login($data['email'], $data['password']);
 
-        Auth::loginUsingId(1);
+        $user = $this->auth->login($data['email'], $data['password']);
 
-        return response()->json('success');
+        if(is_null($user)) {
+            return response()->json("failed to login", 401);
+        }
+
+        // load profile data
+        $user->load('profile');
+
+        return response()->json($user,200);
     }
 
     public function register(Request $request) {
@@ -50,7 +74,20 @@ class AuthController extends Controller
 
         $user = $this->auth->registerUser($data["name"], $data["email"], $data["password"]);
 
+        // After account is registered, login with the registered user
+        $this->auth->loginWithUser($user);
+
+        // load profile data
+        $user->load('profile');
+
         return response()->json($user);
+    }
+
+    public function logout() {
+
+        $this->auth->logout();
+
+        return response()->json("logout", 200);
     }
 
     public function login_form(){

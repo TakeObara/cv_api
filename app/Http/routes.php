@@ -28,11 +28,23 @@ Route::post('auth/register', 'Auth\AuthController@register');
 
 Route::group(['prefix' => '/api/v1'], function () {
 
+    Route::get('auth/logout', 'Auth\AuthController@logout');
     Route::post('auth/login', 'Auth\AuthController@login');
     Route::post('auth/register', 'Auth\AuthController@register');
 
-    Route::resource('profile', 'ProfileController');
+    Route::get('auth/fakelogin', 'Auth\AuthController@fakeLogin');
+
+    Route::group(['middleware' => 'auth'], function() {
+
+        Route::get('profile/me', 'ProfileController@loginedInfo');
+        Route::resource('profile', 'ProfileController', ['only' => ['index','show','update']]);    
+
+        Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update']]);
+
+    });
+    
 });
 
+// Frontend Application 
 Route::controller('/', 'AppController');
 

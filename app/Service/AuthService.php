@@ -32,24 +32,29 @@ class AuthService {
 
     public function login($email, $password){
 
-        $hashed_password = bcrypt($password);
-        $user = User::where('email', $email)
-            ->where('password', $hashed_password)
-            ->first();
-        
-        if(null !== $user && Auth::login($user)){
-            return $user;
-        }
-        else{
-            return null;
+        // 
+        $setRememberMeToken = true;
+
+        if(Auth::attempt(['email' => $email, 'password' => $password], $setRememberMeToken)) {
+            return Auth::user();
         }
 
+        return null;
+    }
+
+    public function ifUserExists($userId) 
+    {
+        return User::where("id","=",$userId)->count() > 0;
+    }
+
+    public function loginWithUser(User $user) {
+        Auth::login($user);
     }
 
     public function logout() {
-        if (Auth::check()){
-            Auth::logout();
-        }
+        
+        Auth::logout();
+        
     }
 
 }
