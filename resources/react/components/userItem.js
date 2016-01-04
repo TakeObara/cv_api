@@ -12,10 +12,8 @@ export default class UserItem extends React.Component{
     _toggleFavourite() {
         var userMeta = this.props.userMeta;
         if(FavouriteStore.isFavourite(userMeta.id)) {
-            console.log("remove");
             FavouriteAction.removeFavourite(userMeta.id);
         } else {
-            console.log("append");
             FavouriteAction.appendFavourite(userMeta.id);
         }
         
