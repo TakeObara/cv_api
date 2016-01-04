@@ -58,7 +58,7 @@ export default class Favourite extends React.Component{
                     <img className="profileImg" src={_favour.profile.profile_image_url}/>
                     <div className="profileMeta">
                         <p>{_favour.profile.name}</p>
-                        <p>{_favour.profile.description}</p>
+                        <p className="profileDesc">{_favour.profile.description}</p>
                     </div>
                 </div>
             );

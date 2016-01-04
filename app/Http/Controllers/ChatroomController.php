@@ -11,6 +11,19 @@ use Cv\Model;
 
 class ChatroomController extends Controller
 {
+
+    public $auth;
+    public $chatroom;
+
+    public function __construct(
+            \Cv\Service\ChatroomService $chatroom,
+            \Cv\Service\AuthService $auth
+        ) {
+
+        $this->chatroom = $chatroom;
+        $this->auth = $auth;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +31,9 @@ class ChatroomController extends Controller
      */
     public function index()
     {
-        
+        $me = $this->auth->getLoginedUser();
+
+        return $this->chatroom->getByUser($me);
     }
 
     /**
