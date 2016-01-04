@@ -51,7 +51,7 @@ class FavouriteStore extends BaseStore {
         // after update data, reload data again
         this.ajax("put", ApiPrefix + "/favourite/"+userId, (error, data) => {
             this.loadAll(true);
-            UserListStore.loadAll(true);
+            // UserListStore.loadAll(true);
         });
     }
 
@@ -59,11 +59,15 @@ class FavouriteStore extends BaseStore {
         // after update data, reload data again
         this.ajax("delete", ApiPrefix + "/favourite/"+userId, (error, data) => {
             this.loadAll(true);
-            UserListStore.loadAll(true);
+            // UserListStore.loadAll(true);
         });
     }
 
     isFavourite(userId) {
+        if(typeof this.data === 'undefined') {
+            return false;
+        }
+        
         for (var i = 0; i < this.data.length; i++) {
             if( this.data[i].id === parseInt(userId)) {
                 return true;

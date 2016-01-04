@@ -26,7 +26,6 @@ export default class UserList extends React.Component {
     }
 
     _onChange() {
-        console.log("userList component onChange");
         var _state = this.state;
         _state.list = UserListStore.getAll();
         this.setState(_state);
