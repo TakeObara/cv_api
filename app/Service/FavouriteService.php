@@ -38,4 +38,8 @@ class FavouriteService {
         $f->favourite_user_id = $favourUserId;
         $f->save();
     }
+
+    public function removeFavourite(User $user, $favourUserId) {
+        Favourite::where("user_id","=",$user->id)->where("favourite_user_id", "=", $favourUserId)->delete();
+    }
 }

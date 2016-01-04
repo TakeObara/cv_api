@@ -1,6 +1,6 @@
-import { UserConst, ApiPrefix } from "../constant"
-import AppDispatcher from "../dispatcher"
-import BaseStore from "./baseStore"
+import { UserConst, ApiPrefix } from "../Constant"
+import AppDispatcher from "../Dispatcher"
+import BaseStore from "./BaseStore"
 
 class UserStore extends BaseStore {
     /**
@@ -29,6 +29,7 @@ class UserStore extends BaseStore {
         if(!forceFlag) {
             if(typeof this.myProfile !== 'undefined') {
                 this.emitChange();
+                return;
             }
         }
 
@@ -76,6 +77,7 @@ class UserStore extends BaseStore {
         if(!forceFlag) {
             if(typeof this.data !== 'undefined') {
                 this.emitChange();
+                return;
             }
         }
 

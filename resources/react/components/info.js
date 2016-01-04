@@ -1,5 +1,5 @@
-import UserAction from "../actions/userAction"
-import UserStore from "../stores/userStore"
+import UserAction from "../actions/UserAction"
+import UserStore from "../stores/UserStore"
 
 
 export default class Info extends React.Component {
@@ -26,6 +26,7 @@ export default class Info extends React.Component {
     }
 
     _onUserChange() {
+        console.log("info component in _onUserChange");
         var _state = this.state;
         _state.me = UserStore.getMyProfile();
         this.setState(_state);
@@ -42,10 +43,13 @@ export default class Info extends React.Component {
                 <div className="content">
                     <div className="halfPage-title">INFORMATION</div>
                     <p>ご利用の流れ</p>
-                    <div style={{marginLeft: "30px"}}>
+                    <div className="infoPage" >
                         <p>1.紹介者と被紹介者がアポイントを確認</p>
+                        <img className="inline" src="/assets/imgs/info/ex1.png" />
                         <p>2.事務局への振り込みを確認</p>
+                        <img className="inline" src="/assets/imgs/info/ex2.png" />
                         <p>3.紹介が完了次第、紹介者の売上に反映されます</p>
+                        <img className="inline" src="/assets/imgs/info/ex3.png" />
                     </div>
                 </div>
             </div>

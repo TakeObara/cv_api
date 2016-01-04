@@ -13,6 +13,7 @@ class ProfileController extends Controller
 
     private $profile;
     private $auth;
+    private $favourite;
 
     public function __construct(
         \Cv\Service\ProfileService $profile,
@@ -30,10 +31,13 @@ class ProfileController extends Controller
      */
     public function index()
     {
+
         //
         $limit = 10;
 
         $profiles = $this->profile->all($limit);
+
+        $me = $this->auth->getLoginedUser();
 
         return response()->json($profiles);
     }

@@ -49,4 +49,17 @@ class FavouriteController extends Controller
 
         return response()->json("updated");
     }
+
+    public function destroy($favouriteUserId) 
+    {
+        $me = $this->auth->getLoginedUser();
+
+        if(!$this->auth->ifUserExists($favouriteUserId)) {
+            return response()->json("user not found",404);
+        }
+
+        $this->favourite->removeFavourite($me, $favouriteUserId);
+        
+        return response()->json("deleted");
+    }
 }

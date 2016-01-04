@@ -1,6 +1,7 @@
-import { FavouriteConst, ApiPrefix } from "../constant"
-import AppDispatcher from "../dispatcher"
-import BaseStore from "./baseStore"
+import { FavouriteConst, ApiPrefix } from "../Constant"
+import AppDispatcher from "../Dispatcher"
+import BaseStore from "./BaseStore"
+import UserListStore from "./UserListStore"
 
 class FavouriteStore extends BaseStore {
     /**
@@ -29,6 +30,7 @@ class FavouriteStore extends BaseStore {
         if(!forceFlag) {
             if(typeof this.data !== 'undefined') {
                 this.emitChange();
+                return;
             }
         }
 
@@ -46,17 +48,28 @@ class FavouriteStore extends BaseStore {
     }
 
     appendFavourite(userId) {
-
+        // after update data, reload data again
         this.ajax("put", ApiPrefix + "/favourite/"+userId, (error, data) => {
-            this.emitChange();
+            this.loadAll(true);
+            UserListStore.loadAll(true);
         });
     }
 
     removeFavourite(userId) {
-
+        // after update data, reload data again
         this.ajax("delete", ApiPrefix + "/favourite/"+userId, (error, data) => {
-            this.emitChange();
+            this.loadAll(true);
+            UserListStore.loadAll(true);
         });
+    }
+
+    isFavourite(userId) {
+        for (var i = 0; i < this.data.length; i++) {
+            if( this.data[i].id === parseInt(userId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     getAll() {

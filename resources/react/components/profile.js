@@ -1,5 +1,5 @@
-import UserAction from "../actions/userAction"
-import UserStore from "../stores/userStore"
+import UserAction from "../actions/UserAction"
+import UserStore from "../stores/UserStore"
 
 export default class Profile extends React.Component{
 
@@ -23,7 +23,7 @@ export default class Profile extends React.Component{
     }
 
     _onChange() {
-        console.log("profile component");
+        console.log("profile component onChange");
         this.setState({me: UserStore.getMyProfile() });
     }
 

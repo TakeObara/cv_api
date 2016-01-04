@@ -3,9 +3,13 @@
 var ApiPrefix = '/api/v1',
 
     UserConst = {
-        loadAll:           'USER_LOAD_ALL',
+        
         LOAD_USER:         'USER_LOAD_USER',
         UPDATE_MY_PROFILE: 'USER_UPDATE_MY_PROFILE',
+    },
+
+    UserListConst = {
+        LOAD_ALL:           'USERLIST_LOAD_ALL',
     },
 
     FavouriteConst = {
@@ -19,4 +23,4 @@ var ApiPrefix = '/api/v1',
     }
 ;
 
-export { ApiPrefix, UserConst, FavouriteConst , AppointmentConst};
+export { ApiPrefix, UserConst, UserListConst, FavouriteConst , AppointmentConst};

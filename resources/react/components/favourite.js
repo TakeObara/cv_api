@@ -1,8 +1,8 @@
-import UserAction from "../actions/userAction"
-import UserStore from "../stores/userStore"
+import UserAction from "../actions/UserAction"
+import UserStore from "../stores/UserStore"
 
-import FavouriteAction from "../actions/favouriteAction"
-import FavouriteStore from "../stores/favouriteStore"
+import FavouriteAction from "../actions/FavouriteAction"
+import FavouriteStore from "../stores/FavouriteStore"
 
 export default class Favourite extends React.Component{
 
@@ -58,7 +58,7 @@ export default class Favourite extends React.Component{
                     <img className="profileImg" src={_favour.profile.profile_image_url}/>
                     <div className="profileMeta">
                         <p>{_favour.profile.name}</p>
-                        <p>{_favour.profile.description}</p>
+                        <p className="profileDesc">{_favour.profile.description}</p>
                     </div>
                 </div>
             );
@@ -68,7 +68,7 @@ export default class Favourite extends React.Component{
             <div className="halfPage">
                 <div className="halfPage-cover profile-cover" style={profileCoverStyle}></div>
                 <div className="halfPage-cover dark-cover"></div>
-                <div className="content">
+                <div className="content scrollable">
                     <div className="halfPage-title">BOOKMARK</div>
                     <div className="favouriteList">
                         {favouriteList}

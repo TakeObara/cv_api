@@ -1,5 +1,5 @@
-import {UserConst, ApiPrefix} from "../constant";
-import AppDispatcher from "../dispatcher";
+import {UserConst, ApiPrefix} from "../Constant";
+import AppDispatcher from "../Dispatcher";
 
 class UserAction {
     
