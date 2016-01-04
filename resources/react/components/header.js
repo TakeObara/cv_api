@@ -1,6 +1,6 @@
 'use strict';
 
-import UserStore from "../stores/userStore"
+import UserStore from "../stores/UserStore"
 var Link = ReactRouter.Link;
 
 export default class Header extends React.Component {

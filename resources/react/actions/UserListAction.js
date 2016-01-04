@@ -1,8 +1,7 @@
-import {AppointmentConst, ApiPrefix} from "../Constant";
+import {UserListConst, ApiPrefix} from "../Constant";
 import AppDispatcher from "../Dispatcher";
 
-
-class AppointmentAction {
+class UserListAction {
     
     loadAll(force) {
         if(typeof force === 'undefined') {
@@ -10,11 +9,10 @@ class AppointmentAction {
         }
 
         AppDispatcher.dispatch({
-            type: AppointmentConst.LOAD_DATA,
+            type: UserListConst.LOAD_ALL,
             forceFlag: force
         });
     }
-
 }   
 
-export default new AppointmentAction();
+export default new UserListAction();

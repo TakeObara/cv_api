@@ -1,8 +1,8 @@
-import UserAction from "../actions/userAction"
-import UserStore from "../stores/userStore"
+import UserAction from "../actions/UserAction"
+import UserStore from "../stores/UserStore"
 
-import AppointmentStore from "../stores/appointmentStore";
-import AppointmentAction from "../actions/appointmentAction";
+import AppointmentStore from "../stores/AppointmentStore";
+import AppointmentAction from "../actions/AppointmentAction";
 
 
 export default class Appointment extends React.Component {
@@ -34,14 +34,14 @@ export default class Appointment extends React.Component {
     }
 
     _onUserChange() {
-        console.log("favourite component in _onUserChange");
+        console.log("appointment component in _onUserChange");
         var _state = this.state;
         _state.me = UserStore.getMyProfile();
         this.setState(_state);
     }
 
     _onChange() {
-        console.log("favourite component in _onChange");
+        console.log("appointment component in _onChange");
         var _state = this.state;
         _state.list = AppointmentStore.getAll();
         this.setState(_state);

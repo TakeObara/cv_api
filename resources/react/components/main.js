@@ -1,7 +1,6 @@
-import Header from "./header";
-import Sidebar from "./sidebar";
-import UserList from "./userList";
-
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import UserList from "./UserList";
 
 export default class Main extends React.Component{
 

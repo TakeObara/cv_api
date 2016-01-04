@@ -1,5 +1,5 @@
-import {FavouriteConst, ApiPrefix} from "../constant";
-import AppDispatcher from "../dispatcher";
+import {FavouriteConst, ApiPrefix} from "../Constant";
+import AppDispatcher from "../Dispatcher";
 
 
 class FavouriteAction {

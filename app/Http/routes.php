@@ -39,7 +39,7 @@ Route::group(['prefix' => '/api/v1'], function () {
         Route::get('profile/me', 'ProfileController@loginedInfo');
         Route::resource('profile', 'ProfileController', ['only' => ['index','show','update']]);    
 
-        Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update']]);
+        Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update','destroy']]);
 
     });
     

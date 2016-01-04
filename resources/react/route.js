@@ -1,9 +1,9 @@
-import Main from "./components/main" 
-import Profile from "./components/profile" 
-import MessagesList from "./components/messages"
-import Favourite from "./components/favourite" 
-import Appointment from "./components/appointment" 
-import Info from "./components/info"
+import Main from "./components/Main" 
+import Profile from "./components/Profile" 
+import MessagesList from "./components/Messages"
+import Favourite from "./components/Favourite" 
+import Appointment from "./components/Appointment" 
+import Info from "./components/Info"
 
 
 

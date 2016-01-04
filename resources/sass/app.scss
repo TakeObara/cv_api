@@ -12,6 +12,10 @@ body, html {
     font-family: 'ヒラギノ角ゴ Pro Regular', Roboto, Verdana, sans-serif;
 }
 
+button:focus {
+    outline: 0;
+}
+
 $gold-color: #cc9966;
 
 .clearfix:after {
@@ -30,6 +34,9 @@ $gold-color: #cc9966;
 }
 .scrollable {
     overflow: scroll;
+}
+.inline {
+    display: inline-block;
 }
 #main, #main > div {
     min-width: 100%;
@@ -91,6 +98,7 @@ header {
         margin: 0;
 
         > li {
+            position: relative;
             display: block;
             width: $sidebar-width;
             height: $sidebar-width;
@@ -160,11 +168,13 @@ header {
 
     .content {
         padding: 20px;
+        height: calc(100% - 40px);
         color: white;
         position: relative;
         z-index: 1;
         line-height: 24px;
         font-size: 16px;
+
 
         input, textarea {
             margin-top: 7px;
@@ -174,6 +184,9 @@ header {
             font-size: 16px;
             border: 0;
             background-color: #dbdbdb;
+        }
+        textarea {
+            height: 200px;
         }
 
         .btn {
@@ -203,6 +216,7 @@ header {
             .profileMeta {
                 float: left;
                 margin-left: 15px;
+                max-width: calc(100% - 115px);
             }
         }
     }
@@ -210,10 +224,63 @@ header {
 
 .userListPage {
     > .userItem {
+        $userItemHeight: 230px;
         float: left;
         width: 150px;
-        height: 230px;
+        height: $userItemHeight;
         display: block;
+        position: relative;
+
+        > .triangle {
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            width: 0;
+            height: 0;
+            padding: 0;
+            background-color: transparent;
+            border-style: solid;
+            border-width: 50px 50px 0 0;
+            opacity: 0.8;
+            border-color: #151a60 transparent transparent transparent;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            > img {
+                position: absolute;
+                top: -45px;
+                left: 2px;
+                display: block;
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        > .cover {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            color: white;
+            opacity: 0;
+            line-height: $userItemHeight;
+            text-align: center;
+            vertical-align: middle;
+
+            .middleInCover {
+                line-height: 20px;
+                display: inline-block;
+            }
+
+            &:hover {
+                cursor: pointer;
+                opacity: 1;
+                background-color: rgba(0,0,0,.6);
+            }
+        }
 
         > img {
             display: block;
@@ -237,3 +304,26 @@ header {
         }
     }
 }    
+
+.infoPage {
+    margin-left: 30px;
+    max-width: 420px;
+
+    > img {
+        display: inline-block;
+        width: 80%;
+    }
+}
+
+.notificationBox {
+    position: absolute;
+    border-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .7);
+    background-color: #dc0d17;
+    color: #fff;
+    padding: 1px 3px;
+    right: -3px;
+    top: 3px;
+    font-size: 10px;
+    z-index: 1;
+}

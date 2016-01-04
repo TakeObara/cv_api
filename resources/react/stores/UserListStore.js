@@ -1,8 +1,8 @@
-import { AppointmentConst, ApiPrefix } from "../Constant"
+import { UserListConst, ApiPrefix } from "../Constant"
 import AppDispatcher from "../Dispatcher"
 import BaseStore from "./BaseStore"
 
-class AppointmentStore extends BaseStore {
+class UserListStore extends BaseStore {
     /**
      * constructor
      */
@@ -11,13 +11,12 @@ class AppointmentStore extends BaseStore {
 
         this.dispatchToken = AppDispatcher.register( (action) => {
             switch (action.type) {
-                case AppointmentConst.LOAD_DATA:
+                case UserListConst.LOAD_ALL:
                     this.loadAll(action.forceFlag);
                 break;
             }
         });
     }
-
 
     loadAll(forceFlag) {
         if(!forceFlag) {
@@ -27,11 +26,11 @@ class AppointmentStore extends BaseStore {
             }
         }
 
-        this.ajax("get", ApiPrefix + "/appointment", (error, data) => {
+        this.ajax("get", ApiPrefix + "/profile", (error, data) => {
             
             for(var i = 0 ; i < data.length ; i ++) {
-                if(data[i].profile.profile_image_url.length === 0) {
-                    data[i].profile.profile_image_url = "/assets/imgs/profile_imageless.png";
+                if(data[i].profile_image_url.length === 0) {
+                    data[i].profile_image_url = "/assets/imgs/profile_imageless.png";
                 }    
             }
             
@@ -48,4 +47,4 @@ class AppointmentStore extends BaseStore {
 
 }
 
-export default new AppointmentStore();
+export default new UserListStore();

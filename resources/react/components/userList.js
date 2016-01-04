@@ -1,16 +1,16 @@
-import UserAction from "../actions/userAction"
-import UserStore from "../stores/userStore"
-import UserItem from './userItem';
+import UserListAction from "../actions/UserListAction"
+import UserListStore from "../stores/UserListStore"
+import UserItem from './UserItem';
 
 export default class UserList extends React.Component {
 
     constructor() {
         super();
 
-        UserAction.loadAll();
+        UserListAction.loadAll();
 
         this.state = {
-            list: UserStore.getAll(),
+            list: UserListStore.getAll(),
         };
 
         this._onChange     = this._onChange.bind(this)
@@ -18,16 +18,17 @@ export default class UserList extends React.Component {
 
 
     componentDidMount() {
-        UserStore.addChangeListener(this._onChange);
+        UserListStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount() {
-        UserStore.removeChangeListener(this._onChange);
+        UserListStore.removeChangeListener(this._onChange);
     }
 
     _onChange() {
+        console.log("userList component onChange");
         var _state = this.state;
-        _state.list = UserStore.getAll();
+        _state.list = UserListStore.getAll();
         this.setState(_state);
     }
 
@@ -40,8 +41,6 @@ export default class UserList extends React.Component {
                 <UserItem key={i} userMeta={_user} />
             );
         }
-
-        console.log(this.state.list);
 
         return (
             <div className="userListPage clearfix">
