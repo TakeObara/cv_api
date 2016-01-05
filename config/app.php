@@ -145,6 +145,8 @@ return [
         Cv\Providers\EventServiceProvider::class,
         Cv\Providers\RouteServiceProvider::class,
 
+        Artdarek\OAuth\OAuthServiceProvider::class,
+
     ],
 
     /*
@@ -192,6 +194,8 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
+        'OAuth' => Artdarek\OAuth\Facade\OAuth::class,
 
     ],
 

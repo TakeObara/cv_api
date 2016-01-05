@@ -27,7 +27,7 @@ export default class Sidebar extends React.Component {
                 </li>
                 <li>
                     {noticeBox}
-                    <Link to="/messages"    activeStyle={activeStyle} ><img src="/assets/imgs/ic_bubble.png" />
+                    <Link to="/chatroom"    activeStyle={activeStyle} ><img src="/assets/imgs/ic_bubble.png" />
                     </Link>
                 </li>
                 <li>

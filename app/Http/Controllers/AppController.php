@@ -11,51 +11,72 @@ class AppController extends Controller
 {
 
     private $react;
+    private $auth;
+    private $oauth;
+    private $profile;
 
-    public function __construct(\Cv\Service\ReactService $react) 
+    public function __construct(
+        \Cv\Service\ReactService $react,
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\ProfileService $profile,
+        \Cv\Service\OAuthService $oauth
+    ) 
     {
         $this->react = $react;
+        $this->auth  = $auth;
+        $this->profile = $profile;
+        $this->oauth   = $oauth;
+
+        $me = $this->auth->getLoginedUser();
+
+        $loginedUserProfile = null;    
+        $facebookLoginUrl = null;
+
+        if(is_null($me)) {
+            $facebookLoginUrl = $this->oauth->getAuthorizationUrl();
+        } else {
+            $loginedUserProfile = $this->profile->getProfileByUserId($me->id)->toArray();    
+        }
+
+        $this->viewParams = [
+            'react' => $this->react,
+            'loginedUserProfile' => $loginedUserProfile,
+            'facebookLoginUrl' => $facebookLoginUrl
+        ];  
     }
 
     public function getIndex() 
     {
-        return view('app.index', [
-                'react' => $this->react
-            ]);
+        return view('app.index', $this->viewParams);
     }
 
     public function getProfile()
     {
-        return view('app.index', [
-                'react' => $this->react
-            ]);   
+        return view('app.index', $this->viewParams);
     } 
 
     public function getFavourite() 
     {
-        return view('app.index', [
-                'react' => $this->react
-            ]);
+        return view('app.index', $this->viewParams);
     }
 
-    public function getMessages() 
+    public function getChatroom() 
     {
-        return view('app.index', [
-                'react' => $this->react
-            ]);
+        return view('app.index', $this->viewParams);
     }
 
     public function getAppointment() 
     {
-        return view('app.index', [
-                'react' => $this->react
-            ]);
+        return view('app.index', $this->viewParams);
     }
 
     public function getInfo() 
     {
-        return view('app.index', [
-                'react' => $this->react
-            ]);
+        return view('app.index', $this->viewParams);
+    }
+
+    public function getLogin() 
+    {
+        return view('app.index', $this->viewParams);
     }
 }

@@ -37,18 +37,6 @@ class ChatroomController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $chatroom = new Chatroom;
-        $chatroom->title = $title;
-        $chatroom->save();
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -56,7 +44,12 @@ class ChatroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $userIds = $request->get("users");
+        $title   = $request->get("title");
+
+        $chatroom = $this->chatroom->create($title, $userIds);
+
+        return response()->json($chatroom, 200);
     }
 
     /**
@@ -67,20 +60,13 @@ class ChatroomController extends Controller
      */
     public function show($id)
     {
+        $me = $this->auth->getLoginedUser();
         //
+        $chatroom = $this->chatroom->get($id, $me);
+
+        return response()->json($chatroom, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $chatroom = Chatroom::find($id);
-        // 処理
-    }
 
     /**
      * Update the specified resource in storage.
@@ -91,11 +77,15 @@ class ChatroomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = \Validator::make($request->all(), []);
-        $chatroom = Chatroom::find($id);
-        // 処理
-        $chatroom->save();
+        try {
+            $chatroom = $this->chatroom->update($id,$request->get("title"), $request->get("users"));
 
+            return response()->json($chatroom, 200);
+
+        } catch (\Cv\Exceptions\MissingModelException $e) {
+
+            return response()->json("model missing", 404);
+        }
     }
 
     /**
@@ -106,6 +96,8 @@ class ChatroomController extends Controller
      */
     public function destroy($id)
     {
-        Chatroom::findOrFail($id)->delete();
+        $this->chatroom->remove($id);
+
+        return response()->json($chatroom, 200);
     }
 }

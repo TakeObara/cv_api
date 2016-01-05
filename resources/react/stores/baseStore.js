@@ -51,7 +51,14 @@ export default class BaseStore extends EventEmitter{
         var getParams = function(data, url) {
             var arr = [], str;
             for(var name in data) {
-                arr.push(name + '=' + encodeURIComponent(data[name]));
+                if(Array.isArray(data[name])) {
+                    var arrayData = data[name];
+                    for (var i = 0; i < arrayData.length; i++) {
+                        arr.push(name+"[]" + '=' + encodeURIComponent(arrayData[i]));
+                    }
+                }else {
+                    arr.push(name + '=' + encodeURIComponent(data[name]));    
+                }
             }
             str = arr.join('&');
             if(str != '') {

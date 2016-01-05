@@ -14,7 +14,7 @@ class Chatroom extends Model
     }
 
     public function user(){
-    	return $this->belongsToMany('Cv\Model\User');
+    	return $this->belongsToMany('Cv\Model\User', 'chatroom_user', 'chatroom_id' , 'user_id');
     }
     
 }

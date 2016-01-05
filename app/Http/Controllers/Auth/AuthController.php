@@ -27,75 +27,48 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct(\Cv\Service\AuthService $auth)
+    public function __construct(
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\OAuthService $oauth
+    )
     {
         $this->auth = $auth;
+        $this->oauth = $oauth;
         // $this->middleware('guest', ['except' => 'getLogout']);
-    }
-
-    // for developing purpose
-    public function fakeLogin(Request $request) {
-        if(!\Config::get('app.debug')) {
-            return response(400);
-        }
-
-        $data = $request->all();
-
-        $user = $this->auth->login($data['email'], $data['pwd']);
-
-        if(is_null($user)) {
-            return response()->json("failed to login", 401);
-        }
-
-        // load profile data
-        $user->load('profile');
-
-        return response()->json($user, 200);
-    }
-
-    public function login(Request $request) {
-        $data = $request->all();
-
-        $user = $this->auth->login($data['email'], $data['password']);
-
-        if(is_null($user)) {
-            return response()->json("failed to login", 401);
-        }
-
-        // load profile data
-        $user->load('profile');
-
-        return response()->json($user,200);
-    }
-
-    public function register(Request $request) {
-
-        $data = $request->all();
-
-        $user = $this->auth->registerUser($data["name"], $data["email"], $data["password"]);
-
-        // After account is registered, login with the registered user
-        $this->auth->loginWithUser($user);
-
-        // load profile data
-        $user->load('profile');
-
-        return response()->json($user);
     }
 
     public function logout() {
 
         $this->auth->logout();
 
-        return response()->json("logout", 200);
-    }
-
-    public function login_form(){
-        return view('auths.login');
-    }
-
-    public function register_form(){
-        return view('auths.register');
+        return redirect("/login");
     }
     
+    public function facebookOauth2Callback(Request $request) {
+        if(!$request->has('code')) {
+            return redirect("/login");
+        }
+
+        $code = $request->get('code');
+
+        $profile = $this->oauth->handleFacebookRedirectAndGetProfile($code);
+
+        $user = $this->auth->getUserByEmail($profile["email"]);
+        if(is_null($user)) {
+            // Register account if there is not exists
+            $profileImage = $this->oauth->downloadFacebookProfileImage($profile["id"]);
+            $user = $this->auth->registerUser($profile["name"], $profile["email"], null, $profile["gender"] , $profile["id"], null,$profileImage);
+        }
+
+        $this->auth->loginWithUser($user, true);
+
+        // redirect to application
+        return redirect("/");
+    }
+
+    public function twitterOauth2Callback(Request $request) {
+        if(!$request->has('code')) {
+            return redirect("/login");
+        }   
+    }
 }

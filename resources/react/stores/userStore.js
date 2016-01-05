@@ -20,8 +20,29 @@ class UserStore extends BaseStore {
                 case UserConst.LOAD_ALL:
                     this.loadAll(action.forceFlag);
                 break;
+                case UserConst.LOGIN:
+                    this.login(action.email, action.pwd);
+                break;
             }
         });
+    }
+
+    login(email, pwd) {
+
+        var formData = {
+            email: email, 
+            password: pwd,
+        };
+        this.ajax("post", ApiPrefix + "/auth/login", (error, data) => {
+            if(error) {
+                this.emitChange();
+                return;
+            }
+            
+            this.myProfile = this.transformResponse(data.profile);
+            this.emitChange();
+        }, formData);
+
     }
 
 
@@ -33,11 +54,20 @@ class UserStore extends BaseStore {
             }
         }
 
+        if(window.myProfile !== null) {
+            this.myProfile = this.transformResponse(window.myProfile);
+            window.myProfile = null;
+            this.emitChange();
+            return;
+        }
+
         this.ajax("get", ApiPrefix + "/profile/me", (error, data) => {
-            this.myProfile = data;
-            if(this.myProfile.profile_image_url.length === 0) {
-                this.myProfile.profile_image_url = "/assets/imgs/profile_imageless.png";
+            if(error) {
+                this.emitChange();
+                return;
             }
+            
+            this.myProfile = this.transformResponse(data);
             this.emitChange();
         });
     }
@@ -50,10 +80,7 @@ class UserStore extends BaseStore {
                 return;
             }
 
-            this.myProfile = data;
-            if(this.myProfile.profile_image_url.length === 0) {
-                this.myProfile.profile_image_url = "/assets/imgs/profile_imageless.png";
-            }
+            this.myProfile = this.transformResponse(data);
             this.emitChange();
         }, data);
     }
@@ -73,31 +100,12 @@ class UserStore extends BaseStore {
         return this.myProfile || dummyData;
     }
 
-    loadAll(forceFlag) {
-        if(!forceFlag) {
-            if(typeof this.data !== 'undefined') {
-                this.emitChange();
-                return;
-            }
+    transformResponse(res) {
+        res.id = parseInt(res.user_id);
+        if(res.profile_image_url.length === 0) {
+            res.profile_image_url = "/assets/imgs/profile_imageless.png";
         }
-
-        this.ajax("get", ApiPrefix + "/profile", (error, data) => {
-            
-            for(var i = 0 ; i < data.length ; i ++) {
-                if(data[i].profile_image_url.length === 0) {
-                    data[i].profile_image_url = "/assets/imgs/profile_imageless.png";
-                }    
-            }
-            
-            this.data = data;
-            this.emitChange();
-        });
-    }
-
-    getAll() {
-        var dummyData = [];
-
-        return this.data || dummyData;
+        return res;
     }
 
 }

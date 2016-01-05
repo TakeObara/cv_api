@@ -15,6 +15,7 @@
     @yield('content')
     </div>
     
+    @yield('scripts-constant')
     <script src="/js/react.js"></script>
     <script src="/js/react-dom.js"></script>
     <script src="/js/react-router.js"></script>

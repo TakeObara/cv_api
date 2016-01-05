@@ -4,8 +4,12 @@ namespace Cv\Service;
 
 use Auth;
 
+use DB;
+use Cv;
 use Cv\Model\User;
 use Cv\Model\Chatroom;
+
+use Illuminate\Support\Collection;
 
 class ChatroomService {
 
@@ -19,14 +23,141 @@ class ChatroomService {
     public function getByUser(User $user) 
     {
         $chatrooms = $user->chatroom()->getResults();
-        $chatrooms->load("messages");
+        $chatrooms->load("message","user","user.profile");
 
         return $chatrooms;
     }
 
-    public function create(User $user, $title)
+    public function get($id, User $user)
     {
-           
+        $chatroom = Chatroom::with("message","user","user.profile")->where("id","=",$id)->first();
+        if(is_null($chatroom)) {
+            throw new Cv\Exceptions\NoPermissionModel;
+        }
+
+        $havePermitToJoin = false;
+        foreach ($chatroom->user as $userInChatroom) {
+            if($userInChatroom->id === $user->id) {
+                $havePermitToJoin = true;
+            }
+        }
+
+        if(!$havePermitToJoin) {
+            throw new Cv\Exceptions\NoPermissionModel;
+        }
+        
+        return $chatroom;
+    }    
+
+    public function create($title, $userIds)
+    {   
+        if($this->haveMissingUser($userIds)) {
+            throw new Cv\Exceptions\MissingModelException;
+        }
+
+        $chatroom = $this->getByUserIds($userIds);
+        if(!is_null($chatroom)) {
+
+            $chatroom->load("user","user.profile");
+            return $chatroom;
+        }
+
+        $chatroom = new Chatroom;
+        $chatroom->title = $title;
+        $chatroom->save();
+
+        $chatroom->user()->sync($userIds);
+
+        $chatroom->load("user","user.profile");
+
+        return $chatroom;
+    }
+
+    public function update($chatroomId, $title, $userIds)
+    {
+        if($this->haveMissingUser($userIds)) {
+            throw new Cv\Exceptions\MissingModelException;
+        }
+
+        $chatroom = Chatroom::findOrDie($chatroomId);
+        if(is_null($chatroom)) {
+            throw new Cv\Exceptions\MissingModelException;
+        }
+
+        $chatroom->title = $title;
+        $chatroom->user()->sync($userIds);
+
+        $chatroom->load("user");
+
+        return $chatroom;
+    }
+
+    public function remove($chatroomId)
+    {
+        // Chatroom::findOrFail($chatroomId)->delete();
+    }
+
+    public function haveMissingUser($userIds) 
+    {
+        $userInModel = User::select("id")->whereIn("id",$userIds)->lists("id")->all();
+        foreach ($userIds as $userId) {
+            if(!in_array($userId, $userInModel)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // exactly match with userIds
+    public function getByUserIds($userIds) {
+
+        $pv = "chatroom_user";
+
+        $users = collect($userIds)->sort();
+        $chatroomIds = DB::table($pv)
+            ->select("chatroom_id")
+            ->where("user_id","=",$users[0])
+            ->lists("chatroom_id")
+        ;
+
+
+        $userChatrooms = DB::table($pv)
+            ->select("user_id","chatroom_id")
+            ->whereIn("chatroom_id",$chatroomIds)
+            ->orderBy("user_id","asc")
+            ->get();
+        ;
+
+        $userChatroomMap = [];
+        foreach ($userChatrooms as $item) {
+            if(array_key_exists($item->chatroom_id, $userChatroomMap)) {
+                $userChatroomMap[$item->chatroom_id][] = $item->user_id;
+            }else {
+                $userChatroomMap[$item->chatroom_id] = [$item->user_id];
+            }
+        }
+
+        // matching
+        $usersCount = $users->count();
+        foreach ($userChatroomMap as $chatroom_id => $usersInMap) {
+            if(count($usersInMap) === $usersCount) {
+                $exactlySame = true;
+                $i = 0;
+                foreach($users as $user) {
+                    if(intval($user) !== $usersInMap[$i]) {
+                        $exactlySame = false;
+                        break;
+                    }
+                    $i += 1;
+                }
+
+                if($exactlySame) {
+                    return Chatroom::find($chatroom_id);
+                }
+            }
+        }
+
+        return null;
     }
 
 }

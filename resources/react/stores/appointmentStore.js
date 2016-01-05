@@ -28,6 +28,9 @@ class AppointmentStore extends BaseStore {
         }
 
         this.ajax("get", ApiPrefix + "/appointment", (error, data) => {
+            if(error) {
+                return;
+            }
             
             for(var i = 0 ; i < data.length ; i ++) {
                 if(data[i].profile.profile_image_url.length === 0) {

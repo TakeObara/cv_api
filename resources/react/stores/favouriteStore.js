@@ -2,6 +2,7 @@ import { FavouriteConst, ApiPrefix } from "../Constant"
 import AppDispatcher from "../Dispatcher"
 import BaseStore from "./BaseStore"
 import UserListStore from "./UserListStore"
+import UserStore from "./UserStore"
 
 class FavouriteStore extends BaseStore {
     /**
@@ -35,12 +36,16 @@ class FavouriteStore extends BaseStore {
         }
 
         this.ajax("get", ApiPrefix + "/favourite", (error, data) => {
+            if(error) {
+                this.emitChange();
+                return;
+            }
             
             for(var i = 0 ; i < data.length ; i ++) {
-                if(data[i].profile.profile_image_url.length === 0) {
-                    data[i].profile.profile_image_url = "/assets/imgs/profile_imageless.png";
-                }    
+                data[i] = UserStore.transformResponse(data[i].profile);
             }
+
+            console.log(data);
             
             this.data = data;
             this.emitChange();
@@ -51,7 +56,7 @@ class FavouriteStore extends BaseStore {
         // after update data, reload data again
         this.ajax("put", ApiPrefix + "/favourite/"+userId, (error, data) => {
             this.loadAll(true);
-            // UserListStore.loadAll(true);
+            UserListStore.loadAll(true);
         });
     }
 
@@ -59,7 +64,7 @@ class FavouriteStore extends BaseStore {
         // after update data, reload data again
         this.ajax("delete", ApiPrefix + "/favourite/"+userId, (error, data) => {
             this.loadAll(true);
-            // UserListStore.loadAll(true);
+            UserListStore.loadAll(true);
         });
     }
 

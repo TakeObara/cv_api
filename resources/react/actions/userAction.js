@@ -31,6 +31,14 @@ class UserAction {
             data: data
         });
     }
+
+    login(email, pwd) {
+        AppDispatcher.dispatch({
+            type: UserConst.LOGIN,
+            email: email,
+            pwd: pwd,
+        });   
+    }
 }   
 
 export default new UserAction();

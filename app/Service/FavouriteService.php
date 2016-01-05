@@ -29,7 +29,7 @@ class FavouriteService {
             throw new ModelNotFoundException;
         }
 
-        if(Favourite::where("favourite_user_id","=",$favourUserId)->count() > 0) {
+        if(Favourite::where("user_id","=",$user->id)->where("favourite_user_id","=",$favourUserId)->count() > 0) {
             return;
         }
 

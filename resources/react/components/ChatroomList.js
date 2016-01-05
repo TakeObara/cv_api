@@ -1,19 +1,24 @@
+
+
 import UserAction from "../actions/UserAction"
 import UserStore from "../stores/UserStore"
 
-import FavouriteItem from "./FavouriteItem";
+import ChatroomListStore from "../stores/ChatroomListStore";
+import ChatroomListAction from "../actions/ChatroomListAction";
 
-import FavouriteAction from "../actions/FavouriteAction"
-import FavouriteStore from "../stores/FavouriteStore"
+import ChatroomItemList from "./ChatroomItemList";
 
-export default class Favourite extends React.Component{
+
+export default class ChatroomList extends React.Component {
 
     constructor() {
         super();
 
+        UserAction.loadMyProfile();
+
         this.state = {
             me: UserStore.getMyProfile(),
-            favourites: FavouriteStore.getAll(),
+            list: ChatroomListStore.getAll(),
         };
 
         this._onUserChange = this._onUserChange.bind(this);
@@ -23,16 +28,16 @@ export default class Favourite extends React.Component{
 
     componentDidMount() {
         UserStore.addChangeListener(this._onUserChange);
-        FavouriteStore.addChangeListener(this._onChange);
+        ChatroomListStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount() {
         UserStore.removeChangeListener(this._onUserChange);
-        FavouriteStore.removeChangeListener(this._onChange);
+        ChatroomListStore.removeChangeListener(this._onChange);
     }
 
     _onUserChange() {
-        console.log("favourite component in _onUserChange");
+        console.log("message component in _onUserChange");
         var _state = this.state;
         _state.me = UserStore.getMyProfile();
         this.setState(_state);
@@ -41,34 +46,30 @@ export default class Favourite extends React.Component{
     _onChange() {
         console.log("favourite component in _onChange");
         var _state = this.state;
-        _state.favourites = FavouriteStore.getAll();
+        _state.list = ChatroomListStore.getAll();
         this.setState(_state);
     }
-
-
 
     render() {
 
         var profileCoverStyle = { backgroundImage: 'url('+this.state.me.profile_image_url+')' };
 
-        var favouriteList = [];
-        for (var i = 0; i < this.state.favourites.length; i++) {
-            var _favour = this.state.favourites[i];
-            favouriteList.push(<FavouriteItem key={i} profile={_favour} />);
-        };
+        var list = [];
+        for (var i = 0; i < this.state.list.length; i++) {
+            var chatroom = this.state.list[i];
+            list.push( <ChatroomItemList key={i} info={chatroom} /> );
+        }
 
         return (
             <div className="halfPage">
                 <div className="halfPage-cover profile-cover" style={profileCoverStyle}></div>
                 <div className="halfPage-cover dark-cover"></div>
                 <div className="content scrollable">
-                    <div className="halfPage-title">BOOKMARK</div>
-                    <div className="favouriteList">
-                        {favouriteList}
-                    </div>
+                    <div className="halfPage-title">MESSAGES</div>
+                    {list}
                 </div>
             </div>
         );
     }
-
 }
+

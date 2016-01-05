@@ -5,9 +5,7 @@ export default class Profile extends React.Component{
 
     constructor() {
         super();
-
-        UserAction.loadMyProfile();
-
+        
         this.state = {me: UserStore.getMyProfile()};
 
         this._onChange = this._onChange.bind(this);

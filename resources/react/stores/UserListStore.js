@@ -1,6 +1,7 @@
 import { UserListConst, ApiPrefix } from "../Constant"
 import AppDispatcher from "../Dispatcher"
 import BaseStore from "./BaseStore"
+import UserStore from "./UserStore"
 
 class UserListStore extends BaseStore {
     /**
@@ -27,11 +28,13 @@ class UserListStore extends BaseStore {
         }
 
         this.ajax("get", ApiPrefix + "/profile", (error, data) => {
+            if(error) {
+                this.emitChange();
+                return;
+            }
             
             for(var i = 0 ; i < data.length ; i ++) {
-                if(data[i].profile_image_url.length === 0) {
-                    data[i].profile_image_url = "/assets/imgs/profile_imageless.png";
-                }    
+                data[i] = UserStore.transformResponse(data[i]);
             }
             
             this.data = data;

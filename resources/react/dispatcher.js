@@ -7,6 +7,7 @@ class Dispatcher {
         this._callbacks = {};
         this._isDispatching = false;
         this._isHandled = {};
+        this._actionFired = {};
         this._isPending = {};
         this._lastID = 1;
         this._prefix = 'ID_';
@@ -79,6 +80,7 @@ class Dispatcher {
        * Dispatches a payload to all registered callbacks.
        */
     dispatch(payload) {
+
         
         this._startDispatching(payload);
         try {

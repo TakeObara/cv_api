@@ -28,8 +28,10 @@ class ReactService {
             // compile react library
             $this->v8->executeString(join("",$react), "react.js");
 
-            // compile components
-            $this->v8->executeString($app, "app.js");
+            if(!\Config::get("app.debug")) {
+                // compile components
+                $this->v8->executeString($app, "app.js");
+            }
         } catch (V8JsException $e) {
             // blow up spectacularly
             $this->handleException($e);

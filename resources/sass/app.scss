@@ -16,6 +16,10 @@ button:focus {
     outline: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 $gold-color: #cc9966;
 
 .clearfix:after {
@@ -206,6 +210,7 @@ header {
             width: 100%;
             margin-top: 15px;
             background: rgba(0,0,0,0.3);
+            position: relative;
 
             .profileImg {
                 width: 100px;
@@ -223,6 +228,102 @@ header {
                     font-size: 70%;
                 }
             }
+
+            .favouriteRemove {
+                position: absolute;
+                top: 0;
+                right: 0;
+                
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .cross {
+                display: block;
+                height: 30px;
+                width: 30px;
+                transform: rotate(45deg);
+            }
+        }
+    }
+}
+
+.chatroom.content {
+    padding: 0;
+    height: 100%;
+    position: relative;
+    
+    .chatroomTitle {
+        color: black;
+        height: 50px;
+        line-height: 50px;
+        vertical-align: middle;
+        background-color: #dbdbdb;
+        width: 100%;
+
+
+    }
+
+    .chatroomMessage {
+        display: block;
+        width: 100%;
+        height: calc(100% - 100px);
+    }
+
+    .chatBox {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        background-color: #006699;
+        height: 50px;
+
+        .formText {
+            display: block;
+            float: left;
+            margin: 7px;
+            width: calc(100% - 90px);
+        }
+
+        .btnSubmit {
+            padding: 0;
+            border: 0;
+            background-color: #6699cc;
+            display: block;
+            float: left;
+            margin-top: 7px;
+            width: 40px;
+            height: 40px;
+        }
+    }
+}
+
+.chatroomItem {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    background-color: #dbdbdb;
+    color: #222;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    .chatroomImg {
+        display: block;
+        float: left;
+        width: 60px;
+        height: 60px;
+    }
+    .chatroomInfo {
+        float: left;
+        margin-left: 15px;
+        width: calc(100% - 75px);
+
+        .opponentName {
+            line-height: 60px;
+            vertical-align: middle;
         }
     }
 }

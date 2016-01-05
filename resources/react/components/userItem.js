@@ -1,12 +1,18 @@
-import FavouriteStore from '../stores/FavouriteStore';
+import UserStore from "../stores/UserStore"
+
+import FavouriteStore from '../stores/FavouriteStore'
 import FavouriteAction from "../actions/FavouriteAction"
 
+import ChatroomListAction from "../actions/ChatroomListAction"
+
+var browserHistory = ReactRouter.browserHistory;
 var Link = ReactRouter.Link;
 
 export default class UserItem extends React.Component{
-    
+
     constructor() {
         super();
+
     }
 
     _toggleFavourite() {
@@ -16,9 +22,27 @@ export default class UserItem extends React.Component{
         } else {
             FavouriteAction.appendFavourite(userMeta.id);
         }
-        
-        // console.log("favourite");
     }
+
+    _startChat() {
+        var userMeta = this.props.userMeta;
+        var me = UserStore.getMyProfile();
+        var title = userMeta.name;
+        var users = [
+            me.id,
+            userMeta.id
+        ];
+        ChatroomListAction.create(title, users, this._startChatPreparedCallback.bind(this));
+    }
+
+    _startChatPreparedCallback(error, data) {
+        if(!error) {
+            browserHistory.push({
+                pathname: '/chatroom/'+data.id
+            });
+        }
+    }
+
 
     render() {
 
@@ -37,7 +61,7 @@ export default class UserItem extends React.Component{
                     {favouriteBtn}
                 </button>
 
-                <div className="cover">
+                <div className="cover"  onClick={this._startChat.bind(this)}>
                     <div className="middleInCover">
                         <img src="/assets/imgs/ic_bubble_w.png" /><br/>
                         会話しましょう
@@ -51,5 +75,4 @@ export default class UserItem extends React.Component{
             </div>
         )
     } 
-
 }
