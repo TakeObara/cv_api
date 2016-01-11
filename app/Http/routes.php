@@ -36,6 +36,10 @@ Route::group(['prefix' => '/api/v1'], function () {
     
 });
 
+Route::get('/privacy', function() {
+    return view("app.privacy");
+});
+
 // Frontend Application 
 Route::controller('/', 'AppController');
 
