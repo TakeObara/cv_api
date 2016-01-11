@@ -7,7 +7,6 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-        "reactjs/react-php-v8js": "1.0.0",
         "oriceon/oauth-5-laravel":"dev-master"
     },
     "repositories": [

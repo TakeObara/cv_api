@@ -16,13 +16,12 @@ class AppController extends Controller
     private $profile;
 
     public function __construct(
-        \Cv\Service\ReactService $react,
         \Cv\Service\AuthService $auth,
         \Cv\Service\ProfileService $profile,
         \Cv\Service\OAuthService $oauth
     ) 
     {
-        $this->react = $react;
+        $this->react = null;
         $this->auth  = $auth;
         $this->profile = $profile;
         $this->oauth   = $oauth;
