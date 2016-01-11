@@ -1,33 +1,40 @@
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import UserList from "./UserList";
-import MainHalfPage from "./MainHalfPage";
+import Header from "./Header"
+import Sidebar from "./Sidebar"
+import UserList from "./UserList"
+import Login from "./Login"
+import AuthEngine from "../middleware/AuthEngine"
 
 export default class Main extends React.Component{
 
     render() {
 
-        var halfPage = null;
-        // if(this.props.children === null) {
-        //     halfPage = (<MainHalfPage />)
-        // }else {
-            halfPage = this.props.children;
-        // }
-
-        return (
-            <div>
-                <Header />
+        var container = null;
+        if(AuthEngine.isAuthorized()) {
+            container = (
                 <div className="container clearfix">
                     <Sidebar />
                     <div className="inner-container">
                         <div className="half-container">
-                            {halfPage}
+                            {this.props.children}
                         </div>
                         <div className="scrollable half-container">
                             <UserList />
                         </div>
                     </div>
                 </div>
+            );
+        }else {
+            container = (
+                <div className="container clearfix">
+                    <Login />
+                </div>
+            );
+        }
+
+        return (
+            <div>
+                <Header />
+                {container}
             </div>
         );
     }

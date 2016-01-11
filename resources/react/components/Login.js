@@ -64,9 +64,20 @@ export default class Login extends React.Component{
     render() {
 
         return(
-            <div>
-                <h1>Login!!!!</h1>
-                <a href={facebookLoginUrl}>Facebook Login</a>
+            <div className="loginPage">
+                <div className="bg"></div>
+                <div className="dark-cover"></div>
+                <div className="content">
+                    <div style={{fontSize:"40px",color:"#a1d784"}}>WELCOME</div>
+                    <br />
+                    <p>1回3000円で人を紹介する、してもらうサービス</p>
+                    <h1 className="brandname">CONNECTION <span className="blue">VENDOR</span></h1>
+                    <p>まずは無料登録しましょう</p>
+                    <br />
+                    <div className="btn_group">
+                        <a className="btn_fb_login" href={facebookLoginUrl}>Facebookアカウントでログインする</a>
+                    </div>
+                </div>
             </div>
         );
     }
