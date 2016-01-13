@@ -53,7 +53,13 @@ class AuthController extends Controller
 
         $profile = $this->oauth->handleFacebookRedirectAndGetProfile($code);
 
-        $user = $this->auth->getUserByEmail($profile["email"]);
+        $user = null;
+        if(is_null($profile["email"])) {
+            $user = $this->auth->getUserByFacebookId($profile["id"]);
+        }else {
+            $user = $this->auth->getUserByEmail($profile["email"]);
+        }
+        
         if(is_null($user)) {
             // Register account if there is not exists
             $profileImage = $this->oauth->downloadFacebookProfileImage($profile["id"]);

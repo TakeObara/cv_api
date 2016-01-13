@@ -44,6 +44,12 @@ class OAuthService {
     }
 
     public function transformFacebookResponse(&$res) {
+
+
+        if(!array_key_exists("email", $res)) {
+            $res["email"] = null;
+        }
+
         $gender = Profile::GENDER_UNISEX;
         if(array_key_exists("gender", $res)) {
             if($res["gender"] === 'male') {
