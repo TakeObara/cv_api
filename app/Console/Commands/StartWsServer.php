@@ -19,7 +19,7 @@ use Illuminate\Console\Command;
 
 class StartWsServer extends Command implements Ratchet\MessageComponentInterface
 {
-    const PORT = 9000;
+    const PORT = 13000;
 
     protected $clients;
     protected $chatroom;

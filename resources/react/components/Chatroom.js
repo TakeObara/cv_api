@@ -17,7 +17,7 @@ export default class Chatroom extends React.Component {
         };
 
         this._onChange = this._onChange.bind(this);
-        this.wsUri = "ws://localhost:9000";
+        this.wsUri = "ws://"+(location.hostname === 'localhost' ? 'localhost:13000': 'chat.cvendor.jp');
     }
 
     componentDidMount() {
