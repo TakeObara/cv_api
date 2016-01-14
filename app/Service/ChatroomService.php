@@ -28,6 +28,16 @@ class ChatroomService {
         return $chatrooms;
     }
 
+    public function inRoom($userId, $chatroomId)
+    {
+        $pv = "chatroom_user";
+
+        return DB::table($pv)
+            ->where("user_id","=",$userId)
+            ->where("chatroom_id","=",$chatroomId)
+            ->count() > 0;
+    }
+
     public function get($id, User $user)
     {
         $chatroom = Chatroom::with("message","user","user.profile")->where("id","=",$id)->first();

@@ -1,8 +1,9 @@
 
 import ChatroomStore from "../stores/ChatroomStore"
 import ChatroomAction from "../actions/ChatroomAction"
-
+import MessageListStore from "../stores/MessageListStore"
 import Message from "./message"
+import UserStore from "../stores/UserStore"
 
 var Link = ReactRouter.Link;
 
@@ -16,6 +17,7 @@ export default class Chatroom extends React.Component {
         };
 
         this._onChange = this._onChange.bind(this);
+        this.wsUri = "ws://localhost:9000";
     }
 
     componentDidMount() {
@@ -35,9 +37,23 @@ export default class Chatroom extends React.Component {
 
     loadChatroom() {
         ChatroomAction.loadData(this.props.params.id);
+
+        this.ws = new WebSocket(this.wsUri + "/" + this.props.params.id); 
+        this.ws.onmessage = this.onMessage.bind(this);
+    }
+
+    onMessage(ev) {
+        var msg    = JSON.parse(ev.data); //PHP sends Json data
+
+        var chatroomId = this.props.params.id;
+        var userId     = msg.userId;
+        var message    = msg.message;
+
+        ChatroomAction.speak(chatroomId, userId, message);
     }
 
     componentWillUnmount() {
+        this.ws.close();
         ChatroomStore.removeChangeListener(this._onChange);
     }
 
@@ -46,15 +62,28 @@ export default class Chatroom extends React.Component {
         this.setState({chatroom: ChatroomStore.get(this.props.params.id)});
     }
 
+    _chatBoxOnChange(e) {
+        this.setState({myText: e.target.value});
+    }
+
     _onSubmit(e) {
         e.preventDefault();
+        
+
+        var userId = UserStore.getMyProfile().id;
+
+        this.ws.send(JSON.stringify({userId: userId, message: this.state.myText}));
+
+        this.setState({myText: ""});
     }
 
     render() {
         var list = [];
 
-        for(var i = 0; i < this.state.chatroom.message.length; i++) {
-            var _msg = this.state.chatroom.message[i];
+        var messages = this.state.chatroom.message;
+
+        for(var i = 0; i < messages.length; i++) {
+            var _msg = messages[i];
             list.push(<Message key={i} message={_msg} />);
         }
 
@@ -68,7 +97,7 @@ export default class Chatroom extends React.Component {
                     </div>
                     <div className="chatBox clearfix">
                         <form onSubmit={this._onSubmit.bind(this)} >
-                            <input className="formText" />
+                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
                             <button className="btnSubmit" type="submit">送信</button>
                         </form>
                     </div>

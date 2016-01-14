@@ -15,6 +15,15 @@ class ChatroomAction {
             id: id,
         });
     }
+
+    speak(chatroomId, userId, message) {
+        AppDispatcher.dispatch({
+            type: ChatroomConst.SPEAK,
+            id: chatroomId,
+            userId: userId,
+            message: message,
+        });   
+    }
 }   
 
 export default new ChatroomAction();
