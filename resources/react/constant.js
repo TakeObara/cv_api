@@ -36,6 +36,7 @@ var ApiPrefix = '/api/v1',
 
     ChatroomConst = {
         LOAD_DATA: 'CHATROOM_LOAD_DATA',
+        SPEAK:     'SPEAK',
     }
 ;
 

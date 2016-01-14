@@ -4,6 +4,8 @@ namespace Cv\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Session;
+
 use Cv\Http\Requests;
 use Cv\Http\Controllers\Controller;
 
@@ -33,8 +35,10 @@ class AppController extends Controller
 
         if(is_null($me)) {
             $facebookLoginUrl = $this->oauth->getAuthorizationUrl();
+            Session::put("userId",null);
         } else {
             $loginedUserProfile = $this->profile->getProfileByUserId($me->id)->toArray();    
+            Session::put("userId",$me->id);
         }
 
         $this->viewParams = [
