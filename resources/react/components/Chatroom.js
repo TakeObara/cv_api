@@ -40,6 +40,9 @@ export default class Chatroom extends React.Component {
 
         this.ws = new WebSocket(this.wsUri + "/" + this.props.params.id); 
         this.ws.onmessage = this.onMessage.bind(this);
+        this.ws.onerror = function() {
+            console.log("Fail to create WebSocket");
+        }
     }
 
     onMessage(ev) {
