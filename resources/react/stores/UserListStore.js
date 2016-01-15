@@ -44,8 +44,22 @@ class UserListStore extends BaseStore {
 
     getAll() {
         var dummyData = [];
-
         return this.data || dummyData;
+    }
+
+    getAllWithoutMe() {
+        var dummyData = [];
+
+        var me = UserStore.getMyProfile();
+        var dataWithoutMe = [];
+        var data = this.data || dummyData;
+        for (var i = 0; i < data.length; i++) {
+            if(data[i].id != me.id) {
+                dataWithoutMe.push(data[i]);
+            }
+        }
+
+        return dataWithoutMe;
     }
 
 }

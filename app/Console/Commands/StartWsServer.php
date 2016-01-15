@@ -81,12 +81,11 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
 
     public function onMessage(ConnectionInterface $from, $msg) {
 
+        $msgItem = json_decode($msg);
+        $this->message->chat($msgItem->userId, $from->chatroomId, $msgItem->message);
+
         foreach ($this->clients[$from->chatroomId] as $client) {
             $client->send($msg);
-
-            $msgItem = json_decode($msg);
-
-            $this->message->chat($msgItem->userId, $from->chatroomId, $msgItem->message);
         }
     }
 
