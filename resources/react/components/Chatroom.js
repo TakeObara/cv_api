@@ -2,7 +2,7 @@
 import ChatroomStore from "../stores/ChatroomStore"
 import ChatroomAction from "../actions/ChatroomAction"
 import MessageListStore from "../stores/MessageListStore"
-import Message from "./message"
+import Message from "./Message"
 import UserStore from "../stores/UserStore"
 
 var Link = ReactRouter.Link;
