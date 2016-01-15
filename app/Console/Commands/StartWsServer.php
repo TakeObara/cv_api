@@ -119,7 +119,7 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
      */
     public function handle()
     {
-        $this->info("start");
+        $this->info("start at PORT: ".self::PORT);
 
         //
         $server = IoServer::factory( new HttpServer(new WsServer($this)), self::PORT );
