@@ -27,10 +27,11 @@ elixir(function(mix) {
     elixir.config.assetsPath = "resources";
     elixir.config.js.folder = "react";
     elixir.config.js.outputFolder = 'dist';
+    elixir.config.js.browserify.options.paths = [__dirname + '/node_modules', __dirname + '/resources/react'];
     elixir.config.js.browserify.transformers = [{
         name: 'babelify',
         options: {
-            presets: ['es2015','react']
+            presets: ['es2015','react'],
         }
     }];
  
