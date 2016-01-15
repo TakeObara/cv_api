@@ -17,7 +17,7 @@ export default class UserList extends React.Component {
         ChatroomListAction.loadAll();
 
         this.state = {
-            list: UserListStore.getAll(),
+            list: UserListStore.getAllWithoutMe(),
         };
 
         this._onChange     = this._onChange.bind(this)
@@ -37,7 +37,7 @@ export default class UserList extends React.Component {
     _onChange() {
         console.log("userList component onChange");
         var _state = this.state;
-        _state.list = UserListStore.getAll();
+        _state.list = UserListStore.getAllWithoutMe();
         this.setState(_state);
     }
 

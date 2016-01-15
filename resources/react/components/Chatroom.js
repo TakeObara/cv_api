@@ -36,7 +36,7 @@ export default class Chatroom extends React.Component {
     }
 
     loadChatroom() {
-        ChatroomAction.loadData(this.props.params.id);
+        ChatroomAction.loadData(this.props.params.id, true);
 
         this.ws = new WebSocket(this.wsUri + "/" + this.props.params.id); 
         this.ws.onmessage = this.onMessage.bind(this);

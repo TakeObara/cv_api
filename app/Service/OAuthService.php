@@ -36,7 +36,7 @@ class OAuthService {
     }
 
     public function downloadFacebookProfileImage($facebookId) {
-        $img = file_get_contents('https://graph.facebook.com/v2.5/'.$facebookId.'/picture?type=large');
+        $img = file_get_contents('https://graph.facebook.com/v2.5/'.$facebookId.'/picture?width=9999');
         $file = "/shared/".$key = md5(microtime().rand()).".jpg";
         file_put_contents(public_path().$file, $img);
 
