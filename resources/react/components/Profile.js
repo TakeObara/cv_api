@@ -1,3 +1,5 @@
+import NotificationAction from "../actions/NotificationAction"
+
 import UserAction from "../actions/UserAction"
 import UserStore from "../stores/UserStore"
 
@@ -36,6 +38,7 @@ export default class Profile extends React.Component{
     }
 
     _save() {
+        NotificationAction.notify("info","updated");
         UserAction.updateMyProfile(this.state.me);
     }
 

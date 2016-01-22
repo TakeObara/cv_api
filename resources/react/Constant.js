@@ -37,7 +37,11 @@ var ApiPrefix = '/api/v1',
     ChatroomConst = {
         LOAD_DATA: 'CHATROOM_LOAD_DATA',
         SPEAK:     'SPEAK',
+    },
+
+    NotifyConst = {
+        NOTIFY:    'NOTIFY',
     }
 ;
 
-export { ApiPrefix, UserConst, UserListConst, FavouriteConst , AppointmentConst, MessageConst,ChatroomListConst, ChatroomConst};
+export { ApiPrefix, UserConst, UserListConst, FavouriteConst , AppointmentConst, MessageConst,ChatroomListConst, ChatroomConst, NotifyConst};
