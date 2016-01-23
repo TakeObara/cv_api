@@ -74,10 +74,21 @@ export default class Chatroom extends React.Component {
         
 
         var userId = UserStore.getMyProfile().id;
+        var message = this.state.myText.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
-        this.ws.send(JSON.stringify({userId: userId, message: this.state.myText}));
+        this.ws.send(JSON.stringify({userId: userId, message: message}));
 
         this.setState({myText: ""});
+    }
+
+    _fileOnChange(e) {
+        e.preventDefault();
+
+        var chatroomId = this.props.params.id;
+        var userId     = UserStore.getMyProfile().id;
+        var file       = e.target.files[0];
+        
+        ChatroomStore.upload(chatroomId, userId, file);
     }
 
     render() {
@@ -90,8 +101,16 @@ export default class Chatroom extends React.Component {
             list.push(<Message key={i} message={_msg} />);
         }
 
+        var button = null;
+        if(this.state.myText && this.state.myText.length > 0) {
+            button = (<button className="btnSubmit" type="submit">送信</button>);
+        }else {
+            button = (<input className="btnSubmit btnUpload" type="file" onChange={this._fileOnChange.bind(this)} />);
+        }
+
         return (
             <div className="halfPage">
+                <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
                 <div className="chatroom content">
                     <div className="chatroomTitle"><Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link></div>
@@ -101,7 +120,7 @@ export default class Chatroom extends React.Component {
                     <div className="chatBox clearfix">
                         <form onSubmit={this._onSubmit.bind(this)} >
                             <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
-                            <button className="btnSubmit" type="submit">送信</button>
+                            {button}
                         </form>
                     </div>
                 </div>

@@ -26,7 +26,7 @@ export default class BaseStore extends EventEmitter{
         this.removeListener(CHANGE_EVENT, callback);
     }
 
-    ajax(method, path, cb , data){
+    ajax (method ,path ,cb ,data ) {
         
         var xhr = null;
         try{ xhr = new XMLHttpRequest(); }catch(e){
@@ -76,4 +76,45 @@ export default class BaseStore extends EventEmitter{
 
         xhr.send(formData);
     }
+
+    upload(method, url, file, cb, multiple = false) {
+
+        if(typeof cb !== 'function') {
+            cb = function() {};
+        }
+
+        if(multiple) {
+            for (var i = 0; i < file.length; i++) {
+                this.upload(method, url, file[i], cb);
+            }
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('file', file);
+        
+
+        var xhr = null;
+        try{ xhr = new XMLHttpRequest(); }catch(e){
+            try{ xhr = new ActiveXObject("Msxml2.XMLHTTP"); }catch (e){
+                console.log("tinyxhr: XMLHttpRequest not supported");
+                return null;
+            }
+        }
+
+        xhr.open(method.toUpperCase(), url);
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState != 4) return;
+
+            var res = JSON.parse(xhr.responseText);
+            var error = false;
+            if (xhr.status !== 200) {
+                error = true;  
+            } 
+            cb(error, res, xhr.status);
+        };
+
+        xhr.send(formData);
+    
+    }  
 }

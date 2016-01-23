@@ -52,8 +52,6 @@ export default class ChatroomList extends React.Component {
 
     render() {
 
-        var profileCoverStyle = { backgroundImage: 'url('+this.state.me.profile_image_url+')' };
-
         var list = [];
         for (var i = 0; i < this.state.list.length; i++) {
             var chatroom = this.state.list[i];
@@ -62,7 +60,7 @@ export default class ChatroomList extends React.Component {
 
         return (
             <div className="halfPage">
-                <div className="halfPage-cover profile-cover" style={profileCoverStyle}></div>
+                <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
                 <div className="content scrollable">
                     <div className="halfPage-title">MESSAGES</div>

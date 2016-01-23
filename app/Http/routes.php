@@ -26,11 +26,14 @@ Route::group(['prefix' => '/api/v1'], function () {
     Route::group(['middleware' => 'auth'], function() {
 
         Route::get('profile/me', 'ProfileController@loginedInfo');
+        Route::post('profile/me/upload', 'ProfileController@upload');
         Route::resource('profile', 'ProfileController', ['only' => ['index','show','update']]);    
 
         Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update','destroy']]);
 
         Route::resource('chatroom', 'ChatroomController', ['except' => 'create']);
+
+        Route::post('chatroom/{id}/upload', 'ChatroomController@upload');
 
     });
     

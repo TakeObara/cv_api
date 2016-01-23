@@ -55,7 +55,17 @@ class ChatroomStore extends BaseStore {
         });
     }
 
-    
+    upload(_id, userId, files) {
+        super.upload("post", "/api/v1/chatroom/"+_id+"/upload", files, (result, res) => {
+            
+            var _src = res.message.destination_path + res.message.filename;
+            this.speak(_id, userId, "<img src=\""+_src+"\">");    
+            
+            
+            this.emitChange();
+        });
+    }
+
     transformResponse(res) {
         res.id = parseInt(res.id);
 
@@ -88,7 +98,7 @@ class ChatroomStore extends BaseStore {
         }
 
 
-        this.chatroom[_id].message.unshift(MessageStore.instance(user.profile, message));
+        this.chatroom[_id].message.push(MessageStore.instance(user.profile, message));
         this.emitChange();
     }
 

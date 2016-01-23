@@ -41,7 +41,7 @@ class ChatroomService {
     public function get($id, User $user)
     {
         $chatroom = Chatroom::with("user","user.profile")->with(["message" => function($query) {
-            $query->orderBy("created_at","desc")->take(5);
+            $query->orderBy("created_at","asc")->take(20);
         }])->where("id","=",$id)->first();
         if(is_null($chatroom)) {
             throw new Cv\Exceptions\NoPermissionModel;

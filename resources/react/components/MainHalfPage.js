@@ -33,11 +33,9 @@ export default class MainHalfPage extends React.Component{
 
     render() {
 
-        var profileCoverStyle = { backgroundImage: 'url('+this.state.me.profile_image_url+')' };
-
         return (
             <div className="halfPage">
-                <div className="halfPage-cover profile-cover" style={profileCoverStyle}></div>
+                <div className="halfPage-cover profile-cover"></div>
             </div>
         );
     }

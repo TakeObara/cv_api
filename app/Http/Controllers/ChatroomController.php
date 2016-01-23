@@ -14,14 +14,20 @@ class ChatroomController extends Controller
 
     public $auth;
     public $chatroom;
+    public $uploadService;
+    public $message;
 
     public function __construct(
             \Cv\Service\ChatroomService $chatroom,
-            \Cv\Service\AuthService $auth
+            \Cv\Service\AuthService $auth,
+            \Cv\Service\UploadService $upload,
+            \Cv\Service\MessageService $message
         ) {
 
+        $this->uploadService = $upload;
         $this->chatroom = $chatroom;
         $this->auth = $auth;
+        $this->message = $message;
     }
 
     /**
@@ -99,5 +105,23 @@ class ChatroomController extends Controller
         $this->chatroom->remove($id);
 
         return response()->json($chatroom, 200);
+    }
+
+    public function upload($chatroomId, Request $request) 
+    {
+        $file = $request->file("file");
+
+        $validator = $this->uploadService->validate($file);
+        if(!$validator["success"]){
+            return response()->json([ "success" => false, "errors" => $validator["messages"] ] ,400);
+        }
+
+        $uploadedFile = $this->uploadService->saveImage($file);
+        $userId = $this->auth->getLoginedUser()->id;
+        $message = "<img src=\"".$uploadedFile["destination_path"] . $uploadedFile["filename"]."\" >";
+
+        $this->message->chatInHtml($userId, $chatroomId, $message);
+        return response()->json([ "success" => true , "message" => $uploadedFile ]);
+    
     }
 }

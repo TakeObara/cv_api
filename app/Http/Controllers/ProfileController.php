@@ -14,14 +14,17 @@ class ProfileController extends Controller
     private $profile;
     private $auth;
     private $favourite;
+    private $uploadService;
 
     public function __construct(
         \Cv\Service\ProfileService $profile,
-        \Cv\Service\AuthService $auth
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\UploadService $uploadService
     ) 
     {
         $this->profile = $profile;
         $this->auth = $auth;
+        $this->uploadService = $uploadService;
     }
 
     /**
@@ -31,7 +34,6 @@ class ProfileController extends Controller
      */
     public function index()
     {
-
         //
         $limit = 10;
 
@@ -83,6 +85,28 @@ class ProfileController extends Controller
         $updatedProfile = $this->profile->save($userId, $request);
         
         return response()->json($updatedProfile, 200);
+    }
+
+
+    public function upload($chatroomId, Request $request) 
+    {
+        $file = $request->file("file");
+
+        $validator = $this->uploadService->validate($file);
+        if(!$validator["success"]){
+            return Response::json([ "success" => false, "errors" => $validator["messages"] ] ,400);
+        }else{
+
+            $uploadedFile = $this->uploadService->saveImage($file);
+            $userId = $this->auth->getLoginedUser()->id;
+            $message = "<img src=\"".$uploadedFile["destination_path"] . $uploadedFile["filename"]."\" >";
+
+            $this->message->chatInHtml($userId, $chatroomId, $message);
+            return Response::json([ "success" => true , "message" => $uploadedFile ]);
+        }
+    
+
+        return response()->json("YES ");
     }
 
 }

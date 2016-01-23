@@ -12,7 +12,7 @@ export default class Message extends React.Component {
         return (
             <div className="messageItem">
                 <img src={image} />
-                <p>{_msg.message}</p>
+                <p dangerouslySetInnerHTML={{__html: _msg.message}}></p>
             </div>
         );
     }

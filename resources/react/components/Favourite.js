@@ -49,8 +49,7 @@ export default class Favourite extends React.Component{
 
     render() {
 
-        var profileCoverStyle = { backgroundImage: 'url('+this.state.me.profile_image_url+')' };
-
+        
         var favouriteList = [];
         for (var i = 0; i < this.state.favourites.length; i++) {
             var _favour = this.state.favourites[i];
@@ -59,7 +58,7 @@ export default class Favourite extends React.Component{
 
         return (
             <div className="halfPage">
-                <div className="halfPage-cover profile-cover" style={profileCoverStyle}></div>
+                <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
                 <div className="content scrollable">
                     <div className="halfPage-title">BOOKMARK</div>

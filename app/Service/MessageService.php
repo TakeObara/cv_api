@@ -13,6 +13,15 @@ class MessageService {
 
     public function chat($userId, $chatroomId, $message)
     {
+        $message = str_replace("<", "&lt;", $message);
+        $message = str_replace(">", "&gt;", $message);
+        
+        $this->chatInHtml($userId, $chatroomId, $message);
+
+    }
+
+    public function chatInHtml($userId, $chatroomId, $message)
+    {
         $msg = new Message;
         $msg->user_id     = $userId;
         $msg->chatroom_id = $chatroomId;

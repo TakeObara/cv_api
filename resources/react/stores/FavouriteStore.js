@@ -44,8 +44,6 @@ class FavouriteStore extends BaseStore {
             for(var i = 0 ; i < data.length ; i ++) {
                 data[i] = UserStore.transformResponse(data[i].profile);
             }
-
-            console.log(data);
             
             this.data = data;
             this.emitChange();
