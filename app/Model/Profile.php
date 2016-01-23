@@ -12,6 +12,10 @@ class Profile extends Model
     const GENDER_FEMALE = 2;
 
 	protected $table = "profiles";
+
+    protected $casts = [
+        'is_public' => 'boolean',
+    ];
     
     public function user(){
     	return $this->belongsTo('Cv\Model\User');
