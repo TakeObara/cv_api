@@ -18,7 +18,7 @@ class ProfileService {
 
     public function all($limit, $offset = 0) 
     {
-        return Profile::orderBy("updated_at","desc")->take($limit)->skip($offset)->get();
+        return Profile::orderBy("updated_at", "desc")->take($limit)->skip($offset)->get();
     }
 
     
@@ -38,8 +38,13 @@ class ProfileService {
     public function save($userId, $data)
     {
         $profile = Profile::where("user_id","=",$userId)->first();
-        $profile->name              = $data['name'];
-        $profile->description       = $data['description'];
+        $profile->name               = $data['name'];
+        $profile->description        = $data['description'];
+        $profile->place              = $data['place'];
+        $profile->resource_introduce = $data['resource_introduce'];
+        $profile->resource_needed    = $data['resource_needed'];
+        $profile->gender             = $data['gender'];
+        $profile->is_public          = $data['is_public'];
         $profile->save();
 
         return $profile;

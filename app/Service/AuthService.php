@@ -40,11 +40,10 @@ class AuthService {
 
     public function getUserByEmail($email) {
         return User::where("email","=",$email)->first();
-    }    
+    }
 
     public function login($email, $password){
 
-        // 
         $setRememberMeToken = true;
 
         if(Auth::attempt(['email' => $email, 'password' => $password], $setRememberMeToken)) {
@@ -54,7 +53,7 @@ class AuthService {
         return null;
     }
 
-    public function ifUserExists($userId) 
+    public function ifUserExists($userId)
     {
         return User::where("id","=",$userId)->count() > 0;
     }
@@ -64,9 +63,9 @@ class AuthService {
     }
 
     public function logout() {
-        
+
         Auth::logout();
-        
+
     }
 
 }
