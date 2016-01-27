@@ -158,10 +158,10 @@ header {
 
     .profile-cover {
         background-image: url(/assets/imgs/ic_profile_background.jpg);
-        background-size: 50% auto;
+        background-size: 80% auto;
         background-repeat: no-repeat;
-        background-position: 35% 116%;
-        background-attachment: fixed;
+        background-position: 150% 120%;
+        background-attachment: scroll;
     }
 
     .halfPage-title {
