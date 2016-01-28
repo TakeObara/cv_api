@@ -35,6 +35,13 @@ class ProfileService {
         return $loginedUser->id == $userId;
     }
 
+    public function updateProfileImage($userId, $url) 
+    {
+        $profile = Profile::where("user_id","=",$userId)->first();
+        $profile->profile_image_url = $url;
+        $profile->save();
+    }
+
     public function save($userId, $data)
     {
         $profile = Profile::where("user_id","=",$userId)->first();
@@ -44,7 +51,7 @@ class ProfileService {
         $profile->resource_introduce = $data['resource_introduce'];
         $profile->resource_needed    = $data['resource_needed'];
         $profile->gender             = $data['gender'];
-        $profile->is_public          = $data['is_public'];
+        $profile->is_public          = $data['is_public'] === 'true' || $data['is_public'] === true;
         $profile->save();
 
         return $profile;

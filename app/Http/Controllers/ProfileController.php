@@ -81,28 +81,29 @@ class ProfileController extends Controller
         if(!$this->profile->haveModifyPermission($userId)) {
             return response()->json("no permission", 403);
         }
-
+        
         $updatedProfile = $this->profile->save($userId, $request);
         
         return response()->json($updatedProfile, 200);
     }
 
 
-    public function upload($chatroomId, Request $request) 
+    public function upload(Request $request) 
     {
         $file = $request->file("file");
 
         $validator = $this->uploadService->validate($file);
         if(!$validator["success"]){
-            return Response::json([ "success" => false, "errors" => $validator["messages"] ] ,400);
+            return response()->json([ "success" => false, "errors" => $validator["messages"] ] ,400);
         }else{
 
             $uploadedFile = $this->uploadService->saveImage($file);
             $userId = $this->auth->getLoginedUser()->id;
-            $message = "<img src=\"".$uploadedFile["destination_path"] . $uploadedFile["filename"]."\" >";
+            $url = $uploadedFile["destination_path"] . $uploadedFile["filename"];
 
-            $this->message->chatInHtml($userId, $chatroomId, $message);
-            return Response::json([ "success" => true , "message" => $uploadedFile ]);
+            $this->profile->updateProfileImage($userId, $url);
+
+            return response()->json([ "success" => true , "message" => $url ]);
         }
     
 

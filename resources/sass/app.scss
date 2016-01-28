@@ -15,11 +15,23 @@ body, html {
 button:focus {
     outline: 0;
 }
+button {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    display: block;
+}
+
+button:hover {
+    cursor: pointer;
+}
 
 a {
     text-decoration: none;
 }
 
+$orange: #f8ae2e;
+$blue: #42aafa;
 $gold-color: #cc9966;
 
 .clearfix:after {
@@ -47,6 +59,18 @@ $gold-color: #cc9966;
     height: 100%;
     min-height: 100%;   
     position: relative;
+}
+
+.col-half {
+    float: left;
+    width: 50%;display: block;
+}
+
+.orange {
+    color: $orange;
+}
+.blue {
+    color: $blue;
 }
 
 $header-height: 50px;
@@ -134,6 +158,10 @@ header {
             width: 50%;
             float: left;
             height: 100%;
+
+            &.userList {
+                background-color: #c2c6c9;
+            }
         }
     }
 }
@@ -184,7 +212,6 @@ header {
 
 
         input, textarea {
-            margin-top: 7px;
             display: block;
             width: calc(100% - 24px);
             padding: 7px 12px;
@@ -265,6 +292,23 @@ header {
         background-color: #dbdbdb;
         width: 100%;
 
+        .btn-appointment {
+            display: block;
+            width: 140px;
+            background-color: #ee7624;
+            text-align: center;
+            line-height: 1.5;
+            color: white;
+            font-size: 13px;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+
+            > img {
+                width: 30px;
+                display: inline-block;
+            }
+        }
 
     }
 
@@ -354,12 +398,14 @@ header {
 
 .userListPage {
     > .userItem {
-        $userItemHeight: 230px;
+        $userItemHeight: 260px;
         float: left;
         width: 150px;
         height: $userItemHeight;
         display: block;
         position: relative;
+        background-color: #d7d2c5;
+        margin: 15px 0 0 15px;
 
         > .triangle {
             position: absolute;
@@ -420,12 +466,17 @@ header {
         > .userMeta {
             text-align: center;
 
+            .userName {
+                margin-top: 5px;
+            }
+
             .line {
                 display: inline-block;
-                height: 2px;
-                line-height: 2px;
-                width: 80%;
-                background-color: #0099cc;
+                background-color: #54565b;
+                line-height: 25px;
+                width: 100%;
+                margin: 4px 0;
+                color: white;
             }
 
             .userDesc {
@@ -497,6 +548,68 @@ header {
     }
 }
 
+.profilePage {
+
+    .share {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-top: 10px;
+    }
+
+    .btn-gray {
+        display: block;
+        background-color: #bfbfbf;
+        color: black;
+        padding: 6px;
+        border-radius: 5px;
+        width: 100px;
+
+        >img {
+            display: inline-block;
+            width: 27px;
+        }
+
+    }
+
+    .profileImage {
+        width: calc(100% - 20px);
+        margin-right: 20px;
+        padding: 0;
+        border: 0;
+        position: relative;
+
+        > img {
+            width: 100%;
+            display: block;
+        }
+
+        > input {
+            position: absolute;
+            width: 1px;
+            top: 0;
+            z-index: -1;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .isPublic {
+        color: white;
+        margin-top: 15px;
+        padding: 7px;
+        width: 100px;
+
+        > input {
+            width: auto;
+            display: inline;
+        }
+    }
+}
+
 .notificationBox {
     position: absolute;
     border-radius: 2px;
@@ -537,6 +650,97 @@ header {
 
         &:hover {
             cursor: pointer;
+        }
+    }
+}   
+
+.appointmentCreatePage {
+    .fence {
+        border: 1px solid white;
+        padding: 0 20px 20px;
+    }
+
+    .price {
+        text-align: center;
+        font-size: 20px;
+        span {
+            margin-left: 30px;
+        }
+    }
+
+    .form-group {
+        width: 100%;
+        margin-top: 20px;
+
+        .icon {
+            display: inline-block;
+        }
+
+        input {
+            background-color: rgba(255,255,255,0.4);
+            color: white;
+        }
+
+        &.guest {
+            label {
+                display: block;
+
+            }
+
+            .questionmark {
+                float: right;
+                > img {
+                    width: 40px;
+                    display: block;
+
+                }
+            }
+        }
+    }
+
+    .btn-submit {
+        float: right; 
+        padding: 5px 15px;
+        color: white;
+        font-size: 15px;
+        background-color: #ee7624;
+        border-radius: 15px;
+    }
+}
+
+.configurationList {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+        display: block;
+        background-color: rgba(255,255,255,0.4);
+        margin-bottom: 5px;
+
+        .item-label {
+            position: relative;
+            padding: 10px;
+            display: block;
+            width: calc(100% - 20px);
+            line-height: 30px;
+            height: 30px;
+
+            &:after {
+                position: absolute;
+                content: " ";
+                right: 10px;
+                top: 15px;
+                width: 0; 
+                height: 0; 
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent; 
+                
+                border-left:10px solid white; 
+            }
+        }
+
+        .page-content {
+            padding: 10px;
         }
     }
 }

@@ -27,8 +27,16 @@ export default class Profile extends React.Component{
         this.setState({me: UserStore.getMyProfile() });
     }
 
-    _updateName(e) {
-        this.state.me.name = e.target.value;
+    _handleInput(e) {
+        var attr = e.target.getAttribute("name");
+        if(e.target.type === 'checkbox') {
+            this.state.me[attr] = e.target.checked;
+        } else if(e.target.tagName === 'SELECT') {
+            this.state.me[attr] = e.target.value;
+        }else {
+            this.state.me[attr] = e.target.value;    
+        }
+        
         this.setState({me: this.state.me});
     }
 
@@ -37,29 +45,77 @@ export default class Profile extends React.Component{
         this.setState({me: this.state.me});
     }
 
+    _profileImageClicked(e) {
+        var _uploadElement = e.target.parentNode.getElementsByTagName("input")[0];
+        _uploadElement.click();
+    }
+
+    _onfileChange(e) {
+        console.log(e.target.files);
+        UserStore.uploadImage(e.target.files[0]);
+    }    
+
     _save() {
         NotificationAction.notify("info","updated");
         UserAction.updateMyProfile(this.state.me);
     }
 
     render() {
+        var profileImg = "/assets/imgs/ic_camera.png";
+        if(this.state.me.profile_image_url && this.state.me.profile_image_url.length > 0)  {
+            profileImg = this.state.me.profile_image_url;
+        }
 
         return (
-            <div className="halfPage">
+            <div className="halfPage profilePage">
                 <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
-                <div className="content">
+                <div className="content scrollable">
                     <div className="halfPage-title">PROFILE</div>
-                    <div className="halfPage-group">
-                        <label>名前</label>
-                        <input value={this.state.me.name} onChange={this._updateName.bind(this)}/>
+                    <div className="halfPage-group clearfix">
+                        <div className="col-half">
+                            <button className="profileImage" onClick={this._profileImageClicked.bind(this)}>
+                                <img src={profileImg} />
+                                <input type="file" onChange={this._onfileChange.bind(this)} />
+                            </button>
+                        </div>
+                        <div className="col-half">
+                            <div className="form-group">
+                                <label >名前</label>
+                                <input value={this.state.me.name} name="name" onChange={this._handleInput.bind(this)}/>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="orange">WANTED</label>
+                                <input value={this.state.me.resource_needed} name="resource_needed" onChange={this._handleInput.bind(this)} placeholder="紹介して欲しい人を発信しましょう" />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-group blue">INTRODUCTION</label>
+                                <input value={this.state.me.resource_introduce} name="resource_introduce" onChange={this._handleInput.bind(this)} placeholder="紹介できる人を発信しましょう" />
+                            </div>
+
+                            <div className="form-group share clearfix">
+                                <a className="right btn-gray" href="https://facebook.com/"><img src="/assets/imgs/ic_mice.png" /> 発信する</a>
+                            </div>
+                        </div>
                     </div>
                     <div className="halfPage-group">
                         <label>自己紹介</label>
                         <textarea cols="5" value={this.state.me.description} onChange={this._updateDescription.bind(this)}/>
                     </div>
 
+                    <div className="halfPage-group">
+                        <label>お住まいの地域</label><br/>
+                        <select value={this.state.me.place} name="place" onChange={this._handleInput.bind(this)}>
+                            {[{id: 3, name: '東京'},{id: 4, name:'ああ'}].map(function(place) {
+                                return (<option key={place.id} value={place.id}>{place.name}</option>);
+                            })}
+                        </select>
+                    </div>
+
                     <button className="btn right" onClick={this._save.bind(this)}>更新</button>
+                    <div className="right isPublic"><input type="checkbox" checked={this.state.me.is_public} name="is_public" onChange={this._handleInput.bind(this)} /> 公開する</div>
                 </div>
             </div>
         );

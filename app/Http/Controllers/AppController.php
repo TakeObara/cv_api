@@ -82,4 +82,9 @@ class AppController extends Controller
     {
         return view('app.index', $this->viewParams);
     }
+
+    public function getConfiguration() 
+    {
+        return view('app.index', $this->viewParams);
+    }
 }
