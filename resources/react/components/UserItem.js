@@ -55,6 +55,21 @@ export default class UserItem extends React.Component{
             favouriteBtn = (<img src="/assets/imgs/ic_plus_white.png" />);
         }
 
+        var line = null;
+        if(userMeta.resource_needed.length > 0 || userMeta.resource_introduce.length > 0) {
+            var spans = [];
+            if(userMeta.resource_needed.length > 0) {
+                spans.push(<span key={1}><span className="orange">W :</span>{userMeta.resource_needed}</span>);
+            }
+
+            if(userMeta.resource_introduce.length > 0) {
+                spans.push(<span key={2}><span className="blue">I :</span>{userMeta.resource_introduce}</span>);
+            }
+
+            line = ( <div className="line">{spans}</div> );
+        }
+        
+
         return (
             <div className="userItem">
                 <button className="triangle" onClick={this._toggleFavourite.bind(this)}>
@@ -69,7 +84,8 @@ export default class UserItem extends React.Component{
                 </div>
                 <img src={userMeta.profile_image_url} />
                 <div className="userMeta">
-                    <div className="userName">{userMeta.name}</div><div className="line"></div>
+                    <div className="userName">{userMeta.name}</div>
+                    {line}
                     <div className="userDesc">{userMeta.description}</div>
                 </div>
             </div>

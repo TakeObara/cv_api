@@ -113,7 +113,10 @@ export default class Chatroom extends React.Component {
                 <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
                 <div className="chatroom content">
-                    <div className="chatroomTitle"><Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link></div>
+                    <div className="chatroomTitle clearfix">
+                        <Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link>
+                        <Link to="/appointment/create" className="btn-appointment right"><img src="/assets/imgs/ic_note_white.png" /><br/><span>契約を記入する</span></Link>
+                    </div>
                     <div className="chatroomMessage scrollable">
                         {list}
                     </div>
