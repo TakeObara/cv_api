@@ -72,15 +72,20 @@ class AuthController extends Controller
             $user = $this->auth->getUserByEmail($profile["email"]);
         }
         
+        $isNewUser = false;
         if(is_null($user)) {
             // Register account if there is not exists
             $profileImage = $this->oauth->downloadFacebookProfileImage($profile["id"]);
             $user = $this->auth->registerUser($profile["name"], $profile["email"], null, $profile["gender"] , $profile["id"], null,$profileImage);
+            $isNewUser = true;
         }
 
         $this->auth->loginWithUser($user, true);
 
         // redirect to application
+        if($isNewUser) {
+            return redirect("/tutorial");
+        }
         return redirect("/");
     }
 

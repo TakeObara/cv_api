@@ -10,6 +10,7 @@ import Login from "./components/Login"
 import RequireAuth from "./middleware/RequireAuth"
 import MainHalfPage from "./components/MainHalfPage"
 import Configuration from "./components/Configuration"
+import Tutorial from "./components/Tutorial"
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -21,6 +22,7 @@ var routesMap = (
         <Route path="/" component={Main}>
             <IndexRoute               onEnter={RequireAuth} component={MainHalfPage} />
             <Route path="login"       component={Login} />
+            <Route path="tutorial"    onEnter={RequireAuth} component={Tutorial} />
             <Route path="profile"     onEnter={RequireAuth} component={Profile}  />
             <Route path="favourite"   onEnter={RequireAuth} component={Favourite} />
             <Route path="chatroom"    onEnter={RequireAuth} >
