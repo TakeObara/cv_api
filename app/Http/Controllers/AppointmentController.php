@@ -43,7 +43,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -54,6 +54,7 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
+
         $me          = $this->auth->getLoginedUser();
         $userIds     = $request->get("users");
         $meetingTime = $request->get("meetingTime");
