@@ -18,7 +18,7 @@ class ProfileService {
 
     public function all($limit, $offset = 0) 
     {
-        return Profile::orderBy("updated_at", "desc")->take($limit)->skip($offset)->get();
+        return Profile::orderBy("updated_at", "desc")->where("is_public", "=", 1)->take($limit)->skip($offset)->get();
     }
 
     
