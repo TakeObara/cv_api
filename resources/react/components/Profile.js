@@ -29,10 +29,9 @@ export default class Profile extends React.Component{
 
     _handleInput(e) {
         var attr = e.target.getAttribute("name");
+
         if(e.target.type === 'checkbox') {
             this.state.me[attr] = e.target.checked;
-        } else if(e.target.tagName === 'SELECT') {
-            this.state.me[attr] = e.target.value;
         }else {
             this.state.me[attr] = e.target.value;    
         }
@@ -86,7 +85,7 @@ export default class Profile extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="orange">WANTED</label>
+                                <label className="orange">WANT</label>
                                 <input value={this.state.me.resource_needed} name="resource_needed" onChange={this._handleInput.bind(this)} placeholder="紹介して欲しい人を発信しましょう" />
                             </div>
 

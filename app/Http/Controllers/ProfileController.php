@@ -102,7 +102,7 @@ class ProfileController extends Controller
             $url = $uploadedFile["destination_path"] . $uploadedFile["filename"];
 
             $this->profile->updateProfileImage($userId, $url);
-
+            
             return response()->json([ "success" => true , "message" => $url ]);
         }
     
