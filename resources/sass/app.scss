@@ -9,7 +9,8 @@ body, html {
 }
 
 * {
-    font-family: 'ヒラギノ角ゴ Pro Regular', Roboto, Verdana, sans-serif;
+    font-family: 'ヒラギノ角ゴ Pro Regular', Optima, Georgia, Roboto, Verdana, sans-serif;
+    src:url("http://www.myfontfree.com/data/1/o/optima/unicode.optima.ttf");
 }
 
 button:focus {
@@ -49,6 +50,18 @@ $gold-color: #cc9966;
     position: relative;
 }
 
+.col-half {
+    float: left;
+    width: 50%;display: block;
+}
+
+.orange {
+    color: #f8ae2e;
+}
+.blue {
+    color: #42aafa;
+}
+
 $header-height: 50px;
 header {
     height: $header-height;
@@ -63,6 +76,10 @@ header {
         line-height: $header-height;
         vertical-align: middle;
         font-size: 28px;
+
+        > img{
+            margin-top: 10px;
+        }
 
         > .white {
             color: #cccccc;
@@ -134,6 +151,10 @@ header {
             width: 50%;
             float: left;
             height: 100%;
+
+            &.userList {
+                background-color: #c2c6c9;
+            }
         }
     }
 }
@@ -184,7 +205,6 @@ header {
 
 
         input, textarea {
-            margin-top: 7px;
             display: block;
             width: calc(100% - 24px);
             padding: 7px 12px;
@@ -265,6 +285,23 @@ header {
         background-color: #dbdbdb;
         width: 100%;
 
+        .btn-appointment {
+            display: block;
+            width: 140px;
+            background-color: #ee7624;
+            text-align: center;
+            line-height: 1.5;
+            color: white;
+            font-size: 13px;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+
+            > img {
+                width: 30px;
+                display: inline-block;
+            }
+        }
 
     }
 
@@ -354,12 +391,14 @@ header {
 
 .userListPage {
     > .userItem {
-        $userItemHeight: 230px;
+        $userItemHeight: 260px;
         float: left;
         width: 150px;
         height: $userItemHeight;
         display: block;
         position: relative;
+        background-color: #d7d2c5;
+        margin: 15px 0 0 15px;
 
         > .triangle {
             position: absolute;
@@ -420,12 +459,17 @@ header {
         > .userMeta {
             text-align: center;
 
+            .userName {
+                margin-top: 5px;
+            }
+
             .line {
                 display: inline-block;
-                height: 2px;
-                line-height: 2px;
-                width: 80%;
-                background-color: #0099cc;
+                background-color: #54565b;
+                line-height: 25px;
+                width: 100%;
+                margin: 4px 0;
+                color: white;
             }
 
             .userDesc {
@@ -497,6 +541,68 @@ header {
     }
 }
 
+.profilePage {
+
+    .share {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-top: 10px;
+    }
+
+    .btn-gray {
+        display: block;
+        background-color: #bfbfbf;
+        color: black;
+        padding: 6px;
+        border-radius: 5px;
+        width: 100px;
+
+        >img {
+            display: inline-block;
+            width: 27px;
+        }
+
+    }
+
+    .profileImage {
+        width: calc(100% - 20px);
+        margin-right: 20px;
+        padding: 0;
+        border: 0;
+        position: relative;
+
+        > img {
+            width: 100%;
+            display: block;
+        }
+
+        > input {
+            position: absolute;
+            width: 1px;
+            top: 0;
+            z-index: -1;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .isPublic {
+        color: white;
+        margin-top: 15px;
+        padding: 7px;
+        width: 100px;
+
+        > input {
+            width: auto;
+            display: inline;
+        }
+    }
+}
+
 .notificationBox {
     position: absolute;
     border-radius: 2px;
@@ -539,4 +645,4 @@ header {
             cursor: pointer;
         }
     }
-}
+}   

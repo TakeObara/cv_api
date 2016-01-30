@@ -32,7 +32,6 @@ Route::group(['prefix' => '/api/v1'], function () {
         Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update','destroy']]);
 
         Route::resource('chatroom', 'ChatroomController', ['except' => 'create']);
-
         Route::post('chatroom/{id}/upload', 'ChatroomController@upload');
 
     });

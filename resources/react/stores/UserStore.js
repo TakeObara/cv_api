@@ -85,6 +85,15 @@ class UserStore extends BaseStore {
         }, data);
     }
 
+
+    uploadImage(file) {
+
+        super.upload("post", ApiPrefix + "/profile/me/upload", file, (error, data) => {
+            this.myProfile.profile_image_url = data.message;
+            this.emitChange();
+        });
+    }
+
     getLogoutLink() {
         return ApiPrefix + "/auth/logout";
     }

@@ -27,9 +27,8 @@ class OAuthService {
         $token = $this->fb->requestAccessToken($code);
 
         // Send a request with it
-        $profile = json_decode($this->fb->request('/me'), true);
+        $profile = json_decode($this->fb->request('/me?fields=email,name,id'), true);
 
-        
         $this->transformFacebookResponse($profile);
 
         return  $profile;
