@@ -23,7 +23,7 @@ class ChatroomService {
     public function getByUser(User $user) 
     {
         $chatrooms = $user->chatroom()->getResults();
-        $chatrooms->load("message","user","user.profile");
+        $chatrooms->load("message","users","users.profile");
 
         return $chatrooms;
     }
@@ -40,7 +40,7 @@ class ChatroomService {
 
     public function get($id, User $user)
     {
-        $chatroom = Chatroom::with("user","user.profile")->with(["message" => function($query) {
+        $chatroom = Chatroom::with("users","users.profile")->with(["message" => function($query) {
             $query->orderBy("created_at","asc")->take(20);
         }])->where("id","=",$id)->first();
         if(is_null($chatroom)) {
@@ -48,7 +48,7 @@ class ChatroomService {
         }
 
         $havePermitToJoin = false;
-        foreach ($chatroom->user as $userInChatroom) {
+        foreach ($chatroom->users as $userInChatroom) {
             if($userInChatroom->id === $user->id) {
                 $havePermitToJoin = true;
             }
@@ -70,7 +70,7 @@ class ChatroomService {
         $chatroom = $this->getByUserIds($userIds);
         if(!is_null($chatroom)) {
 
-            $chatroom->load("user","user.profile");
+            $chatroom->load("users","users.profile");
             return $chatroom;
         }
 
@@ -78,9 +78,9 @@ class ChatroomService {
         $chatroom->title = $title;
         $chatroom->save();
 
-        $chatroom->user()->sync($userIds);
+        $chatroom->users()->sync($userIds);
 
-        $chatroom->load("user","user.profile");
+        $chatroom->load("users","users.profile");
 
         return $chatroom;
     }
@@ -97,9 +97,9 @@ class ChatroomService {
         }
 
         $chatroom->title = $title;
-        $chatroom->user()->sync($userIds);
+        $chatroom->users()->sync($userIds);
 
-        $chatroom->load("user");
+        $chatroom->load("users");
 
         return $chatroom;
     }

@@ -5,7 +5,7 @@
       <title>Connection Vendor</title>
       <meta name="description" content="">
       @yield('meta')
-
+      
       <link rel="stylesheet" href="/css/app.css">
       @yield('styles')
 </head>

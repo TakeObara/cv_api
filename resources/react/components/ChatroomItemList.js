@@ -15,8 +15,8 @@ export default class ChatroomItemList extends React.Component {
         var chatroom = this.props.info;
         
         var opponentProfile = {};
-        for (var i = 0; i < chatroom.user.length; i++) {
-            var _u = chatroom.user[i];
+        for (var i = 0; i < chatroom.users.length; i++) {
+            var _u = chatroom.users[i];
             if(this.me.id !== parseInt(_u.id)) {
                 opponentProfile = UserStore.transformResponse(_u.profile);
                 break;

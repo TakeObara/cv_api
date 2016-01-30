@@ -73,9 +73,9 @@ class ChatroomStore extends BaseStore {
 
             var message = res.message[i].message;
             var user = {profile: {}};  // dummy object
-            for (var u = 0; u < res.user.length; u++) {
-                if(res.user[u].id == res.message[i].user_id) {
-                    user = res.user[u];
+            for (var u = 0; u < res.users.length; u++) {
+                if(res.users[u].id == res.message[i].user_id) {
+                    user = res.users[u];
                     break;
                 }
             }
@@ -88,7 +88,7 @@ class ChatroomStore extends BaseStore {
 
     speak(_id, userId, message) {
 
-        var users = this.chatroom[_id].user;
+        var users = this.chatroom[_id].users;
         var user = {profile: {}};  // dummy object
         for (var u = 0; u < users.length; u++) {
             if(users[u].id == userId) {
@@ -103,8 +103,24 @@ class ChatroomStore extends BaseStore {
     }
 
     get(id) {
-        var dummyData = {id:0, title: '', message: [], user:[]};
+        var dummyData = {id:0, title: '', message: [], users:[]};
         return this.chatroom[id] || dummyData;
+    }
+
+    getOpponent(_id) {
+        var opponent = {profile: {}};
+        var myUserId = UserStore.getMyProfile().id;
+        var chatroom = this.get(_id);
+        
+        for (var i = 0; i < chatroom.users.length; i++) {
+            var _user = chatroom.users[i];
+            if(_user.id !== myUserId) {
+                opponent = _user;
+                break;
+            }
+        }
+
+        return opponent;
     }
 
 }

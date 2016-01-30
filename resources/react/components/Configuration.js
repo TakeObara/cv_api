@@ -26,7 +26,6 @@ export default class Configuration extends React.Component {
     render() {
 
         var page = this.props.params.page;
-        console.log(page);
 
         return (
             <div className="halfPage">

@@ -14,6 +14,7 @@ export default class Chatroom extends React.Component {
         this._loading = true;
         this.state = { 
             chatroom: ChatroomStore.get(0),
+            opponent: ChatroomStore.getOpponent(0),
         };
 
         this._onChange = this._onChange.bind(this);
@@ -62,7 +63,10 @@ export default class Chatroom extends React.Component {
 
     _onChange() {
         this._loading = false;
-        this.setState({chatroom: ChatroomStore.get(this.props.params.id)});
+        this.setState({
+            chatroom: ChatroomStore.get(this.props.params.id),
+            opponent: ChatroomStore.getOpponent(this.props.params.id),
+        });
     }
 
     _chatBoxOnChange(e) {
@@ -96,6 +100,7 @@ export default class Chatroom extends React.Component {
 
         var messages = this.state.chatroom.message;
 
+
         for(var i = 0; i < messages.length; i++) {
             var _msg = messages[i];
             list.push(<Message key={i} message={_msg} />);
@@ -108,14 +113,25 @@ export default class Chatroom extends React.Component {
             button = (<input className="btnSubmit btnUpload" type="file" onChange={this._fileOnChange.bind(this)} />);
         }
 
+        var opponent = this.state.opponent;
+
         return (
             <div className="halfPage">
                 <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
+                {this.props.children}
                 <div className="chatroom content">
-                    <div className="chatroomTitle clearfix">
-                        <Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link>
-                        <Link to="/appointment/create" className="btn-appointment right"><img src="/assets/imgs/ic_note_white.png" /><br/><span>契約を記入する</span></Link>
+                    <div className="chatroomHeader">
+                        <div className="chatroomTopbar">
+                            <span className="orange">求:</span> {opponent.profile.resource_introduce}  <span className="blue">出:</span> {opponent.profile.resource_needed}
+                        </div>
+                        <div className="chatroomTitle clearfix">
+                            <Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link>
+                            <Link to={window.location.pathname + "/appointment"} className="btn-appointment right">
+                                <img src="/assets/imgs/ic_note_white.png" /><br/>
+                                <span>契約を記入する</span>
+                            </Link>
+                        </div>
                     </div>
                     <div className="chatroomMessage scrollable">
                         {list}

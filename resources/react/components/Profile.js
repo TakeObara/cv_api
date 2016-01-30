@@ -65,6 +65,12 @@ export default class Profile extends React.Component{
             profileImg = this.state.me.profile_image_url;
         }
 
+        var prefectures = [];
+        for(var index in prefectureList) {
+
+            prefectures.push((<option key={index} value={index}>{prefectureList[index]}</option>));
+        }
+
         return (
             <div className="halfPage profilePage">
                 <div className="halfPage-cover profile-cover"></div>
@@ -95,7 +101,7 @@ export default class Profile extends React.Component{
                             </div>
 
                             <div className="form-group share clearfix">
-                                <a className="right btn-gray" href="https://facebook.com/"><img src="/assets/imgs/ic_mice.png" /> 発信する</a>
+                                <a className="right btn-gray" target="_blank" href={"https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent("http://cvendor.jp")}><img src="/assets/imgs/ic_mice.png" /> 発信する</a>
                             </div>
                         </div>
                     </div>
@@ -107,9 +113,7 @@ export default class Profile extends React.Component{
                     <div className="halfPage-group">
                         <label>お住まいの地域</label><br/>
                         <select value={this.state.me.place} name="place" onChange={this._handleInput.bind(this)}>
-                            {[{id: 3, name: '東京'},{id: 4, name:'ああ'}].map(function(place) {
-                                return (<option key={place.id} value={place.id}>{place.name}</option>);
-                            })}
+                            {prefectures}
                         </select>
                     </div>
 

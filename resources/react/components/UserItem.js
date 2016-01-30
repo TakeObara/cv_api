@@ -56,7 +56,7 @@ export default class UserItem extends React.Component{
         }
 
         var line = null;
-        if(userMeta.resource_needed.length > 0 || userMeta.resource_introduce.length > 0) {
+        if(userMeta.resource_needed.length > 0 || userMeta.resource_needed.length > 0) {
             var spans = [];
             if(userMeta.resource_needed.length > 0) {
                 spans.push(<span key={1}><span className="orange">W :</span>{userMeta.resource_needed}</span>);

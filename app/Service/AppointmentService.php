@@ -3,7 +3,10 @@
 namespace Cv\Service;
 
 use Auth;
+use Validator;
 
+use Cv\Model\User;
+use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
 
 class AppointmentService {
@@ -13,6 +16,23 @@ class AppointmentService {
     public function __construct(AuthService $auth)
     {
         $this->auth = $auth;
+    }
+
+    public function getByUser(User $user) {
+
+        $appointmentIds = AppointmentUser::where("user_id","=",$user->id)->lists("appointment_id");
+
+        return Appointment::with("appointmentUsers.user.profile")->whereIn("id",$appointmentIds)->get();
+    }
+
+    public function validate($inputs) {
+         $validationRules = [
+            'meetingTime'   => ['required', 'regex:/^\d\d\d\d-\d\d-\d\d \d\d:\d\d$/'],
+            'userId'  => ['required'],
+            'place'  => ['required'],
+        ];
+
+        return Validator::make($inputs, $validationRules);
     }
 
     public function get($id, User $user){
@@ -34,22 +54,33 @@ class AppointmentService {
         return $appointment;
     }
 
-    public function create($userIds, $hostUserId, $place, $meetingTime, $answer){
 
-        if($this->haveMissingUser($userIds)){
+    public function create($userId, $hostId, $guest,$place, $meetingTime){
+
+        if($this->haveMissingUser([$userId])){
             throw new Cv\Exceptions\MissingModelException;
         }
 
     	$appointment = new Appointment;
-        $appointment->host_user_id = $hostUserId;
+        $appointment->host_user_id = $hostId;
+        $appointment->guest        = $guest;
         $appointment->place        = $place;
         $appointment->meeting_time = $meetingTime;
     	$appointment->save();
 
-        $appointment->user()->sync($userIds);
-        $appointment->user()->answer = $answer;
-
-        $appointment->load("user");
+        // create appointmetUser
+        foreach ([$userId, $hostId] as $singleUserId) {
+            $appoinmentUser = new AppointmentUser;
+            $appoinmentUser->appointment_id = $appointment->id;
+            $appoinmentUser->user_id = $singleUserId;
+            if($singleUserId === $hostId) {
+                $appoinmentUser->answer  = true;
+            }else {
+                $appoinmentUser->answer  = false;    
+            }
+            
+            $appoinmentUser->save();
+        }
 
         return $appointment;
 
@@ -68,12 +99,6 @@ class AppointmentService {
     }
 
     public function haveMissingUser($userIds) {
-        $userInModel = User::select("id")->whereIn("id",$userIds)->lists("id")->all();
-        foreach ($userIds as $userId) {
-            if(!in_array($userId, $userInModel)) {
-                return true;
-            }
-        }
-        return false;
+        return User::whereIn("id",$userIds)->count() <= 0; 
     }
 }

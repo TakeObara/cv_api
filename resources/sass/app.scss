@@ -23,15 +23,24 @@ button {
     display: block;
 }
 
+input:focus {
+    outline: 0
+}
+
 button:hover {
     cursor: pointer;
 }
 
 a {
     text-decoration: none;
+
+    &:active, &:visited {
+        color: inherit;
+    }
 }
 
 $orange: #f8ae2e;
+$dark-orange: #ee7624;
 $blue: #42aafa;
 $gold-color: #cc9966;
 
@@ -287,9 +296,21 @@ header {
 
 .chatroom.content {
     padding: 0;
+    top: 0;
     height: 100%;
-    position: relative;
-    
+    width: 100%;
+    position: absolute;
+
+    .chatroomTopbar {
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+
+        .blue {
+            margin-left: 20px;
+        }
+    }
+     
     .chatroomTitle {
         color: black;
         height: 50px;
@@ -297,6 +318,10 @@ header {
         vertical-align: middle;
         background-color: #dbdbdb;
         width: 100%;
+
+        a {
+            margin-left: 10px;
+        }
 
         .btn-appointment {
             display: block;
@@ -308,7 +333,7 @@ header {
             font-size: 13px;
             padding: 5px;
             border-radius: 5px;
-            margin: 5px;
+            margin: -23px 5px 5px;
 
             > img {
                 width: 30px;
@@ -660,10 +685,16 @@ header {
     }
 }   
 
-.appointmentCreatePage {
+.appointmentCreatePage.content {
+    position: relative;
+    top: 0;
+    z-index: 2;
+    background-color: rgba(0,0,0,0.9);
+
     .fence {
         border: 1px solid white;
         padding: 0 20px 20px;
+        margin-top: 20px;
     }
 
     .price {
@@ -671,6 +702,27 @@ header {
         font-size: 20px;
         span {
             margin-left: 30px;
+        }
+    }
+
+    .form-people {
+        width: 100%;
+
+        > .middle {
+            float: left;
+            width: 40px;
+            margin-top: 30px;
+
+            > img {
+                width: calc(100% - 10px);
+                margin: 5px;
+                display: block;
+            }
+        }
+
+        > .form-group {
+            width: calc(50% - 20px);
+            float: left;
         }
     }
 
@@ -685,12 +737,21 @@ header {
         input {
             background-color: rgba(255,255,255,0.4);
             color: white;
+
+            &[disabled] {
+                color: #bfbfbf;
+                background-color: rgba(255,255,255,0.2);
+            }
         }
 
         &.guest {
             label {
                 display: block;
 
+            }
+
+            input {
+                background-color: $dark-orange;
             }
 
             .questionmark {
@@ -709,7 +770,7 @@ header {
         padding: 5px 15px;
         color: white;
         font-size: 15px;
-        background-color: #ee7624;
+        background-color: $dark-orange;
         border-radius: 15px;
     }
 }
@@ -747,6 +808,45 @@ header {
 
         .page-content {
             padding: 10px;
+        }
+    }
+}
+
+
+.appintmentListPage {
+
+    .appointList {
+        margin-top: 10px;
+    }
+
+    .appointItem {
+        width: 100%;
+        background: rgba(0,0,0,0.3);
+        position: relative;
+
+        .profileImg {
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+            display: block;
+            float: left;
+        }
+        .profileMeta {
+            float: left;
+            width: calc(100% - 70px);
+            margin-top: 7px;
+
+            p {
+                margin: 0;
+            }
+
+            .profileMetaLeft {
+                float: left; 
+            }
+            .profileMetaRight {
+                margin-right: 7px;
+                float: right;
+            }
         }
     }
 }
