@@ -21,13 +21,6 @@ export default class Header extends React.Component {
                 {btn}
             </header>
         );
-
-        // return (
-        //     <header className="clearfix">
-        //         <div className="logo"><span className="white">CONNECTION</span> VENDOR</div>
-        //         {btn}
-        //     </header>
-        // );
     }
 }
 

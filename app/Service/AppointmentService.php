@@ -4,8 +4,7 @@ namespace Cv\Service;
 
 use Auth;
 
-use Cv\Model\User;
-use Cv\Model\Profile;
+use Cv\Model\Appointment;
 
 class AppointmentService {
 
