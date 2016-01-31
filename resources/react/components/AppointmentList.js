@@ -80,8 +80,8 @@ export default class AppointmentList extends React.Component {
             var _appo = this.transformResponse(this.state.list[i]);
 
             var status = null;
-            console.log(UserStore.getMyProfile().user_id);
-            if(_appo.host.id === UserStore.getMyProfile().user_id) {
+            console.log(_appo.host.id);
+            if(parseInt(_appo.host.user_id) === UserStore.getMyProfile().user_id) {
                 status = (<span className="blue">SEND</span>);
             }else {
                 status = (<span className="orange">RECEIVE</span>);

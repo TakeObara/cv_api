@@ -109,12 +109,12 @@ class ChatroomStore extends BaseStore {
 
     getOpponent(_id) {
         var opponent = {profile: {}};
-        var myUserId = UserStore.getMyProfile().id;
+        var myUserId = UserStore.getMyProfile().user_id;
         var chatroom = this.get(_id);
         
         for (var i = 0; i < chatroom.users.length; i++) {
             var _user = chatroom.users[i];
-            if(_user.id !== myUserId) {
+            if(parseInt(_user.id) !== myUserId) {
                 opponent = _user;
                 break;
             }
