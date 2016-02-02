@@ -15,6 +15,17 @@ class AppointmentAction {
         });
     }
 
+
+    create(formData) {
+
+        AppDispatcher.dispatch({
+            type: AppointmentConst.CREATE,
+            formData: formData,
+        });
+
+    }
+    
+
 }   
 
 export default new AppointmentAction();

@@ -81,7 +81,7 @@ class ProfileController extends Controller
         if(!$this->profile->haveModifyPermission($userId)) {
             return response()->json("no permission", 403);
         }
-
+        
         $updatedProfile = $this->profile->save($userId, $request);
         
         return response()->json($updatedProfile, 200);
@@ -102,7 +102,7 @@ class ProfileController extends Controller
             $url = $uploadedFile["destination_path"] . $uploadedFile["filename"];
 
             $this->profile->updateProfileImage($userId, $url);
-
+            
             return response()->json([ "success" => true , "message" => $url ]);
         }
     

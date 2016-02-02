@@ -37,14 +37,16 @@ class AuthController extends Controller
         // $this->middleware('guest', ['except' => 'getLogout']);
     }
 
+
+    public function register(Request $request){
+
+        $data = $request->all();
+        $this->auth->registerUser($data['name'], $data['email'], $data['password'], $data['gender']);
+    }
+
     public function login(Request $request){
         $data = $request->all();
         return $this->auth->login($data['email'], $data['password']);
-    }
-
-    public function register(Request $request){
-        $data = $request->all();
-        return $this->auth->registerUser($data['name'], $data['email'], $data['password'], $data['gender']);
     }
 
     public function logout() {
@@ -70,15 +72,20 @@ class AuthController extends Controller
             $user = $this->auth->getUserByEmail($profile["email"]);
         }
         
+        $isNewUser = false;
         if(is_null($user)) {
             // Register account if there is not exists
             $profileImage = $this->oauth->downloadFacebookProfileImage($profile["id"]);
             $user = $this->auth->registerUser($profile["name"], $profile["email"], null, $profile["gender"] , $profile["id"], null,$profileImage);
+            $isNewUser = true;
         }
 
         $this->auth->loginWithUser($user, true);
 
         // redirect to application
+        if($isNewUser) {
+            return redirect("/tutorial");
+        }
         return redirect("/");
     }
 

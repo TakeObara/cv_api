@@ -22,6 +22,7 @@ var ApiPrefix = '/api/v1',
 
     AppointmentConst = {
         LOAD_DATA: 'APPOINTMENT_LOAD_DATA',
+        CREATE:    'APPOINTMENT_CREATE',
     },
 
     MessageConst = {

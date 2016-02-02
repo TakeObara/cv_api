@@ -53,6 +53,11 @@ class AppController extends Controller
         return view('app.index', $this->viewParams);
     }
 
+    public function getTutorial() 
+    {
+        return view('app.index', $this->viewParams);
+    }        
+
     public function getProfile()
     {
         return view('app.index', $this->viewParams);
@@ -79,6 +84,11 @@ class AppController extends Controller
     }
 
     public function getLogin() 
+    {
+        return view('app.index', $this->viewParams);
+    }
+
+    public function getConfiguration() 
     {
         return view('app.index', $this->viewParams);
     }

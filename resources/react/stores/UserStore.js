@@ -111,6 +111,7 @@ class UserStore extends BaseStore {
 
     transformResponse(res) {
         res.id = parseInt(res.user_id);
+        res.user_id = parseInt(res.user_id);
         if(res.profile_image_url.length === 0) {
             res.profile_image_url = "/assets/imgs/profile_imageless.png";
         }

@@ -33,17 +33,9 @@ class AppointmentController extends Controller
     {
         $me = $this->auth->getLoginedUser();
 
-        return $this->appointment->getByUser($me);
-    }
+        $appointments = $this->appointment->getByUser($me);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json($appointments);
     }
 
     /**
@@ -54,15 +46,21 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
+
         $me          = $this->auth->getLoginedUser();
-        $userIds     = $request->get("users");
+        $guest       = $request->get("guest");
+        $userId      = $request->get("userId");
         $meetingTime = $request->get("meetingTime");
         $place       = $request->get("place");
-        $answer      = $request->get("answer");
 
-        $appointment = $this->appointment->create($userIds, $me, $place, $place, $meetingTime, $answer);
+        $validator = $this->appointment->validate($request->all());
+        if($validator->fails()) {
+            return response()->json($validator->messages(), 401);
+        }
 
-        return $response()->json($appointment, 200);
+        $appointment = $this->appointment->create($userId, $me->id, $guest, $place, $meetingTime);
+
+        return response()->json($appointment, 200);
     }
 
     /**
