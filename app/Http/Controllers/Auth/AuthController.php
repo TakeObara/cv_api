@@ -37,6 +37,16 @@ class AuthController extends Controller
         // $this->middleware('guest', ['except' => 'getLogout']);
     }
 
+    public function login(Request $request){
+        $data = $request->all();
+        return $this->auth->login($data['email'], $data['password']);
+    }
+
+    public function register(Request $request){
+        $data = $request->all();
+        return $this->auth->registerUser($data['name'], $data['email'], $data['password'], $data['gender']);
+    }
+
     public function logout() {
 
         $this->auth->logout();
