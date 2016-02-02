@@ -208,11 +208,16 @@ header {
 
     .halfPage-title {
         color: $gold-color;
-        padding-top: 10px;
+        padding-top: 20px;
+        padding-left: 49px;
+        letter-spacing: 0.3em;
+        font-size: 17.75px;
     }
 
     .halfPage-group {
         margin-top: 15px;
+        margin-left: 49px;
+        margin-right: 49px;
     }
 
     .content {
@@ -243,6 +248,7 @@ header {
             border: 1px solid $gold-color;
             display: block;
             margin-top: 15px;
+            margin-right: 49px;
             width: 150px;
             text-align: center;
             background-color: transparent;

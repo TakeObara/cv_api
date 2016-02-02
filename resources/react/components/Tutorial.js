@@ -3,7 +3,7 @@ export default class Tutorial extends React.Component {
 
         return (
             <div className="tutorialPage">
-                <p>チュートリアルページ、たけ！よろしくね</p>
+                <p>チュートリアルページ、たけfdafafdasfafdadfafafds！よろしくね</p>
             </div>
         );
     }
