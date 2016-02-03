@@ -21,7 +21,6 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user_tmp = [];
         $users = [
             ['name' => 'test1', 'email' => 'test1@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
             ['name' => 'test2', 'email' => 'test2@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
