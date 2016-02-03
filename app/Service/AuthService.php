@@ -9,7 +9,7 @@ use Cv\Model\Profile;
 
 class AuthService {
 
-    public function registerUser($name, $email, $password, $gender, $facebookId = null, $twitterId = null, $profileImage = "", $is_public) {
+    public function registerUser($name, $email, $password, $gender, $facebookId = null, $twitterId = null, $profileImage = "", $is_public = force) {
 
         $user = new User;
         $user->name = $name;
