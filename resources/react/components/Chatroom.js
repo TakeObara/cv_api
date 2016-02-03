@@ -3,6 +3,11 @@ import ChatroomStore from "../stores/ChatroomStore"
 import ChatroomAction from "../actions/ChatroomAction"
 import MessageListStore from "../stores/MessageListStore"
 import Message from "./Message"
+
+
+import NotificationAction from "../actions/NotificationAction"
+import NotificationStore from "../stores/NotificationStore"
+
 import UserStore from "../stores/UserStore"
 
 var Link = ReactRouter.Link;
@@ -18,10 +23,11 @@ export default class Chatroom extends React.Component {
         };
 
         this._onChange = this._onChange.bind(this);
-        this.wsUri = "ws://"+(location.hostname === 'localhost' ? 'localhost:13000': 'chat.cvendor.jp');
+        this._onMessage = this._onMessage.bind(this);
     }
 
     componentDidMount() {
+        NotificationStore.addNotifiedListener(this._onMessage)
         ChatroomStore.addChangeListener(this._onChange);
 
         // if there is updated in data, _onChange will be fired and data will be updated
@@ -36,19 +42,13 @@ export default class Chatroom extends React.Component {
             this.loadChatroom()
     }
 
-    loadChatroom() {
-        ChatroomAction.loadData(this.props.params.id, true);
-
-        this.ws = new WebSocket(this.wsUri + "/" + this.props.params.id); 
-        this.ws.onmessage = this.onMessage.bind(this);
-        this.ws.onerror = function() {
-            console.log("Fail to create WebSocket");
+    // 
+    _onMessage(notify) {
+        if(notify.type !== 'chat' || notify.chatroomId === this.props.params.id) {
+            return;
         }
-    }
-
-    onMessage(ev) {
-        var msg    = JSON.parse(ev.data); //PHP sends Json data
-
+        
+        var msg = notify;
         var chatroomId = this.props.params.id;
         var userId     = msg.userId;
         var message    = msg.message;
@@ -57,9 +57,14 @@ export default class Chatroom extends React.Component {
     }
 
     componentWillUnmount() {
-        this.ws.close();
         ChatroomStore.removeChangeListener(this._onChange);
     }
+
+
+    loadChatroom() {
+        ChatroomAction.loadData(this.props.params.id, true);
+    }
+
 
     _onChange() {
         this._loading = false;
@@ -77,10 +82,10 @@ export default class Chatroom extends React.Component {
         e.preventDefault();
         
 
-        var userId = UserStore.getMyProfile().id;
+        var chatroomId = this.state.chatroom.id;
         var message = this.state.myText.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
-        this.ws.send(JSON.stringify({userId: userId, message: message}));
+        NotificationAction.chat( chatroomId, message);
 
         this.setState({myText: ""});
     }

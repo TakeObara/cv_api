@@ -30,6 +30,10 @@ export default class ChatroomItemList extends React.Component {
                 <img className="chatroomImg" src={opponentProfile.profile_image_url} />
                 <div className="chatroomInfo">
                     <div className="opponentName">{opponentProfile.name}</div>
+                    <div className="meta">
+                        <div className="metaItem"><span className="orange">W</span>: {opponentProfile.resource_introduce} </div>
+                        <div className="metaItem"><span className="blue">I</span>: {opponentProfile.resource_needed}</div>
+                    </div>
                 </div>
             </Link>
         );

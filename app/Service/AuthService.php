@@ -53,6 +53,11 @@ class AuthService {
         return null;
     }
 
+    public function getUserById($id)
+    {
+        return User::find($id);
+    }
+
     public function ifUserExists($userId)
     {
         return User::where("id","=",$userId)->count() > 0;

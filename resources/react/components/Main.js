@@ -4,7 +4,7 @@ import UserList from "./UserList"
 import Login from "./Login"
 import AuthEngine from "../middleware/AuthEngine"
 
-import NotificationSystem from "./NotificationSystem"
+import ToastSystem from "./ToastSystem"
 
 export default class Main extends React.Component{
 
@@ -53,7 +53,7 @@ export default class Main extends React.Component{
             <div>
                 <Header />
                 {container}
-                <NotificationSystem ref="notificationSystem"/>
+                <ToastSystem ref="toastSystem"/>
             </div>
         );
     }

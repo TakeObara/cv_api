@@ -6,7 +6,7 @@ import ChatroomStore from "../stores/ChatroomStore"
 import AppointmentStore from "../stores/AppointmentStore"
 import AppointmentAction from "../actions/AppointmentAction"
 
-import NotificationAction from "../actions/NotificationAction"
+import ToastAction from "../actions/ToastAction"
 
 var Link = ReactRouter.Link;
 var browserHistory = ReactRouter.browserHistory;
@@ -16,8 +16,14 @@ export default class AppointmentCreate extends React.Component {
     constructor() {
         super();
 
+        var now = new Date();
+
         this.state = { 
-            appointment: {},
+            appointment: {
+                place: "",
+                meeting_time_date: this.transformToDateValue(now),
+                meeting_time_time: this.transformToTimeValue(now.getHours()),
+            },
             opponent: {profile: {}},
         };
 
@@ -46,11 +52,15 @@ export default class AppointmentCreate extends React.Component {
     // }
 
     _onChange() {
-        var opponent = ChatroomStore.getOpponent(this.props.params.id);
-
+        
         this._loading = false;
+
+        var opponent = ChatroomStore.getOpponent(this.props.params.id);
+        var appointment = this.state.appointment;
+        appointment.guest = opponent.profile.name;
+
         this.setState({
-            appointment: {guest: opponent.profile.name},
+            appointment: appointment,
             opponent: opponent,
         });
     }
@@ -73,10 +83,12 @@ export default class AppointmentCreate extends React.Component {
 
         var opponent = this.state.opponent;
 
+        var meetingTime = this.getMeetingTime();
+
         AppointmentAction.create({
             userId:      this.state.opponent.id,
             guest:       this.state.appointment.guest,
-            meetingTime: this.state.appointment.meeting_time,
+            meetingTime: meetingTime,
             place:       this.state.appointment.place,
             cb:          this._submitCallback.bind(this),
         });
@@ -88,7 +100,83 @@ export default class AppointmentCreate extends React.Component {
             pathname: '/appointment/'+data.id
         });
 
-        NotificationAction.notify("success","アポイント申請しました。");
+        ToastAction.show("success","アポイント申請しました。");
+    }
+
+    _questionMarkClick(e) {
+        e.preventDefault();
+
+    }
+
+    months() {
+        var rst = [];
+        var now = new Date();
+        var thisMonth = now.getMonth() + 1;
+        var thisYear  = now.getFullYear();
+
+        for (var m = 0; m < 1; m++) {
+            if(thisMonth + m > 12 ) {
+                var dateValue = (thisYear + 1) + "-" + (thisMonth + m - 12);
+                var dateShow  = (thisYear + 1) + "年" + (thisMonth + m - 12) + "月";
+                rst.push(<option value={dateValue}>{dateShow}</option>);
+            } else {
+                var dateValue = thisYear + "-" + (thisMonth + m);
+                var dateShow  = thisYear + "年" + (thisMonth + m) + "月";
+                rst.push(<option value={dateValue}>{dateShow}</option>);
+            }
+        }
+        return rst;
+    }
+
+    days() {
+        var rst = [];
+        var now = new Date();
+
+        for(var d = 0; d < 31; d++) {
+            var date = new Date();
+
+            date.setTime(now.getTime() + (d * 24 * 3600 * 1000));
+
+            var dateValue = this.transformToDateValue(date);
+            var dateShow = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
+
+            rst.push(<option key={d} value={dateValue}>{dateShow}</option>);
+        }
+
+        return rst;
+    }
+
+
+
+    times() {
+        var rst = [];
+        var now = new Date();
+
+        for(var h = 0;h < 24; h++) {
+            rst.push(<option key={h} value={this.transformToTimeValue(h)}>{h + ":00"}</option>);
+        }
+        return rst;
+    }
+
+    transformToTimeValue(hour) {
+        return this.transformTwoDigit(hour) + ":00";
+    }
+
+    transformToDateValue(date) {
+        var month  = this.transformTwoDigit(date.getMonth() + 1);
+        var day    = this.transformTwoDigit(date.getDate());
+
+        return date.getFullYear() + "-" + month + "-" + day;
+    }
+
+    transformTwoDigit(num) {
+        return ("0000" + num).substr(-2, 2);
+    }
+
+    getMeetingTime() {
+        var appointment = this.state.appointment;
+        console.log(appointment);
+        return appointment.meeting_time_date + " " + appointment.meeting_time_time;
     }
 
     render() {
@@ -106,7 +194,7 @@ export default class AppointmentCreate extends React.Component {
                         <label className="clearfix">
                             <span>GUEST </span>
                             <img className="icon" src="/assets/imgs/ic_guest.png" />
-                            <button className="questionmark">
+                            <button className="questionmark" onClick={this._questionMarkClick.bind(this)}>
                                 <img src="/assets/imgs/ic_hatena_white.png" />
                             </button>
                         </label>
@@ -125,9 +213,15 @@ export default class AppointmentCreate extends React.Component {
                             <input name="introduced" value={opponent.profile.name} onChange={this._handleInput} disabled={true} />
                         </div>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group date-group">
                         <label>日時</label>
-                        <input name="meeting_time" value={appointment.meeting_time} onChange={this._handleInput} />
+                        <select className="dark-select" name="meeting_time_date" value={appointment.meeting_time_date} onChange={this._handleInput} >
+                        { this.days() }
+                        </select>
+
+                        <select className="dark-select" name="meeting_time_time" value={appointment.meeting_time_time} onChange={this._handleInput}>
+                        { this.times() }
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>場所</label>

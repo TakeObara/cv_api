@@ -33,12 +33,17 @@ Route::group(['prefix' => '/api/v1'], function () {
         Route::resource('appointment', 'AppointmentController');
         Route::resource('chatroom', 'ChatroomController', ['except' => 'create']);
         Route::post('chatroom/{id}/upload', 'ChatroomController@upload');
+
+        Route::get('notification', 'NotificationController@index');
     });
     
 });
 
 Route::get('/privacy', function() {
     return view("app.privacy");
+});
+Route::get('/terms-iframe', function() {
+    return view("app.terms-iframe");
 });
 
 // Frontend Application 

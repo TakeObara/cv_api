@@ -15,6 +15,8 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\ConnectionInterface;
 
+use Cv\Model\Notification;
+
 use Illuminate\Console\Command;
 
 class StartWsServer extends Command implements Ratchet\MessageComponentInterface
@@ -43,12 +45,21 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
      *
      * @return void
      */
-    public function __construct(\Cv\Service\ChatroomService $chatroom, \Cv\Service\MessageService $message)
+    public function __construct(
+        \Cv\Service\ChatroomService $chatroom, 
+        \Cv\Service\MessageService $message,
+        \Cv\Service\NotificationService $notification,
+        \Cv\Service\AppointmentService $appointment,
+        \Cv\Service\AuthService $auth
+    )
     {
         parent::__construct();
         $this->clients = [];
         $this->chatroom = $chatroom;
         $this->message = $message;
+        $this->notification = $notification;
+        $this->appointment = $appointment;
+        $this->auth = $auth;
     }
 
 
@@ -57,7 +68,6 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
         $cookies = $conn->WebSocket->request->getCookies();
         $session = $this->getSessionFromLaravelCookie($cookies[Config::get('session.cookie')]);
 
-        $chatroomId = str_replace("/", "", $conn->WebSocket->request->getPath());
         $userId = $session->get("userId");
 
         if(is_null($userId)) {
@@ -65,38 +75,80 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
             return;
         }
 
-        if(!$this->chatroom->inRoom($userId, $chatroomId)) {
-            $conn->close();
-            return;   
-        }
-
-        if(!array_key_exists($chatroomId, $this->clients)) {
-            $this->clients[$chatroomId] = new SplObjectStorage;
-        }
-
-        $this->clients[$chatroomId]->attach($conn);
-
-        $conn->chatroomId = $chatroomId;
+        $this->clients[$userId] = $conn;
+        $conn->user = $this->auth->getUserById($userId);
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
 
         $msgItem = json_decode($msg);
-        $this->message->chat($msgItem->userId, $from->chatroomId, $msgItem->message);
+        switch ($msgItem->type) {
+            case 'chat':
+                
+                $userId = $from->user->id;
+                $chatroomId = $msgItem->chatroomId;
+                $message = $msgItem->message;
 
-        foreach ($this->clients[$from->chatroomId] as $client) {
-            $client->send($msg);
+                $msgItem->userId = $userId;
+
+
+                if(!$this->chatroom->inRoom($userId, $chatroomId)) {
+                    break;
+                }
+
+                $this->message->chat($userId, $chatroomId, $message);
+
+                $userIdsInRoom = $this->chatroom->getUserIdInRoom($chatroomId);
+
+                // send to user
+                foreach ($userIdsInRoom as $user) {
+
+                    if($this->isOnline($user)) {
+                        $this->clients[$user]->send(json_encode($msgItem));
+                    } else {
+                        $this->notification->notify($user, $userId, Notification::TYPE_MESSAGE, $from->user->name . "さんからメッセージが届きました！");
+                    }
+                }
+                break;
+            case 'appointment':
+
+                $hostId = $from->user->id;
+                $userId = $msgItem->userId;
+                $guest  = $msgItem->guest;
+                $place  = $msgItem->place;
+                $meetingTime = $msgItem->meetingTime;
+
+                $this->appointment->create($userId, $hostId, $guest,$place, $meetingTime);
+
+                $msg = $from->user->name . "さんからアポイントが届きました！";
+                
+                if($this->isOnline($userId)) {
+                    $this->clients[$userId]->send($msg);
+                } 
+
+                $this->notification->notify($userId, $hostId, Notification::TYPE_APPOINTMENT, $msg );
+
+                break;
+            default:
+                break;
         }
+    }
+
+    public function isOnline($userId) {
+        return array_key_exists($userId, $this->clients);
     }
 
     public function onClose(ConnectionInterface $conn) {
         $this->info("close");
-        $this->clients[$from->chatroomId]->detach($conn);
+
+        unset($this->clients[$conn->userId]);
     }
 
     public function onError(ConnectionInterface $conn, Exception $e) {
         $this->error($e);
         $conn->close();
+
+        unset($this->clients[$conn->userId]);
     }
 
     public function getSessionFromLaravelCookie($laravelCookie) {

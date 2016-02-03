@@ -1,29 +1,35 @@
-import {NotifyConst} from "../Constant"
+import {ToastConst} from "../Constant"
 import AppDispatcher from "../Dispatcher"
+import NotificationStore from "../stores/NotificationStore"
 
-export default class NotificationSystem extends React.Component {
+export default class ToastSystem extends React.Component {
 
     constructor() {
         super();
         this.notifyList = [];
         this.dispatchToken = AppDispatcher.register( (action) => {
             switch (action.type) {
-                case NotifyConst.NOTIFY:
-                    this.notify(action.level, action.message);
+                case ToastConst.SHOW:
+                    this.show(action.level, action.message);
                 break;
             }
         });
+
+
+        // this._notified = this._notified.bind(this);
     }
 
-    componentDidMount() {
-
-    }
+    // componentDidMount() {
+        // NotificationStore.addNotifiedListener(this._notified);
+    // }
 
     componentWillUnmount() {
+        // NotificationStore.removeNotifiedListener(this._notified);
+        // NotificationStore.close();
         AppDispatcher.unregister(this.dispatchToken);
     }
 
-    notify(level, message) {
+    show(level, message) {
 
         var timeoutId = setTimeout(() => {
             this.removeNotifyById(timeoutId);

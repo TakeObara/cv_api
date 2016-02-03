@@ -1,13 +1,24 @@
-import {NotifyConst, ApiPrefix} from "../Constant";
+import {NotificationConst, ApiPrefix} from "../Constant";
 import AppDispatcher from "../Dispatcher";
 
 
 class NotificationAction {
-    
-    notify(level, message) {
+
+    loadAll(force) {
+        if(typeof force === 'undefined') {
+            force = false;
+        }
+
         AppDispatcher.dispatch({
-            type: NotifyConst.NOTIFY,
-            level: level,
+            type: NotificationConst.LOAD_DATA,
+            forceFlag: force
+        });
+    }
+        
+    chat( chatroomId, message) {
+        AppDispatcher.dispatch({
+            type: NotificationConst.CHAT,
+            chatroomId: chatroomId,
             message: message,
         });
     }

@@ -40,9 +40,30 @@ var ApiPrefix = '/api/v1',
         SPEAK:     'SPEAK',
     },
 
-    NotifyConst = {
-        NOTIFY:    'NOTIFY',
+    ToastConst = {
+        SHOW:    'TOAST_SHOW',
+    },
+
+    NotificationConst = {
+        LOAD_DATA: 'NOTIFICATION_LOAD_DATA',
+        CHAT:      'NOTIFICATION_CHAT',
+
+        // server constant
+        TYPE_MESSAGE       : 1,
+        TYPE_APPOINTMENT   : 2,
+        TYPE_SYSTEM        : 3,
     }
 ;
 
-export { ApiPrefix, UserConst, UserListConst, FavouriteConst , AppointmentConst, MessageConst,ChatroomListConst, ChatroomConst, NotifyConst};
+export { 
+    ApiPrefix, 
+    UserConst, 
+    UserListConst, 
+    FavouriteConst , 
+    AppointmentConst, 
+    MessageConst, 
+    ChatroomListConst, 
+    ChatroomConst, 
+    ToastConst, 
+    NotificationConst
+};

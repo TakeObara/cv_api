@@ -64,6 +64,19 @@ $gold-color: #cc9966;
 .inline {
     display: inline-block;
 }
+
+select.dark-select {
+    border: 1px solid #000;
+    font-size: 14px;
+    color: #fff;
+    background: #444;
+    padding: 5px;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+}
+
+
 #main, #main > div {
     min-width: 100%;
     height: 100%;
@@ -404,6 +417,7 @@ header {
     width: 100%;
     background-color: #dbdbdb;
     color: #222;
+    border-radius: 7px;
 
     &:first-child {
         margin-top: 0;
@@ -414,15 +428,25 @@ header {
         float: left;
         width: 60px;
         height: 60px;
+        margin: 10px;
     }
     .chatroomInfo {
         float: left;
         margin-left: 15px;
-        width: calc(100% - 75px);
+        width: calc(100% - 95px);
+        color: black;
 
         .opponentName {
-            line-height: 60px;
+            margin-top: 12px;
+            line-height: 25px;
             vertical-align: middle;
+        }
+
+        .meta {
+            > .metaItem {
+                display: inline-block;
+                width: 120px;
+            }            
         }
     }
 }
@@ -763,6 +787,12 @@ header {
                 }
             }
         }
+
+        &.date-group {
+            label {
+                display: block;
+            }
+        }
     }
 
     .btn-submit {
@@ -808,6 +838,12 @@ header {
 
         .page-content {
             padding: 10px;
+
+            iframe {
+                width: 100%;
+                height: 300px;
+                background-color: white;
+            }
         }
     }
 }

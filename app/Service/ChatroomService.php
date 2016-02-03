@@ -20,6 +20,8 @@ class ChatroomService {
     //     $this->auth = $auth;
     // }
 
+    private $pivotTable = "chatroom_user";
+
     public function getByUser(User $user) 
     {
         $chatrooms = $user->chatroom()->getResults();
@@ -30,12 +32,24 @@ class ChatroomService {
 
     public function inRoom($userId, $chatroomId)
     {
-        $pv = "chatroom_user";
+        $pv = $this->pivotTable;
 
         return DB::table($pv)
             ->where("user_id","=",$userId)
             ->where("chatroom_id","=",$chatroomId)
-            ->count() > 0;
+            ->count() > 0
+        ;
+    }
+
+    public function getUserIdInRoom($chatroomId) 
+    {
+        $pv = $this->pivotTable;
+
+        return DB::table($pv)
+            ->select("user_id")
+            ->where("chatroom_id","=",$chatroomId)
+            ->lists("user_id")
+        ;
     }
 
     public function get($id, User $user)
@@ -142,10 +156,13 @@ class ChatroomService {
 
         $userChatroomMap = [];
         foreach ($userChatrooms as $item) {
-            if(array_key_exists($item->chatroom_id, $userChatroomMap)) {
-                $userChatroomMap[$item->chatroom_id][] = $item->user_id;
+            $chatroomId = intval($item->chatroom_id);
+            $userId     = intval($item->user_id);
+
+            if(array_key_exists($chatroomId, $userChatroomMap)) {
+                $userChatroomMap[$chatroomId][] = $userId;
             }else {
-                $userChatroomMap[$item->chatroom_id] = [$item->user_id];
+                $userChatroomMap[$chatroomId] = [$userId];
             }
         }
 

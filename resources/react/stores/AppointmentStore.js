@@ -54,14 +54,17 @@ class AppointmentStore extends BaseStore {
 
     create(formData) {
 
+        var cb = formData.cb;
+        delete formData.cb;
+
         this.ajax("post", ApiPrefix + "/appointment", (error, data) => {
             if(error) {
                 return;
             }
             this.loadAll(true);
 
-            if(typeof formData.cb === 'function') {
-                formData.cb(data);
+            if(typeof cb === 'function') {
+                cb(data);
             }
 
         }, formData);
