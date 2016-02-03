@@ -16,9 +16,6 @@ class AppointmentStore extends BaseStore {
                 case AppointmentConst.LOAD_DATA:
                     this.loadAll(action.forceFlag);
                 break;
-                case AppointmentConst.LOAD_DATA:
-                    this.loadAll(action.forceFlag);
-                break;
                 case AppointmentConst.CREATE:
                     this.create(action.formData);
                 break;
@@ -40,14 +37,14 @@ class AppointmentStore extends BaseStore {
                 return;
             }
             
-            // for(var i = 0 ; i < data.length ; i ++) {
-            //     if(data[i].profile.profile_image_url.length === 0) {
-            //         data[i].profile.profile_image_url = "/assets/imgs/profile_imageless.png";
-            //     }    
-            // }
+            for(var i = 0 ; i < data.length ; i ++) {
+                var appo = data[i];
+                appo = this.transformResponse(appo);
+                this.appointment[appo.id] = appo;
+            }
             
+
             this.data = data;
-            this.appointment[data.id] = data;
             this.emitChange();
         });
     }
@@ -70,6 +67,23 @@ class AppointmentStore extends BaseStore {
         }, formData);
     }
 
+    transformResponse(res) {
+        res.id = parseInt(res.id);
+        res.host_user_id = parseInt(res.host_user_id);
+
+        for (var i = 0; i < res.appointment_users.length; i++) {
+            var userId = parseInt(res.appointment_users[i].user_id);
+
+           if(res.host_user_id === userId) {
+                res.host = res.appointment_users[i].user.profile;
+            }else {
+                res.opponent = res.appointment_users[i].user.profile;
+            }
+        }
+
+        return res;
+    }
+
     getAll() {
         var dummyData = [];
 
@@ -77,7 +91,7 @@ class AppointmentStore extends BaseStore {
     }
 
     get(id) {
-        var dummyData = {id:0};
+        var dummyData = {id:0,host: {}, opponent: {}};
         return this.appointment[id] || dummyData;
     }
 
