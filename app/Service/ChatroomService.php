@@ -76,7 +76,7 @@ class ChatroomService {
     }    
 
     public function create($title, $userIds)
-    {   
+    {
         if($this->haveMissingUser($userIds)) {
             throw new Cv\Exceptions\MissingModelException;
         }
