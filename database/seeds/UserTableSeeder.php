@@ -8,10 +8,12 @@ use Cv\Model\Profile;
 class UserTableSeeder extends Seeder
 {
     public function __construct(
-        \Cv\Service\AuthService $auth
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\ProfileService $profile
     )
     {
         $this->auth = $auth;
+        $this->profile = $profile;
     }
 
     /**
@@ -22,29 +24,29 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         $users = [
-            ['name' => 'test1', 'email' => 'test1@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
-            ['name' => 'test2', 'email' => 'test2@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
-            ['name' => 'test3', 'email' => 'test3@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
-            ['name' => 'test4', 'email' => 'test4@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
-            ['name' => 'test5', 'email' => 'test5@gmail.com', 'password' => '1234', 'gender' => '1', 'is_public' => true],
+            ['name' => 'test1', 'email' => 'test1@gmail.com', 'password' => '1234', 'gender' => '1'],
+            ['name' => 'test2', 'email' => 'test2@gmail.com', 'password' => '1234', 'gender' => '1'],
+            ['name' => 'test3', 'email' => 'test3@gmail.com', 'password' => '1234', 'gender' => '1'],
+            ['name' => 'test4', 'email' => 'test4@gmail.com', 'password' => '1234', 'gender' => '1'],
+            ['name' => 'test5', 'email' => 'test5@gmail.com', 'password' => '1234', 'gender' => '1'],
         ];
 
         DB::table('users')->delete();
         DB::table('profiles')->delete();
            
-        $loop = 1;
-        foreach ($users as $user){
-            $this->auth->registerUser($user['name'], $user['email'], $user['password'], $user['gender'], null, null, '', $user['is_public']);
-            $this->changeIds($user['name'], $loop++);
+        foreach ($users as $index => $user){
+            $user = $this->auth->registerUser($user['name'], $user['email'], $user['password'], $user['gender'], null, null, '');
+
+            $profile = $this->profile->getProfileByUserId($user->id);
+            $this->changeId($user, $profile,$index + 1);
         }
     }
 
-    private function changeIds($userName, $id){
-        $user    = User::where('name', "=", $userName)->first();
-        $profile = Profile::where("user_id", "=", $user['id'])->first();
-        $user->id         = $id;
-        $profile->user_id = $id;
-        $user->save();
+    private function changeId(&$user, &$profile, $newId){
+        $profile->user_id = $newId;
         $profile->save();
+
+        $user->id = $newId;
+        $user->save();
     }
 }
