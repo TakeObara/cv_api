@@ -40,9 +40,9 @@ class UserTableSeeder extends Seeder
     }
 
     private function changeIds($userName, $id){
-        $user = User::where('name', "=", $userName)->first();
+        $user    = User::where('name', "=", $userName)->first();
         $profile = Profile::where("user_id", "=", $user['id'])->first();
-        $user->id = $id;
+        $user->id         = $id;
         $profile->user_id = $id;
         $user->save();
         $profile->save();
