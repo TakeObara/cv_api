@@ -96,7 +96,7 @@ export default class Profile extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="form-group blue">INTRODUCTION</label>
+                                <label className="form-group blue">INTRODUCE</label>
                                 <input value={this.state.me.resource_introduce} name="resource_introduce" onChange={this._handleInput.bind(this)} placeholder="紹介できる人を発信しましょう" />
                             </div>
 

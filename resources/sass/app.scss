@@ -91,9 +91,11 @@ select.dark-select {
 
 .orange {
     color: $orange;
+    font-size: 80%;
 }
 .blue {
     color: $blue;
+    font-size: 80%;
 }
 
 $header-height: 50px;
@@ -222,15 +224,15 @@ header {
     .halfPage-title {
         color: $gold-color;
         padding-top: 20px;
-        padding-left: 49px;
+        padding-left: 7%;
         letter-spacing: 0.3em;
         font-size: 17.75px;
     }
 
     .halfPage-group {
         margin-top: 15px;
-        margin-left: 49px;
-        margin-right: 49px;
+        margin-left: 7%;
+        margin-right: 7%;
     }
 
     .content {
@@ -246,8 +248,9 @@ header {
         input, textarea {
             display: block;
             width: calc(100% - 24px);
+            height: 20px;
             padding: 7px 12px;
-            font-size: 16px;
+            font-size: 12px;
             border: 0;
             background-color: rgba(255,255,255,0.3);
             color: white;
@@ -271,8 +274,10 @@ header {
         }
 
         .favouriteItem {
-            width: 100%;
+            width: 85%;
             margin-top: 15px;
+            margin-right: 7%;
+            margin-left: 7%;
             background: rgba(0,0,0,0.3);
             position: relative;
 
@@ -419,8 +424,10 @@ header {
 
 .chatroomItem {
     display: block;
-    margin-top: 20px;
-    width: 100%;
+    margin-top:20px;
+    margin-left:49px;
+    margin-right:49px;
+    width: 85%;
     background-color: #dbdbdb;
     color: #222;
     border-radius: 7px;
@@ -445,13 +452,14 @@ header {
         .opponentName {
             margin-top: 12px;
             line-height: 25px;
+            font-size: 16px;
             vertical-align: middle;
         }
 
         .meta {
             > .metaItem {
-                display: inline-block;
-                width: 120px;
+                display: block;
+                
             }            
         }
     }
@@ -459,14 +467,14 @@ header {
 
 .userListPage {
     > .userItem {
-        $userItemHeight: 340px;
+        $userItemHeight: 350px;
         float: left;
-        width: 200px;
+        width: 194px;
         height: $userItemHeight;
         display: block;
         position: relative;
         background-color: #d7d2c5;
-        margin: 15px 0 0 15px;
+        margin: 30px 0 0 30px;
 
         > .triangle {
             position: absolute;
@@ -533,15 +541,36 @@ header {
 
             .line {
                 display: inline-block;
-                background-color: #54565b;
                 line-height: 25px;
                 width: 100%;
                 margin: 4px 0;
                 color: white;
+                font-size: 12px;
             }
 
+                .resource1 {
+                    display: inline-block;
+                    background-color: #54565b;
+                    line-height: 25px;
+                    width: 98%;
+                    color: white;
+                    font-size: 12px;
+                    border: inset 2px #ff9966;
+                    
+                }
+                .resource2 {
+                    display: inline-block;
+                    background-color: #54565b;
+                    line-height: 25px;
+                    width: 98%;
+                    color: white;
+                    font-size: 12px;
+                    border: inset 2px #3399cc;
+                    
+                }
+
             .userDesc {
-                font-size: 70%;
+                font-size: 60%;
             }
         }
     }
@@ -727,15 +756,19 @@ header {
     z-index: 2;
     background-color: rgba(0,0,0,0.9);
 
+
     .fence {
         border: 1px solid white;
         padding: 0 20px 20px;
         margin-top: 20px;
+        margin-left: 49px;
+        margin-right: 49px;
     }
 
     .price {
         text-align: center;
         font-size: 20px;
+        margin-top: 200px;
         span {
             margin-left: 30px;
         }
