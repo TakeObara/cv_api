@@ -98,15 +98,26 @@ class AuthController extends Controller
         $token  = $request->get('oauth_token');
         $verify = $request->get('oauth_verifier');
 
-        $profile = $this->auth->handleTwitterRedirectAndGetProfile($token, $verify);
-        var_dump($profile);
+        $profile = $this->oauth->handleTwitterRedirectAndGetProfile($token, $verify);
 
-        return;
+        // no email available in twitter
+        $user = $this->auth->getUserByTwitterId($profile["id_str"]);
+        $isNewUser = false;
+        if(is_null($user)) {
+            // Register account if there is not exists
+            $profileImage = $this->oauth->downloadTwitterProfileImage($profile["profile_image_url"]);
+            $user = $this->auth->registerUser($profile["name"], null, null, null , null, $profile["id_str"], $profileImage);
+            $isNewUser = true;
+        }
+
+
+        $this->auth->loginWithUser($user, true);
+
+        // redirect to application
+        if($isNewUser) {
+            return redirect("/tutorial");
+        }
+        return redirect("/");
     }
 
-    public function twitterOauth2Callback(Request $request) {
-        if(!$request->has('code')) {
-            return redirect("/login");
-        }   
-    }
 }

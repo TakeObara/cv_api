@@ -8,6 +8,7 @@ use Cv\Model\User;
 use Cv\Model\Profile;
 
 use OAuth;
+use Config;
 
 trait OAuthTwitterService {
 
@@ -20,6 +21,9 @@ trait OAuthTwitterService {
 
     public function getTwitterAuthorizationUrl() {
 
+        if(Config::get("app.debug")) {
+            return "javascript: alert(\"Twitter OAuth are not support in local environment\");";
+        }
         $reqToken = $this->twitter->requestRequestToken();
 
         // get Authorization Uri sending the request token
@@ -38,6 +42,12 @@ trait OAuthTwitterService {
         return  $profile;
     }
 
+    public function downloadTwitterProfileImage($imageUrl) {
+        $img = file_get_contents($imageUrl);
+        $file = "/shared/".$key = md5(microtime().rand()).".jpg";
+        file_put_contents(public_path().$file, $img);
 
+        return $file;
+    }
 
 }
