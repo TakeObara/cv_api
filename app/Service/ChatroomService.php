@@ -22,6 +22,11 @@ class ChatroomService {
 
     private $pivotTable = "chatroom_user";
 
+    public function find($id)
+    {
+        return Chatroom::find($id);
+    }
+
     public function getByUser(User $user) 
     {
         $chatrooms = $user->chatroom()->getResults();

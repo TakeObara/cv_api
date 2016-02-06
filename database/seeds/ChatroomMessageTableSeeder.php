@@ -62,19 +62,18 @@ class ChatroomMessageTableSeeder extends Seeder
             ['userId' => 5, 'chatroomId' => 10,'message' => 'fafdadfafafdasa'],
         ];
 
-        $loop = 1;
-        foreach ($chatroomDatas as $data){
-            $this->chatroom->create($data['title'], $data['userIds']);
-            $this->changeId($data['title'], $loop++);
+        
+        foreach ($chatroomDatas as $index => $data){
+            $chatroom = $this->chatroom->create($data['title'], $data['userIds']);
+            $this->changeId($chatroom , $index + 1);
         }
         foreach ($messageDatas as $data){
             $this->message->chat($data['userId'], $data['chatroomId'], $data['message']);
         }
     }
 
-    private function changeId($title, $id){
-        $chatroom = Chatroom::where('title', "=", $title)->first();
-        $chatroom->id = $id;
+    private function changeId(&$chatroom, $newId){
+        $chatroom->id = $newId;
         $chatroom->save();
     }
 }

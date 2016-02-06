@@ -21,23 +21,15 @@ class ProfileTableSeeder extends Seeder
     public function run()
     {
         $profileDatas = [
-            ['userId' => 1, 'description' => 'fdsafafasfasfdfasdfasfa', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア'],
-            ['userId' => 2, 'description' => 'fdsafafasfasfdfdasfdasa', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア'],
-            ['userId' => 3, 'description' => 'fdsafafasfasffdsafdsada', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア'],
-            ['userId' => 4, 'description' => 'fdsafsdafasfasdfasdffaa', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア'],
-            ['userId' => 5, 'description' => 'fdasfasdfasdfasfdafasdf', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア'],
+            ['userId' => 1, 'name' => 'Tanaka', 'place' => '', 'description' => 'fdsafafasfasfdfasdfasfa', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア', 'gender' => Profile::GENDER_MALE , 'is_public' => true],
+            ['userId' => 2, 'name' => 'Obara', 'place' => '', 'description' => 'fdsafafasfasfdfdasfdasa', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア', 'gender' => Profile::GENDER_MALE , 'is_public' => true],
+            ['userId' => 3, 'name' => 'Funakoshi', 'place' => '', 'description' => 'fdsafafasfasffdsafdsada', 'resource_introduce' => 'デザイナー', 'resource_needed' => 'webエンジニア', 'gender' => Profile::GENDER_MALE , 'is_public' => true],
+            ['userId' => 4, 'name' => 'Likwee', 'place' => '', 'description' => 'fdsafsdafasfasdfasdffaa', 'resource_introduce' => 'デザイナー', 'resource_needed' => '', 'gender' => Profile::GENDER_MALE , 'is_public' => true],
+            ['userId' => 5, 'name' => 'Go Sho', 'place' => '', 'description' => 'fdasfasdfasdfasfdafasdf', 'resource_introduce' => '', 'resource_needed' => 'webエンジニア', 'gender' => Profile::GENDER_MALE , 'is_public' => true],
         ];
 
         foreach ($profileDatas as $data){
-            $this->updateProfile($data['userId'], $data);
+            $this->profile->save($data['userId'], $data);
         }
-    }
-
-    private function updateProfile($userId, $data){
-        $profile = Profile::where('user_id', "=", $userId)->first();
-        $profile->description        = $data['description'];
-        $profile->resource_introduce = $data['resource_introduce'];
-        $profile->resource_needed    = $data['resource_needed'];
-        $profile->save();
     }
 }

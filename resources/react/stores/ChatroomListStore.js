@@ -36,11 +36,12 @@ class ChatroomListStore extends BaseStore {
                 return;
             }
             
-            // for(var i = 0 ; i < data.length ; i ++) {
-            //     if(data[i].profile.profile_image_url.length === 0) {
-            //         data[i].profile.profile_image_url = "/assets/imgs/profile_imageless.png";
-            //     }    
-            // }
+            for(var i = 0 ; i < data.length ; i ++) {
+                data[i] = this.transformResponse(data[i]);
+                // if(data[i].profile.profile_image_url.length === 0) {
+                //     data[i].profile.profile_image_url = "/assets/imgs/profile_imageless.png";
+                // }    
+            }
             
             this.data = data;
             this.emitChange();

@@ -96,7 +96,7 @@ export default class Profile extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="form-group blue">INTRODUCTION</label>
+                                <label className="form-group blue">INTRODUCE</label>
                                 <input value={this.state.me.resource_introduce} name="resource_introduce" onChange={this._handleInput.bind(this)} placeholder="紹介できる人を発信しましょう" />
                             </div>
 
@@ -112,7 +112,7 @@ export default class Profile extends React.Component{
 
                     <div className="halfPage-group">
                         <label>お住まいの地域</label><br/>
-                        <select value={this.state.me.place} name="place" onChange={this._handleInput.bind(this)}>
+                        <select className="dark-select" value={this.state.me.place} name="place" onChange={this._handleInput.bind(this)}>
                             {prefectures}
                         </select>
                     </div>
