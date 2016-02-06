@@ -13,6 +13,7 @@
 <script>
 var myProfile = <?= json_encode($loginedUserProfile) ?>;
 var facebookLoginUrl = <?= json_encode($facebookLoginUrl) ?>;
+var twitterLoginUrl = <?= json_encode($twitterLoginUrl) ?>;
 var prefectureList = <?= json_encode(Lang::get("location")) ?>;
 </script>
 @endsection

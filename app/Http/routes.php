@@ -21,7 +21,7 @@ Route::group(['prefix' => '/api/v1'], function () {
     Route::post('auth/fakelogin', 'Auth\AuthController@fakeLogin');
 
     Route::get('auth/fb/oauth2callback', 'Auth\AuthController@facebookOauth2Callback');
-    Route::get('auth/tw/oauth2callback', 'Auth\AuthController@twitterOauth2Callback');
+    Route::get('auth/tw/oauth2callback', 'Auth\AuthController@twitterOauthCallback');
 
     Route::group(['middleware' => 'auth'], function() {
 

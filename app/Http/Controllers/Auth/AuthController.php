@@ -89,6 +89,21 @@ class AuthController extends Controller
         return redirect("/");
     }
 
+    public function twitterOauthCallback(Request $request) {
+        if(!$request->has('oauth_token') || !$request->has('oauth_verifier')) {
+            return redirect("/login");
+        }
+
+        // get data from request
+        $token  = $request->get('oauth_token');
+        $verify = $request->get('oauth_verifier');
+
+        $profile = $this->auth->handleTwitterRedirectAndGetProfile($token, $verify);
+        var_dump($profile);
+
+        return;
+    }
+
     public function twitterOauth2Callback(Request $request) {
         if(!$request->has('code')) {
             return redirect("/login");
