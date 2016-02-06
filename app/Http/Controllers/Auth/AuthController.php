@@ -106,7 +106,7 @@ class AuthController extends Controller
         if(is_null($user)) {
             // Register account if there is not exists
             $profileImage = $this->oauth->downloadTwitterProfileImage($profile["profile_image_url"]);
-            $user = $this->auth->registerUser($profile["name"], null, null, null , null, $profile["id_str"], $profileImage);
+            $user = $this->auth->registerUser($profile["name"], null, null, \Cv\Model\Profile::GENDER_UNISEX , null, $profile["id_str"], $profileImage);
             $isNewUser = true;
         }
 
