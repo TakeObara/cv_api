@@ -92,10 +92,12 @@ select.dark-select {
 .orange {
     color: $orange;
     font-size: 80%;
+    letter-spacing: 0.1em;
 }
 .blue {
     color: $blue;
     font-size: 80%;
+    letter-spacing: 0.2em;
 }
 
 $header-height: 50px;
@@ -221,6 +223,10 @@ header {
         background-attachment: scroll;
     }
 
+    .icon{
+        margin-top:5%; 
+    }
+
     .halfPage-title {
         color: $gold-color;
         padding-top: 20px;
@@ -326,6 +332,7 @@ header {
     position: absolute;
 
     .chatroomTopbar {
+        display: block;
         background-color: black;
         color: white;
         padding: 5px 10px;
@@ -355,9 +362,9 @@ header {
             line-height: 1.5;
             color: white;
             font-size: 13px;
-            padding: 5px;
+            padding: 7px;
             border-radius: 5px;
-            margin: -23px 5px 5px;
+            margin: -23px 10px 15px;
 
             > img {
                 width: 30px;
@@ -422,11 +429,12 @@ header {
     }
 }
 
+
 .chatroomItem {
     display: block;
-    margin-top:20px;
-    margin-left:49px;
-    margin-right:49px;
+    margin-top:10px;
+    margin-left:7%;
+    margin-right:7%;
     width: 85%;
     background-color: #dbdbdb;
     color: #222;
@@ -456,6 +464,7 @@ header {
             vertical-align: middle;
         }
 
+
         .meta {
             > .metaItem {
                 display: block;
@@ -464,6 +473,12 @@ header {
         }
     }
 }
+
+.chatroomWI{
+        font-size: 12px;
+        line-height: 16px;
+}
+
 
 .userListPage {
     > .userItem {
@@ -571,6 +586,8 @@ header {
 
             .userDesc {
                 font-size: 60%;
+                padding: 2% 5%;
+
             }
         }
     }
@@ -605,7 +622,7 @@ header {
         .brandname {
             font-size: 60px;
             .blue {
-                color: #248dc1;        
+                color: #248dc1;
             }
         }
 
@@ -852,6 +869,8 @@ header {
         display: block;
         background-color: rgba(255,255,255,0.4);
         margin-bottom: 5px;
+        margin-right:7%; 
+        margin-left:7%;
 
         .item-label {
             position: relative;
@@ -898,6 +917,8 @@ header {
         width: 100%;
         background: rgba(0,0,0,0.3);
         position: relative;
+        margin-right:7%; 
+        margin-left:7%;
 
         .profileImg {
             margin: 10px;

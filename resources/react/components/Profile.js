@@ -101,7 +101,7 @@ export default class Profile extends React.Component{
                             </div>
 
                             <div className="form-group share clearfix">
-                                <a className="right btn-gray" target="_blank" href={"https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent("http://cvendor.jp")}><img src="/assets/imgs/ic_mice.png" /> 発信する</a>
+                                <a className="right btn-gray" target="_blank" href={"https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent("http://cvendor.jp")}><img src="/assets/imgs/ic_mice.png"　className="icon" /> 発信する</a>
                             </div>
                         </div>
                     </div>
