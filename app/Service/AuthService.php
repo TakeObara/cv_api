@@ -39,6 +39,10 @@ class AuthService {
         return User::where("facebook_id","=",$facebookId)->first();
     }
 
+    public function getUserByTwitterId($twitterId) {
+        return User::where("twitter_id","=",$twitterId)->first();
+    }
+
     public function getUserByEmail($email) {
         return User::where("email","=",$email)->first();
     }

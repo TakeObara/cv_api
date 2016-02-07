@@ -32,9 +32,12 @@ class AppController extends Controller
 
         $loginedUserProfile = null;    
         $facebookLoginUrl = null;
+        $twitterLoginUrl = null;
+
 
         if(is_null($me)) {
-            $facebookLoginUrl = $this->oauth->getAuthorizationUrl();
+            $facebookLoginUrl = $this->oauth->getFacebookAuthorizationUrl();
+            $twitterLoginUrl  = $this->oauth->getTwitterAuthorizationUrl();
             Session::put("userId",null);
         } else {
             $loginedUserProfile = $this->profile->getProfileByUserId($me->id)->toArray();    
@@ -44,7 +47,8 @@ class AppController extends Controller
         $this->viewParams = [
             'react' => $this->react,
             'loginedUserProfile' => $loginedUserProfile,
-            'facebookLoginUrl' => $facebookLoginUrl
+            'facebookLoginUrl'   => $facebookLoginUrl,
+            'twitterLoginUrl'    => $twitterLoginUrl,
         ];  
     }
 

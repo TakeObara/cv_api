@@ -610,8 +610,20 @@ header {
 
         .btn_group {
             text-align: center;
+            
             > * {
                 display: inline-block;
+            }
+
+            .btn_login {
+                
+                width: 300px;
+                margin-right: 20px;
+                text-align: center;
+                padding: 13px 0;
+                color: white;
+                border-radius: 7px;
+                box-shadow: 5px 5px rgb(10,34,64);
             }
         }
     }    
@@ -619,12 +631,9 @@ header {
 
 .btn_fb_login {
     background-color: #002f87;
-    width: 400px;
-    text-align: center;
-    padding: 13px 0;
-    color: white;
-    border-radius: 7px;
-    box-shadow: 5px 5px rgb(10,34,64);
+}
+.btn_tw_login {
+    background-color: #0071CE;
 }
 
 .infoPage {

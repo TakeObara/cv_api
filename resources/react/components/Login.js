@@ -75,7 +75,8 @@ export default class Login extends React.Component{
                     <p>まずは無料登録しましょう</p>
                     <br />
                     <div className="btn_group">
-                        <a className="btn_fb_login" href={facebookLoginUrl}>Facebookアカウントでログインする</a>
+                        <a className="btn_login btn_fb_login" href={facebookLoginUrl}>Facebookアカウントでログインする</a>
+                        <a className="btn_login btn_tw_login" href={twitterLoginUrl}>Twitterアカウントでログインする</a>
                     </div>
                 </div>
             </div>

@@ -231,7 +231,8 @@ export default class AppointmentCreate extends React.Component {
                         紹介料 <span>3000円</span>
                     </div>
                     <div className="form-group clearfix">
-                        <button type="submit" className="btn-submit">紹介料を支払う</button>
+                        // <button type="submit" className="btn-submit">紹介料を支払う</button>
+                        <a href="https://spike.cc/shop/hengliwei/products/b6mCOrIe">fsfsdfsd</a>
                     </div>
                 </form>
             </div>
