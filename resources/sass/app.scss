@@ -368,25 +368,63 @@ header {
     }
 
     .chatroomMessage {
+        padding: 20px;
         display: block;
         width: 100%;
-        height: calc(100% - 100px);
+        height: calc(100% - 140px);
+        box-sizing: border-box;
     }
 
     .messageItem {
 
+        width: 100%;
+
         img {
             display: inline-block;
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-top: 20px;
         }
 
+        $bubbleTriangleLength: 15px;
+
         p {
-            margin-left: 13px;
+            position: relative;
+            margin: 0 0 0 10px;
             color: black;
             display: inline-block;
             padding: 7px;
             background-color: white;
+            float: left;
+
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: -$bubbleTriangleLength;
+                left: 5px;
+                border-width: $bubbleTriangleLength $bubbleTriangleLength 0 0;
+                border-style: solid;
+                border-color: white transparent;
+                display: block;
+                width: 0;
+            }
+        }
+
+        &.toRight {
+            img, p{
+                float: right;
+            }
+
+            p {
+                margin-right: 10px;
+            }
+
+            p:after {
+                border-width: $bubbleTriangleLength 0 0 $bubbleTriangleLength;
+                left: auto;
+                right: 5px;
+            }
         }
     }
 
@@ -423,6 +461,7 @@ header {
 }
 
 .chatroomItem {
+    position: relative;
     display: block;
     margin-top:20px;
     margin-left:49px;
@@ -463,6 +502,21 @@ header {
             }            
         }
     }
+
+    .unreadBox {
+        $radius: 25px;
+        position: absolute;
+        right: 10px;
+        top: calc(50% - #{$radius / 2});
+        color: white;
+        display: block;
+        width: $radius;
+        height: $radius;
+        line-height: $radius;
+        border-radius: $radius;
+        background-color: #5fb4e5;
+        text-align: center; 
+    }    
 }
 
 .userListPage {

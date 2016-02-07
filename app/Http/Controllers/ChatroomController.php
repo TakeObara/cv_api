@@ -124,4 +124,13 @@ class ChatroomController extends Controller
         return response()->json([ "success" => true , "message" => $uploadedFile ]);
     
     }
+
+    public function markAsRead($chatroomId)
+    {
+        $me = $this->auth->getLoginedUser();
+        
+        $this->chatroom->markAsRead($me->id, $chatroomId);
+
+        return response()->json("",200);
+    }
 }

@@ -23,6 +23,20 @@ class ChatroomListAction {
             users: users,
         });
     }
+
+    markAsRead(chatroomId) {
+        AppDispatcher.dispatch({
+            type: ChatroomListConst.MARK_AS_READ,
+            id: chatroomId,
+        });
+    }
+
+    updateUnreadChatroomCount(chatroomId) {
+        AppDispatcher.dispatch({
+            type: ChatroomListConst.UPDATE_UNREAD_COUNT,
+            id: chatroomId,
+        });   
+    }
 }   
 
 export default new ChatroomListAction();

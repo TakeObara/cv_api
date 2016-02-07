@@ -10,7 +10,7 @@ export default class Message extends React.Component {
         var image = _msg.image.length <= 0 ? "/assets/imgs/profile_imageless.png" : _msg.image;
 
         return (
-            <div className="messageItem">
+            <div className={"messageItem clearfix "+(_msg.me ? "" : "toRight")}>
                 <img src={image} />
                 <p dangerouslySetInnerHTML={{__html: _msg.message}}></p>
             </div>

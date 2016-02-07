@@ -23,6 +23,7 @@ var ApiPrefix = '/api/v1',
     AppointmentConst = {
         LOAD_DATA: 'APPOINTMENT_LOAD_DATA',
         CREATE:    'APPOINTMENT_CREATE',
+        MARK_AS_READ: 'APPOINTMENT_MARK_AS_READ',
     },
 
     MessageConst = {
@@ -33,11 +34,13 @@ var ApiPrefix = '/api/v1',
     ChatroomListConst = {
         LOAD_DATA: 'CHATROOMLIST_LOAD_DATA',
         CREATE:    'CHATROOMLIST_CREATE',
+        MARK_AS_READ: 'CHATROOMLIST_MARK_AS_READ',
+        UPDATE_UNREAD_COUNT: 'CHATROOMLIST_UPDATE_UNREAD_COUNT',
     },
 
     ChatroomConst = {
         LOAD_DATA: 'CHATROOM_LOAD_DATA',
-        SPEAK:     'SPEAK',
+        SPEAK:     'CHATROOM_SPEAK',
     },
 
     ToastConst = {
@@ -45,8 +48,9 @@ var ApiPrefix = '/api/v1',
     },
 
     NotificationConst = {
-        LOAD_DATA: 'NOTIFICATION_LOAD_DATA',
-        CHAT:      'NOTIFICATION_CHAT',
+        LOAD_DATA:   'NOTIFICATION_LOAD_DATA',
+        CHAT:        'NOTIFICATION_CHAT',
+        UPDATE_PATH: 'NOTIFICATION_UPDATE_PATH',
 
         // server constant
         TYPE_MESSAGE       : 1,
