@@ -142,9 +142,11 @@ export default class Chatroom extends React.Component {
                         {list}
                     </div>
                     <div className="chatBox clearfix">
-                        <form onSubmit={this._onSubmit.bind(this)} >
-                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
-                            {button}
+                        <form onSubmit={this._onSubmit.bind(this)}  className="btn-clip">
+
+                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)}
+                            <img src="/assets/imgs/ic_clip.png" />
+
                         </form>
                     </div>
                 </div>
