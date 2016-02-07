@@ -25,6 +25,7 @@ export default class AppointmentCreate extends React.Component {
                 meeting_time_time: this.transformToTimeValue(now.getHours()),
             },
             opponent: {profile: {}},
+            showExplain: false,
         };
 
         this._handleInput = this._handleInput.bind(this);
@@ -106,6 +107,7 @@ export default class AppointmentCreate extends React.Component {
     _questionMarkClick(e) {
         e.preventDefault();
 
+        this.setState({showExplain: true});
     }
 
     months() {
@@ -175,8 +177,13 @@ export default class AppointmentCreate extends React.Component {
 
     getMeetingTime() {
         var appointment = this.state.appointment;
-        console.log(appointment);
         return appointment.meeting_time_date + " " + appointment.meeting_time_time;
+    }
+
+    _closeExplainGroup(e) {
+        e.preventDefault();
+
+        this.setState({showExplain: false});
     }
 
     render() {
@@ -185,11 +192,20 @@ export default class AppointmentCreate extends React.Component {
         var me = UserStore.getMyProfile();
         var opponent = this.state.opponent;
 
+        var explainGroup = null;
+        if(this.state.showExplain) {
+            explainGroup = (<div className="explain-group">
+                    <button className="cross" onClick={this._closeExplainGroup.bind(this)}><img src="/assets/imgs/ic_plus_white.png" /></button>
+                    <img className="explain-bg" src="/assets/imgs/explain.gif" />
+                </div>);
+        }
+
         return(
             
             <div className="content appointmentCreatePage">
                 <Link to={"/chatroom/" + this.props.params.id} className="halfPage-title"> ＜ APPOINTMENT</Link>
                 <form className="fence" onSubmit={this._onSubmit.bind(this)}>
+                    {explainGroup}
                     <div className="form-group guest">
                         <label className="clearfix">
                             <span>GUEST </span>

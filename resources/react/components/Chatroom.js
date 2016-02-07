@@ -149,7 +149,7 @@ export default class Chatroom extends React.Component {
                     <div className="chatBox clearfix">
                         <form onSubmit={this._onSubmit.bind(this)}  className="btn-clip">
 
-                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)}
+                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
                             <img src="/assets/imgs/ic_clip.png" />
 
                         </form>
