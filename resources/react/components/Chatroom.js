@@ -133,13 +133,13 @@ export default class Chatroom extends React.Component {
                 <div className="chatroom content">
                     <div className="chatroomHeader">
                         <div className="chatroomTopbar">
-                            <span className="orange">求:</span> {opponent.profile.resource_introduce}  <span className="blue">出:</span> {opponent.profile.resource_needed}
+                            <span className="orange">W:</span> {opponent.profile.resource_introduce}  <span className="blue">I:</span> {opponent.profile.resource_needed}
                         </div>
                         <div className="chatroomTitle clearfix">
                             <Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link>
                             <Link to={window.location.pathname + "/appointment"} className="btn-appointment right">
                                 <img src="/assets/imgs/ic_note_white.png" /><br/>
-                                <span>契約を記入する</span>
+                                <span>契約書を記入する</span>
                             </Link>
                         </div>
                     </div>
@@ -147,9 +147,11 @@ export default class Chatroom extends React.Component {
                         {list}
                     </div>
                     <div className="chatBox clearfix">
-                        <form onSubmit={this._onSubmit.bind(this)} >
-                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
-                            {button}
+                        <form onSubmit={this._onSubmit.bind(this)}  className="btn-clip">
+
+                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)}
+                            <img src="/assets/imgs/ic_clip.png" />
+
                         </form>
                     </div>
                 </div>
