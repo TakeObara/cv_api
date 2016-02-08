@@ -92,10 +92,12 @@ select.dark-select {
 .orange {
     color: $orange;
     font-size: 80%;
+    letter-spacing: 0.1em;
 }
 .blue {
     color: $blue;
     font-size: 80%;
+    letter-spacing: 0.2em;
 }
 
 $header-height: 50px;
@@ -221,6 +223,10 @@ header {
         background-attachment: scroll;
     }
 
+    .icon{
+        margin-top:5%; 
+    }
+
     .halfPage-title {
         color: $gold-color;
         padding-top: 20px;
@@ -326,6 +332,7 @@ header {
     position: absolute;
 
     .chatroomTopbar {
+        display: block;
         background-color: black;
         color: white;
         padding: 5px 10px;
@@ -355,38 +362,94 @@ header {
             line-height: 1.5;
             color: white;
             font-size: 13px;
-            padding: 5px;
+            padding: 7px;
             border-radius: 5px;
-            margin: -23px 5px 5px;
+            margin: -23px 10px 15px;
 
             > img {
                 width: 30px;
                 display: inline-block;
             }
-        }
 
+        }
     }
 
+    .btn-clip{
+        display: block;
+        width: 30px;
+        background-color: #99ccff;
+        line-height: 1.5;
+        color: white;
+        font-size: 13px;
+        padding: 7px;
+        border-radius: 5px;
+        margin: 0;
+
+        > img {
+            width: 15px;
+            display: inline-block;
+        }
+    }
+
+
     .chatroomMessage {
+        padding: 20px;
         display: block;
         width: 100%;
-        height: calc(100% - 100px);
+        height: calc(100% - 140px);
+        box-sizing: border-box;
     }
 
     .messageItem {
 
+        width: 100%;
+
         img {
             display: inline-block;
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-top: 20px;
         }
 
+        $bubbleTriangleLength: 15px;
+
         p {
-            margin-left: 13px;
+            position: relative;
+            margin: 0 0 0 10px;
             color: black;
             display: inline-block;
             padding: 7px;
             background-color: white;
+            float: left;
+
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: -$bubbleTriangleLength;
+                left: 5px;
+                border-width: $bubbleTriangleLength $bubbleTriangleLength 0 0;
+                border-style: solid;
+                border-color: white transparent;
+                display: block;
+                width: 0;
+            }
+        }
+
+        &.toRight {
+            img, p{
+                float: right;
+            }
+
+            p {
+                margin-right: 10px;
+            }
+
+            p:after {
+                border-width: $bubbleTriangleLength 0 0 $bubbleTriangleLength;
+                left: auto;
+                right: 5px;
+            }
         }
     }
 
@@ -422,11 +485,13 @@ header {
     }
 }
 
+
 .chatroomItem {
+    position: relative;
     display: block;
-    margin-top:20px;
-    margin-left:49px;
-    margin-right:49px;
+    margin-top:10px;
+    margin-left:7%;
+    margin-right:7%;
     width: 85%;
     background-color: #dbdbdb;
     color: #222;
@@ -456,6 +521,7 @@ header {
             vertical-align: middle;
         }
 
+
         .meta {
             > .metaItem {
                 display: block;
@@ -463,7 +529,28 @@ header {
             }            
         }
     }
+
+    .unreadBox {
+        $radius: 25px;
+        position: absolute;
+        right: 10px;
+        top: calc(50% - #{$radius / 2});
+        color: white;
+        display: block;
+        width: $radius;
+        height: $radius;
+        line-height: $radius;
+        border-radius: $radius;
+        background-color: #5fb4e5;
+        text-align: center; 
+    }    
 }
+
+.chatroomWI{
+        font-size: 12px;
+        line-height: 16px;
+}
+
 
 .userListPage {
     > .userItem {
@@ -571,6 +658,8 @@ header {
 
             .userDesc {
                 font-size: 60%;
+                padding: 2% 5%;
+
             }
         }
     }
@@ -605,7 +694,7 @@ header {
         .brandname {
             font-size: 60px;
             .blue {
-                color: #248dc1;        
+                color: #248dc1;
             }
         }
 
@@ -767,6 +856,7 @@ header {
 
 
     .fence {
+        position: relative;
         border: 1px solid white;
         padding: 0 20px 20px;
         margin-top: 20px;
@@ -780,6 +870,30 @@ header {
         margin-top: 200px;
         span {
             margin-left: 30px;
+        }
+    }
+
+    .explain-group {
+        position: absolute;
+        background-color: rgba(0,0,0,0.9);
+        width: calc(100% - 40px);
+        height: 100%;
+
+        button {
+            width: 40px;
+            height: 40px;
+            float: right;
+            margin: 20px 0;
+
+            > img {
+                transform: rotate(45deg);
+                width: 100%;
+                display: block;
+            }
+        }
+
+        .explain-bg {
+            width: 100%;
         }
     }
 
@@ -867,6 +981,8 @@ header {
         display: block;
         background-color: rgba(255,255,255,0.4);
         margin-bottom: 5px;
+        margin-right:7%; 
+        margin-left:7%;
 
         .item-label {
             position: relative;
@@ -913,6 +1029,8 @@ header {
         width: 100%;
         background: rgba(0,0,0,0.3);
         position: relative;
+        margin-right:7%; 
+        margin-left:7%;
 
         .profileImg {
             margin: 10px;

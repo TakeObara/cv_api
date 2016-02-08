@@ -25,6 +25,11 @@ class AppointmentAction {
 
     }
     
+    markAsRead() {
+        AppDispatcher.dispatch({
+            type: AppointmentConst.MARK_AS_READ,
+        });
+    }
 
 }   
 

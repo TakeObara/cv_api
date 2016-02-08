@@ -20,6 +20,8 @@ class AppController extends Controller
     public function __construct(
         \Cv\Service\AuthService $auth,
         \Cv\Service\ProfileService $profile,
+        \Cv\Service\ChatroomService $chatroom,
+        \Cv\Service\AppointmentService $appointment,
         \Cv\Service\OAuthService $oauth
     ) 
     {
@@ -27,12 +29,15 @@ class AppController extends Controller
         $this->auth  = $auth;
         $this->profile = $profile;
         $this->oauth   = $oauth;
+        $this->chatroom = $chatroom;
+        $this->appointment = $appointment;
 
         $me = $this->auth->getLoginedUser();
 
         $loginedUserProfile = null;    
         $facebookLoginUrl = null;
         $twitterLoginUrl = null;
+        $myNotification = null;
 
 
         if(is_null($me)) {
@@ -41,6 +46,11 @@ class AppController extends Controller
             Session::put("userId",null);
         } else {
             $loginedUserProfile = $this->profile->getProfileByUserId($me->id)->toArray();    
+            $myNotification = [
+                "chatroom_unread_count" => $this->chatroom->unreadCount($me->id),
+                "appointment_unread_count" => $this->appointment->unreadCount($me->id),
+
+            ];
             Session::put("userId",$me->id);
         }
 
@@ -49,6 +59,7 @@ class AppController extends Controller
             'loginedUserProfile' => $loginedUserProfile,
             'facebookLoginUrl'   => $facebookLoginUrl,
             'twitterLoginUrl'    => $twitterLoginUrl,
+            'myNotification'     => $myNotification,
         ];  
     }
 

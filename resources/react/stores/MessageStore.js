@@ -1,4 +1,6 @@
 
+import UserStore from "./UserStore"
+
 class MessageStore {
     /**
      * constructor
@@ -10,7 +12,10 @@ class MessageStore {
 
     instance(user, message) {
 
+        var myId = UserStore.getMyProfile().id;
+
         return {
+            me: myId === user.user_id,
             uname: user.name,
             image: user.profile_image_url,
             message: message,

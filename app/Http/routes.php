@@ -14,7 +14,7 @@
 Route::group(['prefix' => '/api/v1'], function () {
 
     Route::get('auth/logout', 'Auth\AuthController@logout');
-    Route::post('auth/login', 'Auth\AuthController@login');
+    Route::get('auth/login', 'Auth\AuthController@login');
     Route::post('auth/register', 'Auth\AuthController@register');
 
     // for developing purpose
@@ -27,12 +27,19 @@ Route::group(['prefix' => '/api/v1'], function () {
 
         Route::get('profile/me', 'ProfileController@loginedInfo');
         Route::post('profile/me/upload', 'ProfileController@upload');
+
         Route::resource('profile', 'ProfileController', ['only' => ['index','show','update']]);    
 
         Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update','destroy']]);
+
+        // appointment
+        Route::put('appointment/markAsRead', 'AppointmentController@markAsRead');
         Route::resource('appointment', 'AppointmentController');
+        
+
         Route::resource('chatroom', 'ChatroomController', ['except' => 'create']);
         Route::post('chatroom/{id}/upload', 'ChatroomController@upload');
+        Route::put('chatroom/{id}/markAsRead', 'ChatroomController@markAsRead');
 
         Route::get('notification', 'NotificationController@index');
     });

@@ -8,6 +8,10 @@ class Chatroom extends Model
 {
 
 	protected $table = "chatrooms";
+
+    public function chatroomUser() {
+        return $this->hasOne('Cv\Model\ChatroomUser');
+    }
     
     public function message(){
     	return $this->hasMany('Cv\Model\Message');

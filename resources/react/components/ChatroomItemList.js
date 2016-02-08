@@ -24,16 +24,18 @@ export default class ChatroomItemList extends React.Component {
         }
 
         var path = "/chatroom/"+chatroom.id;
+        var unreadBox = chatroom.unread_count > 0 ? (<div className="unreadBox">{chatroom.unread_count}</div>) : null;
 
         return (
             <Link to={path} className="chatroomItem clearfix">
                 <img className="chatroomImg" src={opponentProfile.profile_image_url} />
                 <div className="chatroomInfo">
                     <div className="opponentName">{opponentProfile.name}</div>
-                    <div className="meta">
+                    <div className="meta chatroomWI">
                         <div className="metaItem"><span className="orange">W</span>: {opponentProfile.resource_introduce} </div>
-                        <div className="metaItem"><span className="blue">I</span>: {opponentProfile.resource_needed}</div>
+                        <div className="metaItem"><span className="blue">I&nbsp;</span>: {opponentProfile.resource_needed}</div>
                     </div>
+                    {unreadBox}
                 </div>
             </Link>
         );

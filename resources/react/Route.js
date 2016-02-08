@@ -5,7 +5,7 @@ import Chatroom from "./components/Chatroom"
 import Favourite from "./components/Favourite" 
 import AppointmentDetail from "./components/AppointmentDetail"
 import AppointmentList from "./components/AppointmentList" 
-import AppointmentCreate from "./components/AppointmentCreate"
+import AppointmentRegister from "./components/AppointmentRegister"
 import Info from "./components/Info"
 import Login from "./components/Login"
 import RequireAuth from "./middleware/RequireAuth"
@@ -29,7 +29,7 @@ var routesMap = (
             <Route path="chatroom"    onEnter={RequireAuth} >
                 <IndexRoute  component={ChatroomList} />
                 <Route path=":id" component={Chatroom}>
-                    <Route path="appointment" component={AppointmentCreate} />
+                    <Route path="appointment" component={AppointmentRegister} />
                 </Route>
             </Route>
             <Route path="appointment" onEnter={RequireAuth}>

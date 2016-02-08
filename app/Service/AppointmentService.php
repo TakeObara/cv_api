@@ -54,6 +54,23 @@ class AppointmentService {
         return $appointment;
     }
 
+    public function unreadCount($userId) 
+    {
+        return AppointmentUser::select("user_id")
+            ->where("user_id","=",$userId)
+            ->where("read","=",false)
+            ->count()
+        ;
+    }
+
+    public function markAsRead($userId) 
+    {
+        foreach (AppointmentUser::where("user_id","=",$userId)->get() as $a) {
+            $a->read = true;
+            $a->save();
+        }
+    }
+
 
     public function create($userId, $hostId, $guest,$place, $meetingTime){
 
@@ -70,16 +87,18 @@ class AppointmentService {
 
         // create appointmetUser
         foreach ([$userId, $hostId] as $singleUserId) {
-            $appoinmentUser = new AppointmentUser;
-            $appoinmentUser->appointment_id = $appointment->id;
-            $appoinmentUser->user_id = $singleUserId;
+            $appointmentUser = new AppointmentUser;
+            $appointmentUser->appointment_id = $appointment->id;
+            $appointmentUser->user_id = $singleUserId;
             if($singleUserId === $hostId) {
-                $appoinmentUser->answer  = true;
+                $appointmentUser->answer  = true;
+                $appointmentUser->read    = true;
             }else {
-                $appoinmentUser->answer  = false;    
+                $appointmentUser->answer  = false;    
+                $appointmentUser->read    = false;
             }
             
-            $appoinmentUser->save();
+            $appointmentUser->save();
         }
 
         return $appointment;

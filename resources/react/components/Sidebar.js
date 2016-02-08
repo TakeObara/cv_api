@@ -1,9 +1,36 @@
 'use strict';
 
 import NotificationBox from './NotificationBox'
+import NotificationStore from '../stores/NotificationStore'
+
 var Link = ReactRouter.Link;
 
 export default class Sidebar extends React.Component {
+
+    constructor() {
+        super();
+
+        this._onNotify = this._onNotify.bind(this);
+    }
+
+    componentDidMount() {
+        
+        NotificationStore.addNotifiedListener(this._onNotify)
+    
+    }
+
+    componentWillUnmount() {
+        NotificationStore.removeNotifiedListener(this._onNotify);
+    }
+
+    _onNotify(e) {
+        if(e.currentPath === window.location.pathname) {
+            return;
+        }
+
+        this.setState({});
+    }
+
 
     render() {
 
@@ -12,8 +39,8 @@ export default class Sidebar extends React.Component {
             'backgroundColor': 'white'
         };
 
-        var noticeCount = 10;
-        var noticeBox = (<NotificationBox count={noticeCount}/>);
+        var chatUnreadCountBox = (<NotificationBox count={ NotificationStore.getUnreadChatCount() }/>);
+        var appointmentUnreadCountBox = (<NotificationBox count={ NotificationStore.getUnreadAppointmentCount() }/>);
 
         return (
 
@@ -26,11 +53,12 @@ export default class Sidebar extends React.Component {
                     </Link>
                 </li>
                 <li>
-                    {noticeBox}
+                    {chatUnreadCountBox}
                     <Link to="/chatroom"    activeStyle={activeStyle} ><img src="/assets/imgs/ic_bubble.png" />
                     </Link>
                 </li>
                 <li>
+                    {appointmentUnreadCountBox}
                     <Link to="/appointment" activeStyle={activeStyle} ><img src="/assets/imgs/ic_memo.png" />
                     </Link>
                 </li>
