@@ -46,7 +46,12 @@ class AuthController extends Controller
 
     public function login(Request $request){
         $data = $request->all();
-        return $this->auth->login($data['email'], $data['password']);
+        $user = $this->auth->login($data['email'], $data['password']);
+        if(is_null($user)) {
+            return "fail";
+        }
+
+        return "success";
     }
 
     public function logout() {

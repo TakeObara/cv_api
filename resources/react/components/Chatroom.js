@@ -1,9 +1,9 @@
 
 import ChatroomStore from "../stores/ChatroomStore"
 import ChatroomAction from "../actions/ChatroomAction"
+import ChatroomListAction from "../actions/ChatroomListAction"
 import MessageListStore from "../stores/MessageListStore"
 import Message from "./Message"
-
 
 import NotificationAction from "../actions/NotificationAction"
 import NotificationStore from "../stores/NotificationStore"
@@ -27,6 +27,7 @@ export default class Chatroom extends React.Component {
     }
 
     componentDidMount() {
+        
         NotificationStore.addNotifiedListener(this._onMessage)
         ChatroomStore.addChangeListener(this._onChange);
 
@@ -57,11 +58,13 @@ export default class Chatroom extends React.Component {
     }
 
     componentWillUnmount() {
+        NotificationStore.removeNotifiedListener(this._onMessage);
         ChatroomStore.removeChangeListener(this._onChange);
     }
 
 
     loadChatroom() {
+        NotificationAction.updatePath();
         ChatroomAction.loadData(this.props.params.id, true);
     }
 
@@ -72,6 +75,8 @@ export default class Chatroom extends React.Component {
             chatroom: ChatroomStore.get(this.props.params.id),
             opponent: ChatroomStore.getOpponent(this.props.params.id),
         });
+
+        ChatroomListAction.markAsRead(this.props.params.id);
     }
 
     _chatBoxOnChange(e) {
@@ -84,7 +89,6 @@ export default class Chatroom extends React.Component {
 
         var chatroomId = this.state.chatroom.id;
         var message = this.state.myText.replace(/</g,"&lt;").replace(/>/g,"&gt;");
-
         NotificationAction.chat( chatroomId, message);
 
         this.setState({myText: ""});
@@ -128,13 +132,13 @@ export default class Chatroom extends React.Component {
                 <div className="chatroom content">
                     <div className="chatroomHeader">
                         <div className="chatroomTopbar">
-                            <span className="orange">求:</span> {opponent.profile.resource_introduce}  <span className="blue">出:</span> {opponent.profile.resource_needed}
+                            <span className="orange">W:</span> {opponent.profile.resource_introduce}  <span className="blue">I:</span> {opponent.profile.resource_needed}
                         </div>
                         <div className="chatroomTitle clearfix">
                             <Link to="/chatroom"> ＜ {this.state.chatroom.title}</Link>
                             <Link to={window.location.pathname + "/appointment"} className="btn-appointment right">
                                 <img src="/assets/imgs/ic_note_white.png" /><br/>
-                                <span>契約を記入する</span>
+                                <span>契約書を記入する</span>
                             </Link>
                         </div>
                     </div>
@@ -142,9 +146,13 @@ export default class Chatroom extends React.Component {
                         {list}
                     </div>
                     <div className="chatBox clearfix">
-                        <form onSubmit={this._onSubmit.bind(this)} >
+                        <form onSubmit={this._onSubmit.bind(this)}>
+
                             <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
-                            {button}
+
+                            <button type="submit" className="btn-clip">
+                                <img src="/assets/imgs/ic_clip.png" />
+                            </button>
                         </form>
                     </div>
                 </div>

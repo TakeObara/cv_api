@@ -23,6 +23,12 @@ class NotificationAction {
         });
     }
 
+    updatePath() {
+        AppDispatcher.dispatch({
+            type: NotificationConst.UPDATE_PATH,
+        });   
+    }
+
 }   
 
 export default new NotificationAction();

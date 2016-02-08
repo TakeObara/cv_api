@@ -22,7 +22,7 @@ class Notification extends Model
     }
 
     public function targets() {
-        return $this->belongsTo('Cv\Model\User','id','target_user_id');
+        return $this->belongsTo('Cv\Model\Profile','target_user_id','user_id');
     }
 
 }

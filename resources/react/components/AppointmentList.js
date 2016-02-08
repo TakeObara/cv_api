@@ -30,6 +30,9 @@ export default class AppointmentList extends React.Component {
     }
 
     _onChange() {
+
+        AppointmentAction.markAsRead();
+
         var _state = this.state;
         _state.list = AppointmentStore.getAll();
         this.setState(_state);

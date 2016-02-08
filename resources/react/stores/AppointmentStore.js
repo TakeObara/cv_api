@@ -2,6 +2,8 @@ import { AppointmentConst, ApiPrefix } from "../Constant"
 import AppDispatcher from "../Dispatcher"
 import BaseStore from "./BaseStore"
 
+import NotificationStore from "./NotificationStore"
+
 class AppointmentStore extends BaseStore {
     /**
      * constructor
@@ -18,6 +20,9 @@ class AppointmentStore extends BaseStore {
                 break;
                 case AppointmentConst.CREATE:
                     this.create(action.formData);
+                break;
+                case AppointmentConst.MARK_AS_READ:
+                    this.markAsRead();
                 break;
             }
         });
@@ -93,6 +98,13 @@ class AppointmentStore extends BaseStore {
     get(id) {
         var dummyData = {id:0,host: {}, opponent: {}};
         return this.appointment[id] || dummyData;
+    }
+
+    markAsRead() {
+        
+        NotificationStore.updateAppointmentUnreadCount();
+
+        this.ajax("put", ApiPrefix + "/appointment/markAsRead",() => {});
     }
 
 }
