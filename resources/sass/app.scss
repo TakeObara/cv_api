@@ -1097,5 +1097,30 @@ header {
 }
 
 .tutorialPage{
+
+    width: 100%;
+    height: 100%;
+    position: relative;
     
+    #step {
+        width: 100%;
+    }
+
+    .leftArrow {
+        position: absolute;
+        top: 350px;
+        left: 640px;
+    }
+
+    .point {
+        position: absolute;
+        top: 380px;
+        left: 730px; 
+    }
+
+    .rightArrow {
+        position: absolute;
+        top: 350px;
+        left: 780px;
+    }
 }
