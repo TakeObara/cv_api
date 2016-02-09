@@ -14,7 +14,7 @@
 Route::group(['prefix' => '/api/v1'], function () {
 
     Route::get('auth/logout', 'Auth\AuthController@logout');
-    Route::get('auth/login', 'Auth\AuthController@login');
+    Route::post('auth/login', 'Auth\AuthController@login');
     Route::post('auth/register', 'Auth\AuthController@register');
 
     // for developing purpose
