@@ -295,29 +295,57 @@ header {
             }
             .profileMeta {
                 float: left;
-                margin: 0 15px;
-                max-width: calc(100% - 130px);
+                margin: 0;
+                width: calc(100% - 100px);
 
                 > .profileDesc {
                     line-height: 15px;
                     font-size: 70%;
                 }
+
+                p {
+                    padding-left: 15px;
+                    margin: 8px 0;
+
+                    &.profileWanted, &.profileIntroduce {
+                        border: 2px solid;
+                        margin: 0;
+                    }
+
+                    &.profileWanted {
+                        border-color: $orange;
+                        .label {
+                            color: $orange;
+                        }
+                    }
+
+                    &.profileIntroduce {
+                        border-color: $blue;
+                        .label {
+                            color: $blue;
+                        }
+                    } 
+                }
             }
 
-            .favouriteRemove {
+            .favouriteBtn {
                 position: absolute;
                 top: 0;
                 right: 0;
+                display: block;
+                height: 30px;
+                width: 30px;
                 
                 &:hover {
                     cursor: pointer;
                 }
             }
 
-            .cross {
-                display: block;
-                height: 30px;
-                width: 30px;
+            .favouriteSpeak {
+                right: 40px;   
+            }
+
+            .favouriteRemove {
                 transform: rotate(45deg);
             }
         }
@@ -622,6 +650,12 @@ header {
         > .userMeta {
             text-align: center;
 
+            .userPlace {
+                text-align: left;
+                padding: 5px 0 0 15px;
+                font-size: 12px;
+            }
+
             .userName {
                 margin-top: 5px;
             }
@@ -840,6 +874,10 @@ header {
 
         &.success {
             background-color: #51a351;
+        }
+
+        &.error {
+            background-color: #bd362f;
         }
 
         &:hover {
@@ -1097,6 +1135,27 @@ header {
     }
 }
 
+.contactForm.page-content {
+    width: calc(100% - 20px);
+
+    textarea {
+        color: black;
+        background-color: white;
+    }
+
+    button {
+        float: right;
+        background-color: #009bdf;
+        color: white;
+        width: 130px;
+        text-align: center;
+        padding: 7px 0;
+        margin-top: 7px;
+        font-size: 15px;
+    }
+}
+
 .tutorialPage{
     
 }
+

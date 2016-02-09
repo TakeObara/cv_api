@@ -42,6 +42,8 @@ Route::group(['prefix' => '/api/v1'], function () {
         Route::put('chatroom/{id}/markAsRead', 'ChatroomController@markAsRead');
 
         Route::get('notification', 'NotificationController@index');
+
+        Route::post('contact', 'ContactController@send');
     });
     
 });

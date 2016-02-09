@@ -56,6 +56,10 @@ var ApiPrefix = '/api/v1',
         TYPE_MESSAGE       : 1,
         TYPE_APPOINTMENT   : 2,
         TYPE_SYSTEM        : 3,
+    },
+
+    ContactConst = {
+        SEND:      'CONTACT_SEND',
     }
 ;
 
@@ -69,5 +73,6 @@ export {
     ChatroomListConst, 
     ChatroomConst, 
     ToastConst, 
-    NotificationConst
+    NotificationConst,
+    ContactConst
 };
