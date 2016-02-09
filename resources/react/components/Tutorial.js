@@ -26,7 +26,7 @@ export default class Tutorial extends React.Component {
     }
 
     frontClick() {
-        if(this.count !== 4) this.count++;
+        if(this.count !== this.imgs.length) this.count++;
         this._setImages(this.count);
     }
 
