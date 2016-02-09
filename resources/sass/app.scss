@@ -295,29 +295,57 @@ header {
             }
             .profileMeta {
                 float: left;
-                margin: 0 15px;
-                max-width: calc(100% - 130px);
+                margin: 0;
+                width: calc(100% - 100px);
 
                 > .profileDesc {
                     line-height: 15px;
                     font-size: 70%;
                 }
+
+                p {
+                    padding-left: 15px;
+                    margin: 8px 0;
+
+                    &.profileWanted, &.profileIntroduce {
+                        border: 2px solid;
+                        margin: 0;
+                    }
+
+                    &.profileWanted {
+                        border-color: $orange;
+                        .label {
+                            color: $orange;
+                        }
+                    }
+
+                    &.profileIntroduce {
+                        border-color: $blue;
+                        .label {
+                            color: $blue;
+                        }
+                    } 
+                }
             }
 
-            .favouriteRemove {
+            .favouriteBtn {
                 position: absolute;
                 top: 0;
                 right: 0;
+                display: block;
+                height: 30px;
+                width: 30px;
                 
                 &:hover {
                     cursor: pointer;
                 }
             }
 
-            .cross {
-                display: block;
-                height: 30px;
-                width: 30px;
+            .favouriteSpeak {
+                right: 40px;   
+            }
+
+            .favouriteRemove {
                 transform: rotate(45deg);
             }
         }
@@ -371,46 +399,85 @@ header {
                 display: inline-block;
             }
 
-
+        }
     }
 
     .btn-clip{
         display: block;
-        width: 20px;
+        width: 30px;
         background-color: #99ccff;
         line-height: 1.5;
         color: white;
         font-size: 13px;
         padding: 7px;
         border-radius: 5px;
-        margin: -23px 10px 15px;
+        margin: 0;
 
         > img {
-                width: 15px;
-                display: inline-block;
-            }
+            width: 15px;
+            display: inline-block;
+        }
+    }
 
 
     .chatroomMessage {
+        padding: 20px;
         display: block;
         width: 100%;
-        height: calc(100% - 100px);
+        height: calc(100% - 140px);
+        box-sizing: border-box;
     }
 
     .messageItem {
 
+        width: 100%;
+
         img {
             display: inline-block;
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-top: 20px;
         }
 
+        $bubbleTriangleLength: 15px;
+
         p {
-            margin-left: 13px;
+            position: relative;
+            margin: 0 0 0 10px;
             color: black;
             display: inline-block;
             padding: 7px;
             background-color: white;
+            float: left;
+
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: -$bubbleTriangleLength;
+                left: 5px;
+                border-width: $bubbleTriangleLength $bubbleTriangleLength 0 0;
+                border-style: solid;
+                border-color: white transparent;
+                display: block;
+                width: 0;
+            }
+        }
+
+        &.toRight {
+            img, p{
+                float: right;
+            }
+
+            p {
+                margin-right: 10px;
+            }
+
+            p:after {
+                border-width: $bubbleTriangleLength 0 0 $bubbleTriangleLength;
+                left: auto;
+                right: 5px;
+            }
         }
     }
 
@@ -448,6 +515,7 @@ header {
 
 
 .chatroomItem {
+    position: relative;
     display: block;
     margin-top:10px;
     margin-left:7%;
@@ -485,10 +553,24 @@ header {
         .meta {
             > .metaItem {
                 display: block;
-                
             }            
         }
     }
+
+    .unreadBox {
+        $radius: 25px;
+        position: absolute;
+        right: 10px;
+        top: calc(50% - #{$radius / 2});
+        color: white;
+        display: block;
+        width: $radius;
+        height: $radius;
+        line-height: $radius;
+        border-radius: $radius;
+        background-color: #5fb4e5;
+        text-align: center; 
+    }    
 }
 
 .chatroomWI{
@@ -566,6 +648,12 @@ header {
 
         > .userMeta {
             text-align: center;
+
+            .userPlace {
+                text-align: left;
+                padding: 5px 0 0 15px;
+                font-size: 12px;
+            }
 
             .userName {
                 margin-top: 5px;
@@ -645,8 +733,20 @@ header {
 
         .btn_group {
             text-align: center;
+            
             > * {
                 display: inline-block;
+            }
+
+            .btn_login {
+                
+                width: 300px;
+                margin-right: 20px;
+                text-align: center;
+                padding: 13px 0;
+                color: white;
+                border-radius: 7px;
+                box-shadow: 5px 5px rgb(10,34,64);
             }
         }
     }    
@@ -654,12 +754,9 @@ header {
 
 .btn_fb_login {
     background-color: #002f87;
-    width: 400px;
-    text-align: center;
-    padding: 13px 0;
-    color: white;
-    border-radius: 7px;
-    box-shadow: 5px 5px rgb(10,34,64);
+}
+.btn_tw_login {
+    background-color: #0071CE;
 }
 
 .infoPage {
@@ -721,6 +818,12 @@ header {
         }
     }
 
+    .dark-select {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: 0;
+        width: 80%;
+    }
+
     .isPublic {
         color: white;
         margin-top: 15px;
@@ -772,6 +875,10 @@ header {
             background-color: #51a351;
         }
 
+        &.error {
+            background-color: #bd362f;
+        }
+
         &:hover {
             cursor: pointer;
         }
@@ -786,6 +893,7 @@ header {
 
 
     .fence {
+        position: relative;
         border: 1px solid white;
         padding: 0 20px 20px;
         margin-top: 20px;
@@ -799,6 +907,30 @@ header {
         margin-top: 200px;
         span {
             margin-left: 30px;
+        }
+    }
+
+    .explain-group {
+        position: absolute;
+        background-color: rgba(0,0,0,0.9);
+        width: calc(100% - 40px);
+        height: 100%;
+
+        button {
+            width: 40px;
+            height: 40px;
+            float: right;
+            margin: 20px 0;
+
+            > img {
+                transform: rotate(45deg);
+                width: 100%;
+                display: block;
+            }
+        }
+
+        .explain-bg {
+            width: 100%;
         }
     }
 
@@ -964,6 +1096,65 @@ header {
     }
 }
 
+.appointDetail {
+    margin-left: 20px;
+
+    .col-2, .col-1 {
+        margin-top: 20px;        
+    }
+
+    .col-2 {
+        float: left;
+        width: calc(50% - 20px); 
+        margin-right: 20px;
+
+    }
+    .col-1 {
+        float: left;
+        width: calc(100% - 20px);
+        margin-right: 20px;
+    }
+
+    .bg-gray {
+        background-color: rgba(255,255,255,0.3);
+        padding: 10px;
+    }
+
+    .appointFund {
+        margin-top: 40px;
+        text-align: center;
+        margin-left: -20px;
+
+        > * {
+            margin: 0;
+        }
+        .large {
+            font-size: 25px;
+        }
+    }
+}
+
+.contactForm.page-content {
+    width: calc(100% - 20px);
+
+    textarea {
+        color: black;
+        background-color: white;
+    }
+
+    button {
+        float: right;
+        background-color: #009bdf;
+        color: white;
+        width: 130px;
+        text-align: center;
+        padding: 7px 0;
+        margin-top: 7px;
+        font-size: 15px;
+    }
+}
+
 .tutorialPage{
     
 }
+

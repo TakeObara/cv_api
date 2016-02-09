@@ -3,6 +3,7 @@ import AppDispatcher from "../Dispatcher"
 import BaseStore from "./BaseStore"
 import MessageStore from "./MessageStore"
 import UserStore from "./UserStore"
+import NotificationStore from "./NotificationStore";
 
 class ChatroomStore extends BaseStore {
     /**
@@ -68,6 +69,7 @@ class ChatroomStore extends BaseStore {
 
     transformResponse(res) {
         res.id = parseInt(res.id);
+        res.unread_count = parseInt(res.unread_count);
 
         for (var i = 0; i < res.message.length; i++) {
 
@@ -103,7 +105,7 @@ class ChatroomStore extends BaseStore {
     }
 
     get(id) {
-        var dummyData = {id:0, title: '', message: [], users:[]};
+        var dummyData = {id:0, title: '', message: [], users:[], unread_count: 0};
         return this.chatroom[id] || dummyData;
     }
 

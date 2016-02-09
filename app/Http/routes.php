@@ -21,20 +21,29 @@ Route::group(['prefix' => '/api/v1'], function () {
     Route::post('auth/fakelogin', 'Auth\AuthController@fakeLogin');
 
     Route::get('auth/fb/oauth2callback', 'Auth\AuthController@facebookOauth2Callback');
-    Route::get('auth/tw/oauth2callback', 'Auth\AuthController@twitterOauth2Callback');
+    Route::get('auth/tw/oauth2callback', 'Auth\AuthController@twitterOauthCallback');
 
     Route::group(['middleware' => 'auth'], function() {
 
         Route::get('profile/me', 'ProfileController@loginedInfo');
         Route::post('profile/me/upload', 'ProfileController@upload');
+
         Route::resource('profile', 'ProfileController', ['only' => ['index','show','update']]);    
 
         Route::resource('favourite', 'FavouriteController', ['only' => ['index', 'update','destroy']]);
+
+        // appointment
+        Route::put('appointment/markAsRead', 'AppointmentController@markAsRead');
         Route::resource('appointment', 'AppointmentController');
+        
+
         Route::resource('chatroom', 'ChatroomController', ['except' => 'create']);
         Route::post('chatroom/{id}/upload', 'ChatroomController@upload');
+        Route::put('chatroom/{id}/markAsRead', 'ChatroomController@markAsRead');
 
         Route::get('notification', 'NotificationController@index');
+
+        Route::post('contact', 'ContactController@send');
     });
     
 });

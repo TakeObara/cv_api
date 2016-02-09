@@ -24,6 +24,7 @@ export default class ChatroomItemList extends React.Component {
         }
 
         var path = "/chatroom/"+chatroom.id;
+        var unreadBox = chatroom.unread_count > 0 ? (<div className="unreadBox">{chatroom.unread_count}</div>) : null;
 
         return (
             <Link to={path} className="chatroomItem clearfix">
@@ -34,6 +35,7 @@ export default class ChatroomItemList extends React.Component {
                         <div className="metaItem"><span className="orange">W</span>: {opponentProfile.resource_introduce} </div>
                         <div className="metaItem"><span className="blue">I&nbsp;</span>: {opponentProfile.resource_needed}</div>
                     </div>
+                    {unreadBox}
                 </div>
             </Link>
         );

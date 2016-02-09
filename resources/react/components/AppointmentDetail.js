@@ -1,4 +1,4 @@
-
+import AppointmentAction from "../actions/AppointmentAction"
 import AppointmentStore from "../stores/AppointmentStore"
 import UserStore from "../stores/UserStore"
 
@@ -9,6 +9,8 @@ export default class AppointmentDetail extends React.Component {
     constructor() {
         super();
         
+        AppointmentAction.loadAll();
+
         this.state = { 
             appointment: AppointmentStore.get(0),
         };
@@ -16,39 +18,61 @@ export default class AppointmentDetail extends React.Component {
         this._onChange = this._onChange.bind(this);
     }
 
-    // componentDidMount() {
-    //     // ChatroomStore.addChangeListener(this._onChange);
+    componentDidMount() {
+        AppointmentStore.addChangeListener(this._onChange);
 
-    //     // if there is updated in data, _onChange will be fired and data will be updated
-    //     // this.loadChatroom();
-    // }
+        this.loadAppointment();
+    }
 
-    // componentDidUpdate (prevProps) {
-    //     // respond to parameter change in scenario 3
-    //     let oldId = prevProps.params.id
-    //     let newId = this.props.params.id
-    //     if (newId !== oldId)
-    //         this.loadChatroom()
-    // }
+    componentWillUnmount() {
+        AppointmentStore.removeChangeListener(this._onChange);
+    }
 
-
-    // componentWillUnmount() {
-    //     // ChatroomStore.removeChangeListener(this._onChange);
-    // }
+    loadAppointment() {
+        var appointment = AppointmentStore.get(this.props.params.id);
+        this.setState({appointment: appointment});
+    }
 
     _onChange() {
-        
+        this.loadAppointment();
     }
 
     render() {
-        
+        var appo = this.state.appointment;        
 
         return (
             <div className="halfPage">
                 <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
-                <div className="content">
-                    <p>This is detail</p>
+                <div className="content scrollable">
+                    <div className="halfPage-title">DETAIL</div>
+                    <div className="appointDetail clearfix">
+                        <div className="col-2">
+                            <label>紹介者</label>
+                            <div className="bg-gray">{appo.host.name}</div>
+                        </div>
+                        <div className="col-2">
+                            <label>被紹介者</label>
+                            <div className="bg-gray">{appo.opponent.name}</div>
+                        </div>
+                        <div className="col-1">
+                            <label>ゲスト</label>
+                            <div className="bg-gray">{appo.guest}</div>
+                        </div>
+                        <div className="col-2">
+                            <label>日時</label>
+                            <div className="bg-gray">{appo.meeting_time}</div>
+                        </div>
+                        <div className="col-2">
+                            <label>場所</label>
+                            <div className="bg-gray">{appo.place}</div>
+                        </div>
+
+                        <div className="appointFund col-1">
+                            <p>紹介料</p>
+                            <p className="large">　　　3000円</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

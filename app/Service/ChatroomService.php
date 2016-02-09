@@ -8,6 +8,7 @@ use DB;
 use Cv;
 use Cv\Model\User;
 use Cv\Model\Chatroom;
+use Cv\Model\ChatroomUser;
 
 use Illuminate\Support\Collection;
 
@@ -20,21 +21,31 @@ class ChatroomService {
     //     $this->auth = $auth;
     // }
 
-    private $pivotTable = "chatroom_user";
+    public function find($id)
+    {
+        return Chatroom::find($id);
+    }
 
     public function getByUser(User $user) 
     {
         $chatrooms = $user->chatroom()->getResults();
-        $chatrooms->load("message","users","users.profile");
+        $chatrooms->load("message","users","users.profile","chatroomUser");
+
+        foreach ($chatrooms as $chatroom) {
+            $this->transformData($chatroom);
+        }
 
         return $chatrooms;
     }
 
+    public function transformData(&$chatroom) {    
+        $chatroom->unread_count = $chatroom->chatroomUser->unread_count;
+        unset($chatroom->chatroomUser);
+    }
+
     public function inRoom($userId, $chatroomId)
     {
-        $pv = $this->pivotTable;
-
-        return DB::table($pv)
+        return ChatroomUser::select("user_id","chatroom_id")
             ->where("user_id","=",$userId)
             ->where("chatroom_id","=",$chatroomId)
             ->count() > 0
@@ -43,10 +54,7 @@ class ChatroomService {
 
     public function getUserIdInRoom($chatroomId) 
     {
-        $pv = $this->pivotTable;
-
-        return DB::table($pv)
-            ->select("user_id")
+        return ChatroomUser::select("user_id")
             ->where("chatroom_id","=",$chatroomId)
             ->lists("user_id")
         ;
@@ -71,19 +79,21 @@ class ChatroomService {
         if(!$havePermitToJoin) {
             throw new Cv\Exceptions\NoPermissionModel;
         }
+
+        $this->transformData($chatroom);
         
         return $chatroom;
     }    
 
     public function create($title, $userIds)
-    {   
+    {
         if($this->haveMissingUser($userIds)) {
             throw new Cv\Exceptions\MissingModelException;
         }
 
         $chatroom = $this->getByUserIds($userIds);
-        if(!is_null($chatroom)) {
 
+        if(!is_null($chatroom)) {
             $chatroom->load("users","users.profile");
             return $chatroom;
         }
@@ -111,8 +121,7 @@ class ChatroomService {
         }
 
         $chatroom->title = $title;
-        $chatroom->users()->sync($userIds);
-
+        
         $chatroom->load("users");
 
         return $chatroom;
@@ -134,21 +143,49 @@ class ChatroomService {
         return false;
     }
 
-    // exactly match with userIds
-    public function getByUserIds($userIds) {
+    public function markAsRead($user_id, $chatroom_id)
+    {
+        $item = ChatroomUser::where("user_id","=",$user_id)
+            ->where("chatroom_id","=",$chatroom_id)
+            ->first();
 
-        $pv = "chatroom_user";
+        $item->unread_count = 0;
+        $item->save();
+    }
+
+    public function unreadCount($user_id)
+    {
+        $count = 0;
+        $cs = ChatroomUser::where("user_id",$user_id)->get();
+        foreach ($cs as $c) {
+            $count += $c->unread_count;
+        }
+
+        return $count;
+    }
+
+    public function addUnreadCount($user_id, $chatroom_id) 
+    {
+        $item = ChatroomUser::where("user_id","=",$user_id)
+            ->where("chatroom_id","=",$chatroom_id)
+            ->first();
+
+        $item->unread_count += 1;
+        $item->save();
+    }
+
+    // exactly match with userIds
+    public function getByUserIds($userIds) 
+    {
 
         $users = collect($userIds)->sort();
-        $chatroomIds = DB::table($pv)
-            ->select("chatroom_id")
+        $chatroomIds = ChatroomUser::select("chatroom_id")
             ->where("user_id","=",$users[0])
             ->lists("chatroom_id")
         ;
 
 
-        $userChatrooms = DB::table($pv)
-            ->select("user_id","chatroom_id")
+        $userChatrooms = ChatroomUser::select("user_id","chatroom_id")
             ->whereIn("chatroom_id",$chatroomIds)
             ->orderBy("user_id","asc")
             ->get();

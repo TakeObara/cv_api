@@ -48,7 +48,6 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
     public function __construct(
         \Cv\Service\ChatroomService $chatroom, 
         \Cv\Service\MessageService $message,
-        \Cv\Service\NotificationService $notification,
         \Cv\Service\AppointmentService $appointment,
         \Cv\Service\AuthService $auth
     )
@@ -57,7 +56,6 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
         $this->clients = [];
         $this->chatroom = $chatroom;
         $this->message = $message;
-        $this->notification = $notification;
         $this->appointment = $appointment;
         $this->auth = $auth;
     }
@@ -76,20 +74,23 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
         }
 
         $this->clients[$userId] = $conn;
-        $conn->user = $this->auth->getUserById($userId);
+        $this->clients[$userId]->user = $this->auth->getUserById($userId);
+        $this->clients[$userId]->currentPath = "";
     }
 
-    public function onMessage(ConnectionInterface $from, $msg) {
+    public function onMessage(ConnectionInterface $from, $notify) {
 
-        $msgItem = json_decode($msg);
-        switch ($msgItem->type) {
+        $notify = json_decode($notify);
+
+        switch ($notify->type) {
             case 'chat':
                 
                 $userId = $from->user->id;
-                $chatroomId = $msgItem->chatroomId;
-                $message = $msgItem->message;
+                $chatroomId = $notify->chatroomId;
+                $message = $notify->message;
 
-                $msgItem->userId = $userId;
+                $notify->userId = $userId;
+                $notify->currentPath = '/chatroom/'.$chatroomId;
 
 
                 if(!$this->chatroom->inRoom($userId, $chatroomId)) {
@@ -102,36 +103,51 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
 
                 // send to user
                 foreach ($userIdsInRoom as $user) {
-
+                    $unreadFlag = false;
                     if($this->isOnline($user)) {
-                        $this->clients[$user]->send(json_encode($msgItem));
-                    } else {
-                        $this->notification->notify($user, $userId, Notification::TYPE_MESSAGE, $from->user->name . "さんからメッセージが届きました！");
+                        $this->clients[$user]->send(json_encode($notify));
+
+                        if($this->clients[$user]->currentPath != $notify->currentPath) {
+                            $unreadFlag = true;
+                        }
+                    }else {
+                        $unreadFlag = true;
+                    }
+
+                    if($unreadFlag) {
+                        $this->chatroom->addUnreadCount($user, $chatroomId);
                     }
                 }
                 break;
             case 'appointment':
 
                 $hostId = $from->user->id;
-                $userId = $msgItem->userId;
-                $guest  = $msgItem->guest;
-                $place  = $msgItem->place;
-                $meetingTime = $msgItem->meetingTime;
+                $userId = $notify->userId;
+                $guest  = $notify->guest;
+                $place  = $notify->place;
+                $meetingTime = $notify->meetingTime;
 
                 $this->appointment->create($userId, $hostId, $guest,$place, $meetingTime);
 
                 $msg = $from->user->name . "さんからアポイントが届きました！";
                 
                 if($this->isOnline($userId)) {
+                    $notify->currentPath = '/chatroom/'.$chatroomId;
                     $this->clients[$userId]->send($msg);
-                } 
+                }
 
-                $this->notification->notify($userId, $hostId, Notification::TYPE_APPOINTMENT, $msg );
-
+                break;
+            case 'update_path':
+                $this->updateMyCurrentPath($notify->currentPath , $from->user);
+                var_dump($notify->currentPath);
                 break;
             default:
                 break;
         }
+    }
+
+    public function updateMyCurrentPath($currentPath ,$user) {
+        $this->clients[$user->id]->currentPath = $currentPath;
     }
 
     public function isOnline($userId) {
@@ -139,7 +155,7 @@ class StartWsServer extends Command implements Ratchet\MessageComponentInterface
     }
 
     public function onClose(ConnectionInterface $conn) {
-        $this->info("close");
+        $this->info("close ".$conn->userId);
 
         unset($this->clients[$conn->userId]);
     }

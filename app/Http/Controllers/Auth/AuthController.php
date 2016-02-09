@@ -46,7 +46,12 @@ class AuthController extends Controller
 
     public function login(Request $request){
         $data = $request->all();
-        return $this->auth->login($data['email'], $data['password']);
+        $user = $this->auth->login($data['email'], $data['password']);
+        if(is_null($user)) {
+            return "fail";
+        }
+
+        return "success";
     }
 
     public function logout() {
@@ -89,9 +94,35 @@ class AuthController extends Controller
         return redirect("/");
     }
 
-    public function twitterOauth2Callback(Request $request) {
-        if(!$request->has('code')) {
+    public function twitterOauthCallback(Request $request) {
+        if(!$request->has('oauth_token') || !$request->has('oauth_verifier')) {
             return redirect("/login");
-        }   
+        }
+
+        // get data from request
+        $token  = $request->get('oauth_token');
+        $verify = $request->get('oauth_verifier');
+
+        $profile = $this->oauth->handleTwitterRedirectAndGetProfile($token, $verify);
+
+        // no email available in twitter
+        $user = $this->auth->getUserByTwitterId($profile["id_str"]);
+        $isNewUser = false;
+        if(is_null($user)) {
+            // Register account if there is not exists
+            $profileImage = $this->oauth->downloadTwitterProfileImage($profile["profile_image_url"]);
+            $user = $this->auth->registerUser($profile["name"], null, null, \Cv\Model\Profile::GENDER_UNISEX , null, $profile["id_str"], $profileImage);
+            $isNewUser = true;
+        }
+
+
+        $this->auth->loginWithUser($user, true);
+
+        // redirect to application
+        if($isNewUser) {
+            return redirect("/tutorial");
+        }
+        return redirect("/");
     }
+
 }

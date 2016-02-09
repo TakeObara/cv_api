@@ -1,4 +1,3 @@
-import UserAction from "../actions/UserAction"
 import UserStore from "../stores/UserStore"
 
 import AppointmentStore from "../stores/AppointmentStore";
@@ -11,7 +10,6 @@ export default class AppointmentList extends React.Component {
     constructor() {
         super();
 
-        UserAction.loadMyProfile();
         AppointmentAction.loadAll();
 
         this.state = {
@@ -19,30 +17,22 @@ export default class AppointmentList extends React.Component {
             list: AppointmentStore.getAll(),
         };
 
-        this._onUserChange = this._onUserChange.bind(this);
         this._onChange     = this._onChange.bind(this)
     }
 
 
     componentDidMount() {
-        UserStore.addChangeListener(this._onUserChange);
         AppointmentStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount() {
-        UserStore.removeChangeListener(this._onUserChange);
         AppointmentStore.removeChangeListener(this._onChange);
     }
 
-    _onUserChange() {
-        console.log("appointment component in _onUserChange");
-        var _state = this.state;
-        _state.me = UserStore.getMyProfile();
-        this.setState(_state);
-    }
-
     _onChange() {
-        console.log("appointment component in _onChange");
+
+        AppointmentAction.markAsRead();
+
         var _state = this.state;
         _state.list = AppointmentStore.getAll();
         this.setState(_state);
@@ -80,7 +70,7 @@ export default class AppointmentList extends React.Component {
             var _appo = this.transformResponse(this.state.list[i]);
 
             var status = null;
-            console.log(_appo.host.id);
+
             if(parseInt(_appo.host.user_id) === UserStore.getMyProfile().user_id) {
                 status = (<span className="blue">SEND</span>);
             }else {
@@ -107,7 +97,7 @@ export default class AppointmentList extends React.Component {
             <div className="halfPage appintmentListPage">
                 <div className="halfPage-cover profile-cover"></div>
                 <div className="halfPage-cover dark-cover"></div>
-                <div className="content">
+                <div className="content scrollable">
                     <div className="halfPage-title">APPOINTMENT</div>
                     <div className="appointList">
                         {list}

@@ -112,7 +112,7 @@ export default class Profile extends React.Component{
 
                     <div className="halfPage-group">
                         <label>お住まいの地域</label><br/>
-                        <select value={this.state.me.place} name="place" onChange={this._handleInput.bind(this)}>
+                        <select className="dark-select" value={this.state.me.place} name="place" onChange={this._handleInput.bind(this)}>
                             {prefectures}
                         </select>
                     </div>
