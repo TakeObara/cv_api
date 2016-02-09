@@ -1,9 +1,6 @@
 <?php
-
 use Illuminate\Database\Seeder;
-
 use Cv\Model\Chatroom;
-
 class ChatroomMessageTableSeeder extends Seeder
 {
     public function __construct(
@@ -14,7 +11,6 @@ class ChatroomMessageTableSeeder extends Seeder
         $this->chatroom = $chatroom;
         $this->message = $message;
     }
-
     /**
      * Run the database seeds.
      *
@@ -25,7 +21,6 @@ class ChatroomMessageTableSeeder extends Seeder
         DB::table('messages')->delete();
         DB::table('chatrooms')->delete();
         DB::table('chatroom_user')->delete();
-
         $chatroomDatas = [
             ['title' => 'title1', 'userIds' => [1, 2]],
             ['title' => 'title2', 'userIds' => [1, 3]],
@@ -38,7 +33,6 @@ class ChatroomMessageTableSeeder extends Seeder
             ['title' => 'title9', 'userIds' => [3, 5]],
             ['title' => 'title10','userIds' => [4, 5]],
         ];
-
         $messageDatas = [
             ['userId' => 1, 'chatroomId' => 1, 'message' => 'fafdadfafafdasa'],
             ['userId' => 2, 'chatroomId' => 1, 'message' => 'fafdadfafafdasa'],
@@ -61,7 +55,6 @@ class ChatroomMessageTableSeeder extends Seeder
             ['userId' => 4, 'chatroomId' => 10,'message' => 'fafdadfafafdasa'],
             ['userId' => 5, 'chatroomId' => 10,'message' => 'fafdadfafafdasa'],
         ];
-
         
         foreach ($chatroomDatas as $index => $data){
             $chatroom = $this->chatroom->create($data['title'], $data['userIds']);
@@ -71,7 +64,6 @@ class ChatroomMessageTableSeeder extends Seeder
             $this->message->chat($data['userId'], $data['chatroomId'], $data['message']);
         }
     }
-
     private function changeId(&$chatroom, $newId){
         $chatroom->id = $newId;
         $chatroom->save();
