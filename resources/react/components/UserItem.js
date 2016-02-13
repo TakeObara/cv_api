@@ -68,7 +68,6 @@ export default class UserItem extends React.Component{
 
             line = ( <div className="line">{spans}</div> );
         }
-        
 
         return (
             <div className="userItem">
@@ -84,6 +83,7 @@ export default class UserItem extends React.Component{
                 </div>
                 <img src={userMeta.profile_image_url} />
                 <div className="userMeta">
+                    <div className="userPlace">{prefectureList[userMeta.place]}</div>
                     <div className="userName">{userMeta.name}</div>
                     {line}
                     <div className="userDesc">
