@@ -4,7 +4,7 @@ namespace Cv\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Contacts extends Model
+class Contact extends Model
 {
 
 	protected $table = "contacts";

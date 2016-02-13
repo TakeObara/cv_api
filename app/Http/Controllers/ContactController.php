@@ -15,10 +15,12 @@ class ContactController extends Controller
     private $auth;
 
     public function __construct(
-        \Cv\Service\AuthService $auth
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\ContactService $contact
     ) 
     {
         $this->auth = $auth;
+        $this->contact = $contact;
     }
 
     public function send(Request $request) {
@@ -38,5 +40,17 @@ class ContactController extends Controller
         });
 
         return response()->json("",200);
+    }
+
+    public function index(){
+        $me = $this->auth->getLoginedUser();
+        return $this->contact->getContactsByUserId($me->id);
+    }
+
+    public function store(Request $request){
+        $me = $this->auth->getLoginedUser();
+        $data = $request->all();
+        $this->contact->save($me->id, $data['message']);
+        return response()->json('success');
     }
 }
