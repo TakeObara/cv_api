@@ -59,7 +59,7 @@ class AppointmentService {
         $now = (int)date('YmdHi');
         
         if($now <= ($meetingTime + 30)) {
-            throw new Cv\Exceptions\MistakeBusinessLogicException;
+            // throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
         $appointment->met = (bool)$met;
@@ -82,7 +82,7 @@ class AppointmentService {
 
         if($now >= ($meetingTime - 30)) {
             // delete are not allow to be occured once user have answer and before 30 minutes of meetingTime
-            throw new Cv\Exceptions\MistakeBusinessLogicException;
+            // throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
         $appointment->delete();
@@ -140,7 +140,7 @@ class AppointmentService {
         $appointment->host_user_id = $hostId;
         $appointment->guest        = $guest;
         $appointment->place        = $place;
-        $appointment->meeting_time = $meetingTime;
+        $appointment->meeting_time = $meetingTime .":00";
     	$appointment->save();
 
         // create appointmetUser
