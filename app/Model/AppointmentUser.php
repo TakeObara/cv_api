@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class AppointmentUser extends Model
 {
 
+    const ANSWER_NOT_YET = 0;
+    const ANSWER_NO_GOING = 1;
+    const ANSWER_YES_GOING = 2;
+
 	protected $table = "appointment_user";
-	   
+	
     public function user(){
     	return $this->belongsTo('Cv\Model\User', 'user_id');
     }

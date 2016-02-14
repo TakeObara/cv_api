@@ -46,12 +46,12 @@ class AuthController extends Controller
 
     public function login(Request $request){
         $data = $request->all();
-        $user = $this->auth->login($data['email'], $data['password']);
+        $user = $this->auth->login($data['email'], $data['pwd']);
         if(is_null($user)) {
             return "fail";
         }
 
-        return "success";
+        return redirect("/");
     }
 
     public function logout() {

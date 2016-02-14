@@ -35,23 +35,82 @@ class AppointmentService {
         return Validator::make($inputs, $validationRules);
     }
 
-    public function get($id, User $user){
-    	$appointment = Appointment::whereIn("id", "=", $id);
+    public function get($id){
+    	$appointment = Appointment::find($id);
         if(is_null($appointment)){
             throw new Cv\Exceptions\NoPermissionModel;
         }
 
-        $havePermitToJoin = false;
-        foreach ($appointment->user as $userInAppointment){
-            if($userInAppointment->id === $user->id){
-                $havePermitToJoin = true;
-            }
+        return $appointment;
+    }
+
+    public function met($id, $met)
+    {
+        $appointment = Appointment::find($id);
+        if(is_null($appointment)) {
+            throw new Cv\Exceptions\MissingModelException;
         }
 
-        if(!$havePermitToJoin){
+        if(!$this->haveModifyPermission($appointment)) {
             throw new Cv\Exceptions\NoPermissionModel;
         }
-        return $appointment;
+
+        $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
+        $now = (int)date('YmdHi');
+        
+        if($now <= ($meetingTime + 30)) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
+        }
+
+        $appointment->met = (bool)$met;
+        $appointment->save();
+    }
+
+    public function delete($id) 
+    {
+        $appointment = Appointment::find($id);
+        if(is_null($appointment)) {
+            throw new Cv\Exceptions\MissingModelException;
+        }
+
+        if(!$this->haveModifyPermission($appointment)) {
+            throw new Cv\Exceptions\NoPermissionModel;
+        }
+
+        $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
+        $now = (int)date('YmdHi');
+
+        if($now >= ($meetingTime - 30)) {
+            // delete are not allow to be occured once user have answer and before 30 minutes of meetingTime
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
+        }
+
+        $appointment->delete();
+    }
+
+    public function haveModifyPermission(Appointment $appointment)
+    {
+
+        $me = $this->auth->getLoginedUser();
+
+        return $appointment->host_user_id === $me->id;
+    }
+
+    public function answer($appointmentId, $userId, $answer)
+    {
+        $appointment = AppointmentUser::where("user_id","=",$userId)
+            ->where("appointment_id","=",$appointmentId)
+            ->first()
+        ;
+
+        if(is_null($appointment)) {
+            throw new Cv\Exceptions\MissingModelException;
+        }
+
+
+        $appointment->answer = $answer;
+        $appointment->reply_time = date('Y-m-d H:i:s');
+        $appointment->save();
     }
 
     public function unreadCount($userId) 
@@ -70,7 +129,6 @@ class AppointmentService {
             $a->save();
         }
     }
-
 
     public function create($userId, $hostId, $guest,$place, $meetingTime){
 
@@ -91,10 +149,10 @@ class AppointmentService {
             $appointmentUser->appointment_id = $appointment->id;
             $appointmentUser->user_id = $singleUserId;
             if($singleUserId === $hostId) {
-                $appointmentUser->answer  = true;
+                $appointmentUser->answer  = AppointmentUser::ANSWER_YES_GOING;
                 $appointmentUser->read    = true;
             }else {
-                $appointmentUser->answer  = false;    
+                $appointmentUser->answer  = AppointmentUser::ANSWER_NOT_YET;    
                 $appointmentUser->read    = false;
             }
             
