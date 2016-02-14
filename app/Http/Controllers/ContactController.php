@@ -33,6 +33,8 @@ class ContactController extends Controller
         $user = $this->auth->getLoginedUser();
         $myProfile = $user->profile()->getResults();
 
+        $this->contact->save($user->id, $text);
+
         Mail::send('emails.admin-inquiry' , ["text" => $text, "me" => $myProfile] , function ($message) {
             $sender = Config::get('admin.mail');
             $message->to($sender)
@@ -40,17 +42,5 @@ class ContactController extends Controller
         });
 
         return response()->json("",200);
-    }
-
-    public function index(){
-        $me = $this->auth->getLoginedUser();
-        return $this->contact->getContactsByUserId($me->id);
-    }
-
-    public function store(Request $request){
-        $me = $this->auth->getLoginedUser();
-        $data = $request->all();
-        $this->contact->save($me->id, $data['message']);
-        return response()->json('success');
     }
 }

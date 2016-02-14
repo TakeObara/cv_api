@@ -43,9 +43,7 @@ Route::group(['prefix' => '/api/v1'], function () {
 
         Route::get('notification', 'NotificationController@index');
 
-        Route::get('contact', 'ContactController@get');
         Route::post('contact', 'ContactController@send');
-        Route::post('contact/save', 'ContactController@save');
     });
     
 });
