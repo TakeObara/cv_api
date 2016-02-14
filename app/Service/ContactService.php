@@ -3,15 +3,9 @@
 namespace Cv\Service;
 
 use Auth;
-
-use DB;
-use Cv;
 use Cv\Model\Contact;
 
-use Illuminate\Support\Collection;
-
 class ContactService {
-    public function __construct(){}
 
     public function save($userId, $message){
         $contact = new Contact;
