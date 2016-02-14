@@ -10,6 +10,7 @@ class ContactAction {
             _cb: cb,
         });
     }
+
 }   
 
 export default new ContactAction();
