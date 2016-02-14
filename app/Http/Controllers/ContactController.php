@@ -15,10 +15,12 @@ class ContactController extends Controller
     private $auth;
 
     public function __construct(
-        \Cv\Service\AuthService $auth
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\ContactService $contact
     ) 
     {
         $this->auth = $auth;
+        $this->contact = $contact;
     }
 
     public function send(Request $request) {
@@ -30,6 +32,8 @@ class ContactController extends Controller
 
         $user = $this->auth->getLoginedUser();
         $myProfile = $user->profile()->getResults();
+
+        $this->contact->save($user->id, $text);
 
         Mail::send('emails.admin-inquiry' , ["text" => $text, "me" => $myProfile] , function ($message) {
             $sender = Config::get('admin.mail');

@@ -24,17 +24,24 @@ class AppointmentStore extends BaseStore {
                 case AppointmentConst.MARK_AS_READ:
                     this.markAsRead();
                 break;
+                case AppointmentConst.DELETE:
+                    this.delete(action.id, action.cb);
+                break;
+                case AppointmentConst.ANSWER:
+                    this.answer(action.id, action.answer, action.cb);
+                break;
+                case AppointmentConst.MET:
+                    this.met(action.id, action.met, action.cb);
+                break;
             }
         });
     }
 
 
     loadAll(forceFlag) {
-        if(!forceFlag) {
-            if(typeof this.data !== 'undefined') {
-                this.emitChange();
-                return;
-            }
+
+        if(!forceFlag && !this.isDataExpired()) {
+            return;
         }
 
         this.ajax("get", ApiPrefix + "/appointment", (error, data) => {
@@ -48,8 +55,7 @@ class AppointmentStore extends BaseStore {
                 this.appointment[appo.id] = appo;
             }
             
-
-            this.data = data;
+            this.updateDataExpireDate();
             this.emitChange();
         });
     }
@@ -89,10 +95,71 @@ class AppointmentStore extends BaseStore {
         return res;
     }
 
-    getAll() {
-        var dummyData = [];
+    delete(id, cb) {
+        this.ajax("delete", ApiPrefix + "/appointment/"+id, (error) => {
+            if(error) {
+                return;
+            }
 
-        return this.data || dummyData;
+            delete this.appointment[id];
+            if(typeof cb === 'function') {
+                cb();
+            }
+
+            this.emitChange();
+        });
+    }
+
+    answer(id, answer, cb) {
+
+        var formData = {
+            answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.APPOINTMENT_ANSWER_NO_GOING,
+        };
+
+        this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {
+            if(error) {
+                return;
+            }
+
+            if(typeof cb === 'function') {
+                cb();
+            }
+
+            this.appointment[id].opponent.answer = formData.answer;
+
+            this.emitChange();
+        }, formData);
+    }
+
+    met(id, met, cb) {
+
+        var formData = {
+            met: met ? AppointmentConst.MET_YES : AppointmentConst.MET_NO,
+        };
+
+        this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error) => {
+            if(error) {
+                return;
+            }
+
+            if(typeof cb === 'function') {
+                cb();
+            }
+
+            this.appointment[id].met = formData.met;
+
+            this.emitChange();
+        }, formData);
+    }
+
+    getAll() {
+        var data = [];
+
+        for(var key in this.appointment) {
+            data.push(this.appointment[key]);
+        }
+
+        return data;
     }
 
     get(id) {

@@ -63,6 +63,21 @@ class AppointmentController extends Controller
         return response()->json($appointment, 200);
     }
 
+    public function destroy($id)
+    {
+        
+        try {
+            $this->appointment->delete($id);
+
+            return response()->json("",200);
+
+        } catch (\Cv\Exceptions\MissingModelException $e) {
+            return response()->json("model missing", 404);
+        } catch (\Cv\Exceptions\NoPermissionModel $e) {
+            return response()->json("", 403);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -72,9 +87,9 @@ class AppointmentController extends Controller
     public function show($id)
     {
         $me = $this->auth->getLoginedUser();
-        $appointment = $this->appointment->get($me);
+        // $appointment = $this->appointment->get($me);
 
-        return response()->json($appointment, 200);
+        // return response()->json($appointment, 200);
     }
 
     public function markAsRead()
@@ -83,6 +98,29 @@ class AppointmentController extends Controller
         
         $this->appointment->markAsRead($me->id);
 
-        return response()->json("",200);
+        return response()->json("", 200);
+    }
+
+    public function answer($id, Request $request)
+    {
+        $me = $this->auth->getLoginedUser();
+
+        $this->appointment->answer($id, $me->id, $request->get("answer"));
+
+        return response()->json("", 200);
+    }
+
+    public function met($id, Request $request)
+    {
+        try {
+            $this->appointment->met($id, $request->get("met"));
+
+            return response()->json("",200);
+
+        } catch (\Cv\Exceptions\MissingModelException $e) {
+            return response()->json("model missing", 404);
+        } catch (\Cv\Exceptions\NoPermissionModel $e) {
+            return response()->json("", 403);
+        }
     }
 }

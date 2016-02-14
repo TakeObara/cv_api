@@ -5,7 +5,6 @@ namespace Cv\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Cv\Http\Controllers\Controller;
-use FastPay\FastPay;
 
 class PaymentController extends Controller
 {
@@ -13,28 +12,56 @@ class PaymentController extends Controller
     private $auth;
 
     public function __construct(
-        \Cv\Service\AuthService $auth
+        \Cv\Service\AuthService $auth,
+        \Cv\Service\AppointmentService $appointment,
+        \Cv\Service\TransactionService $transaction
     ) 
     {
         $this->auth = $auth;
+        $this->appointment = $appointment;
+        $this->transaction = $transaction;
     }
 
     public function yahooFastpayCallback(Request $request)
     {
-        if(!$request->has('fastpayToken')) {
+        if(!$request->has('action') || !$request->has('id') || !$request->has('fastpayToken')) {
             return "error";
         }
 
-        $fastpay = new FastPay(env("YAHOO_FASTPAY_SECRET_TOKEN"));
-        $token = $request->get("fastpayToken");
+        $action = $request->get('action');
+        $id     = $request->get('id');
 
-        // 課金を作成
-        $charge = $fastpay->charge->create(array(
-            "amount" => 3000,
-            "card" => $token,
-            "description" => "fastpay@example.com",
-            "capture" => "false",
-        ));
-        print_r($charge->getArray());
+        try {
+
+            $user = $this->auth->getLoginedUser();
+
+            $appointment = $this->appointment->get( $id ,$user);
+
+            if($appointment->paid) {
+                // this appointment already paid
+                return redirect("/".$action."/".$id);   
+            }
+
+            if(!$this->appointment->haveModifyPermission($appointment)) {
+                return "error";
+            }
+
+            $token = $request->get("fastpayToken");
+            $amount = 3000;
+            $this->transaction->makeAppointmentPaymentTransaction( $amount , $token ,$appointment);
+
+            $appointment->paid = true;
+            $appointment->save();
+
+
+            return redirect("/".$action."/".$id);
+
+        } catch (\Cv\Exceptions\NoPermissionModel $e) {
+            return "error";
+        } catch (\Cv\Exceptions\NoPermissionModel $e) {
+            return "error";
+        }
+
+        return "error";
     }
 }
