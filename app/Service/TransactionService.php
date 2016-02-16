@@ -46,6 +46,38 @@ class TransactionService {
         $appointment->save();
     }
 
+    public function makeAppointmentReceiveTransaction($amount, $appointment)
+    {
+
+        $appointment->load('appointmentUsers');
+        $appointmentUsers = $appointment->appointmentUsers;
+
+        $opponenet = null;
+        $host = null;
+        foreach ($appointmentUsers as $user) {
+            if($user->id === $appointment->host_user_id) {
+                $host = $user;
+            }else {
+                $opponenet = $user;
+            }
+        }
+
+        if(is_null($opponenet) || is_null($host)) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
+        }
+
+        $invoiceNumber = $this->generateUniqueInvoiceNumber();
+
+        $ts = new Transaction;
+        $ts->user_id = $opponenet->id;
+        $ts->appointment_id = $appointment->id;
+        $ts->invoice_number = $invoiceNumber;
+        $ts->amount = $amount;
+        $ts->status = Transaction::PAYMENT_TRANSFER;
+        $ts->save();
+        
+    }
+
     public function generateUniqueInvoiceNumber() 
     {
         return substr(md5(time()), 0, 6);

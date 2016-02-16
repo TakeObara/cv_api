@@ -67,6 +67,9 @@ class AppointmentStore extends BaseStore {
 
         this.ajax("post", ApiPrefix + "/appointment", (error, data) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
             this.loadAll(true);
@@ -141,13 +144,17 @@ class AppointmentStore extends BaseStore {
             met: met ? AppointmentConst.MET_YES : AppointmentConst.MET_NO,
         };
 
-        this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error) => {
+        this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error, data) => {
             if(error) {
                 return;
             }
 
             if(typeof cb === 'function') {
-                cb();
+                cb(data);
+            }
+
+            if(!met) {
+                return;
             }
 
             this.appointment[id].met = formData.met;
@@ -169,6 +176,10 @@ class AppointmentStore extends BaseStore {
     get(id) {
         var dummyData = {id:0,host: {}, opponent: {}};
         return this.appointment[id] || dummyData;
+    }
+
+    isAfterMeetingTime(meeting_time) {
+        return Date.parse(meeting_time) < Date.now();
     }
 
     markAsRead() {

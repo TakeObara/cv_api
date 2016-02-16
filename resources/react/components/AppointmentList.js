@@ -1,7 +1,8 @@
 import UserStore from "../stores/UserStore"
 
-import AppointmentStore from "../stores/AppointmentStore";
-import AppointmentAction from "../actions/AppointmentAction";
+import AppointmentStore from "../stores/AppointmentStore"
+import AppointmentAction from "../actions/AppointmentAction"
+import {AppointmentConst} from "../Constant"
 
 var Link = ReactRouter.Link;
 
@@ -60,6 +61,8 @@ export default class AppointmentList extends React.Component {
             host: host,
             opponent: opponent,
             created_at: appo.created_at,
+            meeting_time: appo.meeting_time,
+            met: appo.met,
         }
     }
 
@@ -69,12 +72,28 @@ export default class AppointmentList extends React.Component {
         for (var i = 0; i < this.state.list.length; i++) {
             var _appo = this.transformResponse(this.state.list[i]);
 
+            var statusMessage = null;
             var status = null;
 
             if(parseInt(_appo.host.user_id) === UserStore.getMyProfile().user_id) {
                 status = (<span className="blue">SEND</span>);
             }else {
                 status = (<span className="orange">RECEIVE</span>);
+            }
+
+            console.log(_appo);
+            if(AppointmentStore.isAfterMeetingTime(_appo.meeting_time)) {
+                statusMessage = 
+                        _appo.met === AppointmentConst.MET_UNKNOWN ?   '未回答' :     
+                        _appo.met === AppointmentConst.MET_NO ?  '返金済み':
+                        _appo.met === AppointmentConst.MET_YES ? '返答済み' : '???'
+                    ;
+            } else {
+                statusMessage = 
+                        _appo.opponent.answer === AppointmentConst.ANSWER_NOT_YET ?   '返信待ち' :     
+                        _appo.opponent.answer === AppointmentConst.ANSWER_NO_GOING ?  '拒否された' :
+                        _appo.opponent.answer === AppointmentConst.ANSWER_YES_GOING ? '支払済' : '？？'
+                    ;
             }
 
             list.push(
@@ -87,6 +106,7 @@ export default class AppointmentList extends React.Component {
                         </div>
                         <div className="profileMetaRight">
                             <p>{_appo.created_at.substr(0, 10)}</p>
+                            <p>{statusMessage}</p>
                         </div>
                     </div>
                 </Link>

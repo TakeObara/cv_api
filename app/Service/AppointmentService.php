@@ -9,6 +9,8 @@ use Cv\Model\User;
 use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
 
+use Carbon\Carbon;
+
 class AppointmentService {
 
     private $auth;
@@ -42,6 +44,11 @@ class AppointmentService {
         }
 
         return $appointment;
+    }
+
+    public function getUsersIdInAppointment($id) 
+    {
+        return AppointmentUser::where("appointment_id","=",$id)->lists("user_id");
     }
 
     public function met($id, $met)
@@ -134,6 +141,16 @@ class AppointmentService {
             $a->read = true;
             $a->save();
         }
+    }
+
+    public function isMeetingTimeCorrect($meetingTimeInStr) 
+    {
+        $meetingTime =  preg_replace("/[\?\-\s:]/", "", $meetingTimeInStr);
+        $now = Carbon::now()->format("YmdHi");
+        
+        // DEVELOPMENT PURPOSE: 
+        // 本番では、100 （１時間前）=> 10000（１日前） 
+        return $meetingTime > $now + 100;
     }
 
     public function create($userId, $hostId, $guest,$place, $meetingTime){

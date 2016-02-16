@@ -77,14 +77,18 @@ export default class AppointmentDetail extends React.Component {
         e.preventDefault();
 
         // redirect to payment system
-        window.location.href = "https://fastpay.yahoo.co.jp/checkout?key=dj0zaiZpPTdZejV3ZUFNM2dVaiZzPWNvbnN1bWVyc2VjcmV0Jng9YjQ-&amount=3000&redirect_url="+encodeURIComponent("http://localhost:8000/api/v1/test123?action=appointment&id="+this.props.params.id+"&");
+        window.location.href = "https://fastpay.yahoo.co.jp/checkout?key=dj0zaiZpPTdZejV3ZUFNM2dVaiZzPWNvbnN1bWVyc2VjcmV0Jng9YjQ-&amount=3000&redirect_url="+encodeURIComponent("http://cvendor.jp/api/v1/test123?action=appointment&id="+this.props.params.id+"&");
     }
 
     _onMeetNo(e) {
         e.preventDefault();
 
-        AppointmentAction.met(this.props.params.id, false, () => {
-            ToastAction.show("info","答え、ありがとうございます");
+        AppointmentAction.met(this.props.params.id, false, (data) => {
+
+            // redirect to chatroom for negotiation
+            browserHistory.push({
+                pathname: data.redirectTo,
+            });
         }); 
 
     }
@@ -106,7 +110,7 @@ export default class AppointmentDetail extends React.Component {
 
         if(this.state.loadFlag) {
 
-            var afterMeetingTimeFlag = Date.parse(appo.meeting_time) < Date.now();
+            var afterMeetingTimeFlag = AppointmentStore.isAfterMeetingTime(appo.meeting_time);
             
             if(isHost) {
 
@@ -155,7 +159,6 @@ export default class AppointmentDetail extends React.Component {
                     }
 
                 }else {
-                    console.log(appo.opponent.answer);
                     _opponentMessage = 
                         appo.opponent.answer === AppointmentConst.ANSWER_NOT_YET ?   '' :     
                         appo.opponent.answer === AppointmentConst.ANSWER_NO_GOING ?  '拒否しました' :
@@ -166,8 +169,8 @@ export default class AppointmentDetail extends React.Component {
                         _opponentPanel = (
                             <div className="col-1 form-btn">
 
-                                <button className="orange" onClick={this._onPayment.bind(this)}>承諾し、支払い画面へ</button>
-                                <button className="green" onClick={this._onAnswerNotGoing.bind(this)}>拒否</button>
+                                <button className="green" onClick={this._onPayment.bind(this)}>支払い画面へ</button>
+                                <button className="orange" onClick={this._onAnswerNotGoing.bind(this)}>拒否</button>
                             </div>
                         );
                     }
