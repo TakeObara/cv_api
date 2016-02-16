@@ -87,8 +87,7 @@ export default class UserItem extends React.Component{
                     <div className="userName">{userMeta.name}</div>
                     {line}
                     <div className="userDesc">
-                        // {userMeta.description}
-                        あああああああああああああああああああああああああああああああああああああああああああああ
+                        {userMeta.description}
                     </div>
                 </div>
             </div>
