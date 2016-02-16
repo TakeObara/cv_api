@@ -51,9 +51,9 @@ class AppointmentService {
             throw new Cv\Exceptions\MissingModelException;
         }
 
-        if(!$this->haveModifyPermission($appointment)) {
-            throw new Cv\Exceptions\NoPermissionModel;
-        }
+        // if(!$this->haveModifyPermission($appointment)) {
+        //     throw new Cv\Exceptions\NoPermissionModel;
+        // }
 
         $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
         $now = (int)date('YmdHi');
@@ -62,7 +62,7 @@ class AppointmentService {
             // throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
-        $appointment->met = (bool)$met;
+        $appointment->met = $met;
         $appointment->save();
     }
 
@@ -94,6 +94,12 @@ class AppointmentService {
         $me = $this->auth->getLoginedUser();
 
         return $appointment->host_user_id === $me->id;
+    }
+
+    // 被紹介者がアポイントに参加しないと答えました
+    public function reject($appointmentId, $userId)
+    {
+        $this->answer($appointmentId, $userId, AppointmentUser::ANSWER_NO_GOING);
     }
 
     public function answer($appointmentId, $userId, $answer)

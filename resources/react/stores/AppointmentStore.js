@@ -31,7 +31,7 @@ class AppointmentStore extends BaseStore {
                     this.answer(action.id, action.answer, action.cb);
                 break;
                 case AppointmentConst.MET:
-                    this.met(action.id, action.met, action.cb);
+                    this.met(action.id, action.meet, action.cb);
                 break;
             }
         });
@@ -86,9 +86,13 @@ class AppointmentStore extends BaseStore {
             var userId = parseInt(res.appointment_users[i].user_id);
 
            if(res.host_user_id === userId) {
-                res.host = res.appointment_users[i].user.profile;
+                res.host        = res.appointment_users[i].user.profile;
+                res.host.answer = res.appointment_users[i].answer;
+                res.host.read   = res.appointment_users[i].read;
             }else {
-                res.opponent = res.appointment_users[i].user.profile;
+                res.opponent        = res.appointment_users[i].user.profile;
+                res.opponent.answer = res.appointment_users[i].answer;
+                res.opponent.read   = res.appointment_users[i].read;
             }
         }
 
@@ -113,7 +117,7 @@ class AppointmentStore extends BaseStore {
     answer(id, answer, cb) {
 
         var formData = {
-            answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.APPOINTMENT_ANSWER_NO_GOING,
+            answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.ANSWER_NO_GOING,
         };
 
         this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {

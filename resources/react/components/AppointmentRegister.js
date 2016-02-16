@@ -17,6 +17,7 @@ export default class AppointmentRegister extends React.Component {
         super();
 
         var now = new Date();
+        now.setTime(now.getTime() + (2 * 3600 * 1000));
 
         this.state = { 
             appointment: {

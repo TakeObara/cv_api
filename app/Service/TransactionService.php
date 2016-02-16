@@ -4,14 +4,16 @@ namespace Cv\Service;
 
 use FastPay\FastPay;
 
+use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
 use Cv\Model\Transaction;
 
 class TransactionService {
 
-    public function __construct(\Cv\Service\AuthService $auth)
+    public function __construct(\Cv\Service\AuthService $auth, \Cv\Service\AppointmentService $appointment)
     {
         $this->auth = $auth;
+        $this->appointment = $appointment;
     }
 
     public function makeAppointmentPaymentTransaction( $amount , $token, $appointment)
@@ -38,6 +40,10 @@ class TransactionService {
         $ts->status = Transaction::PAYMENT_SUCCESS;
         $ts->save();
 
+
+        $this->appointment->answer($appointment->id, $user->id, AppointmentUser::ANSWER_YES_GOING);
+        $appointment->paid = true;
+        $appointment->save();
     }
 
     public function generateUniqueInvoiceNumber() 

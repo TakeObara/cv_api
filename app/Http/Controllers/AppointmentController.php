@@ -105,7 +105,7 @@ class AppointmentController extends Controller
     {
         $me = $this->auth->getLoginedUser();
 
-        $this->appointment->answer($id, $me->id, $request->get("answer"));
+        $this->appointment->reject($id, $me->id);
 
         return response()->json("", 200);
     }
