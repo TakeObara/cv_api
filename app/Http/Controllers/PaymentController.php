@@ -24,13 +24,13 @@ class PaymentController extends Controller
 
     public function yahooFastpayCallback(Request $request)
     {
-        $action = $request->get('action');
-        $id     = $request->get('id');
         
         if(!$request->has('action') || !$request->has('id') || !$request->has('fastpayToken')) {
             return "error";
         }
 
+        $action = $request->get('action');
+        $id     = $request->get('id');
 
         try {
 
@@ -46,7 +46,6 @@ class PaymentController extends Controller
             $token = $request->get("fastpayToken");
             $amount = 3000;
             $this->transaction->makeAppointmentPaymentTransaction( $amount , $token ,$appointment);
-
 
             return redirect("/".$action."/".$id);
 
