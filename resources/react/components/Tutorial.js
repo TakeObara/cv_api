@@ -1,3 +1,4 @@
+var Link = ReactRouter.Link;
 export default class Tutorial extends React.Component {
 
     constructor() {
@@ -81,7 +82,7 @@ export default class Tutorial extends React.Component {
         var rightArrow = (<a className='rightArrow' onClick={this.frontClick.bind(this)}><img src={this.rightArrows[this.state.rightArrowCount]} /></a>);
         var point = (<img className='point' src={this.point} />);
         var statusImg = (<img className='status' src={this.statuses[this.state.count]} />);
-
+        var startButton = (<Link to="/" className="startButton">今すぐ利用を開始する</Link>);
         return (
             <div className='tutorialPage'>
                 { background }
@@ -89,6 +90,7 @@ export default class Tutorial extends React.Component {
                 { point }
                 { rightArrow }
                 { statusImg }
+                { startButton }
             </div>
         );
     }

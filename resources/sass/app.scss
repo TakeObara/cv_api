@@ -1131,4 +1131,18 @@ header {
         top: 60%;
         left: 48%;
     }
+
+    .startButton {
+        position: absolute;
+        top: 90%;
+        left: 80%;
+        color: #fff;
+        font-size: 20px;
+        display:block;
+        width:200px;
+        padding:10px;
+        text-align:center;
+        background-color: #33cc99;
+        border-radius: 10px;
+    }
 }
