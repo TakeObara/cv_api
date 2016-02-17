@@ -48,6 +48,15 @@ class AppointmentAction {
         });   
     }
 
+    met(id, meet, cb) {
+        AppDispatcher.dispatch({
+            type: AppointmentConst.MET,
+            id: id,
+            meet: meet,
+            cb: cb,
+        });   
+    }
+
 }   
 
 export default new AppointmentAction();

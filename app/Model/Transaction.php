@@ -10,6 +10,7 @@ class Transaction extends Model
     const PAYMENT_UNKNOWN = 0;
     const PAYMENT_SUCCESS = 1;
     const PAYMENT_RETURN = 2;
+    const PAYMENT_TRANSFER = 3;
 
     protected $table = "transaction_history";
 

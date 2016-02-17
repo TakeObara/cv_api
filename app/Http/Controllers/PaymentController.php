@@ -24,6 +24,7 @@ class PaymentController extends Controller
 
     public function yahooFastpayCallback(Request $request)
     {
+        
         if(!$request->has('action') || !$request->has('id') || !$request->has('fastpayToken')) {
             return "error";
         }
@@ -42,22 +43,12 @@ class PaymentController extends Controller
                 return redirect("/".$action."/".$id);   
             }
 
-            if(!$this->appointment->haveModifyPermission($appointment)) {
-                return "error";
-            }
-
             $token = $request->get("fastpayToken");
             $amount = 3000;
             $this->transaction->makeAppointmentPaymentTransaction( $amount , $token ,$appointment);
 
-            $appointment->paid = true;
-            $appointment->save();
-
-
             return redirect("/".$action."/".$id);
 
-        } catch (\Cv\Exceptions\NoPermissionModel $e) {
-            return "error";
         } catch (\Cv\Exceptions\NoPermissionModel $e) {
             return "error";
         }

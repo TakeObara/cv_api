@@ -12,6 +12,13 @@ class AppointmentUser extends Model
     const ANSWER_YES_GOING = 2;
 
 	protected $table = "appointment_user";
+
+    protected $casts = [
+        'appointment_id' => 'integer',
+        'user_id' => 'integer',
+        'answer' => 'integer',
+        'read' => 'integer',
+    ];
 	
     public function user(){
     	return $this->belongsTo('Cv\Model\User', 'user_id');
