@@ -1096,31 +1096,39 @@ header {
     }
 }
 
-.tutorialPage{
+.tutorialPage {
 
     width: 100%;
     height: 100%;
     position: relative;
-    
-    #step {
-        width: 100%;
-    }
 
-    .leftArrow {
-        position: absolute;
-        top: 350px;
-        left: 640px;
+    .step {
+        width: 100%;
+        height: 100%;
     }
 
     .point {
         position: absolute;
-        top: 380px;
-        left: 730px; 
+        top: 50%;
+        left: 51%; 
     }
+
+    .leftArrow {
+        position: absolute;
+        top: 46%;
+        left: 45%;
+    }
+
 
     .rightArrow {
         position: absolute;
-        top: 350px;
-        left: 780px;
+        top: 46%;
+        left: 54%;
+    }
+
+    .status {
+        position: absolute;
+        top: 60%;
+        left: 48%;
     }
 }
