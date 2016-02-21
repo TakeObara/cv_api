@@ -23,4 +23,8 @@ class AppointmentUser extends Model
     public function user(){
     	return $this->belongsTo('Cv\Model\User', 'user_id');
     }
+
+    public function appointment() {
+        return $this->belongsTo('Cv\Model\Appointment', 'appointment_id');
+    }    
 }

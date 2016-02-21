@@ -75,9 +75,9 @@ export default class AppointmentDetail extends React.Component {
 
     _onPayment(e) {
         e.preventDefault();
-
+        var host = "http://localhost:8000";
         // redirect to payment system
-        window.location.href = "https://fastpay.yahoo.co.jp/checkout?key=dj0zaiZpPTdZejV3ZUFNM2dVaiZzPWNvbnN1bWVyc2VjcmV0Jng9YjQ-&amount=3000&redirect_url="+encodeURIComponent("http://cvendor.jp/api/v1/test123?action=appointment&id="+this.props.params.id+"&");
+        window.location.href = "https://fastpay.yahoo.co.jp/checkout?key=dj0zaiZpPTdZejV3ZUFNM2dVaiZzPWNvbnN1bWVyc2VjcmV0Jng9YjQ-&amount=3000&redirect_url="+encodeURIComponent(host+"/api/v1/test123?action=appointment&id="+this.props.params.id+"&");
     }
 
     _onMeetNo(e) {
@@ -116,11 +116,15 @@ export default class AppointmentDetail extends React.Component {
 
                 if(afterMeetingTimeFlag) {
 
-                    _opponentMessage = 
-                        appo.met === AppointmentConst.MET_UNKNOWN ?   'まだ答えていません' :     
-                        appo.met === AppointmentConst.MET_NO ?  '「会っていません」と答えました':
-                        appo.met === AppointmentConst.MET_YES ? '「会いました！」と答えてくれました' : '???'
-                    ;
+                    if(appo.paid) {
+                        _opponentMessage = 
+                            appo.met === AppointmentConst.MET_UNKNOWN ?   'まだ答えていません' :     
+                            appo.met === AppointmentConst.MET_NO ?  '「会っていません」と答えました':
+                            appo.met === AppointmentConst.MET_YES ? '「会いました！」と答えてくれました' : '???'
+                        ;
+                    }else {
+                        _opponentMessage = "支払われていないので、こちらのアポイントをクローズさせていただきます。";
+                    }
 
                 }else {
                     _opponentMessage = 
@@ -143,19 +147,23 @@ export default class AppointmentDetail extends React.Component {
 
                 if( afterMeetingTimeFlag ) {
 
-                    var notAnsweredYet = appo.met === AppointmentConst.MET_UNKNOWN;
+                    if(appo.paid) {
+                        var notAnsweredYet = appo.met === AppointmentConst.MET_UNKNOWN;
 
-                    if(notAnsweredYet) {
-                        _opponentPanel = (
-                            <div className="col-1 form-btn">
-                                <div>会いましたか？お答えください。</div>
-                                <button className="orange" onClick={this._onMeetYes.bind(this)}>紹介完了</button>
-                                <button className="green" onClick={this._onMeetNo.bind(this)}>紹介者に連絡する</button>
-                            </div>
-                            );
+                        if(notAnsweredYet) {
+                            _opponentPanel = (
+                                <div className="col-1 form-btn">
+                                    <div>会いましたか？お答えください。</div>
+                                    <button className="orange" onClick={this._onMeetYes.bind(this)}>紹介完了</button>
+                                    <button className="green" onClick={this._onMeetNo.bind(this)}>紹介者に連絡する</button>
+                                </div>
+                                );
+                        }else {
+                            var met = appo.met === AppointmentConst.MET_YES;
+                            _opponentMessage = met ? '会いました': '会ってませんでした。紹介者と連絡を取っています。';
+                        }
                     }else {
-                        var met = appo.met === AppointmentConst.MET_YES;
-                        _opponentMessage = met ? '会いました': '会ってませんでした。紹介者と連絡を取っています。';
+                        _opponentMessage = "支払われていないので、こちらのアポイントをクローズさせていただきます。";
                     }
 
                 }else {

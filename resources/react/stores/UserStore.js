@@ -104,6 +104,7 @@ class UserStore extends BaseStore {
             name: "",
             description: "",
             profile_image_url: "/assets/imgs/profile_imageless.png",
+            amount: 0,
         }
 
         return this.myProfile || dummyData;

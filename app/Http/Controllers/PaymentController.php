@@ -4,6 +4,7 @@ namespace Cv\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Config;
 use Cv\Http\Controllers\Controller;
 
 class PaymentController extends Controller
@@ -44,8 +45,8 @@ class PaymentController extends Controller
             }
 
             $token = $request->get("fastpayToken");
-            $amount = 3000;
-            $this->transaction->makeAppointmentPaymentTransaction( $amount , $token ,$appointment);
+
+            $this->transaction->makeAppointmentPaymentTransaction( Config::get("appointment.cost") , $token ,$appointment);
 
             return redirect("/".$action."/".$id);
 

@@ -9,7 +9,7 @@ use Cv\Http\Controllers\Controller;
 
 use Cv\Model\Appointment;
 
-
+use Config;
 
 class AppointmentController extends Controller
 {
@@ -17,12 +17,14 @@ class AppointmentController extends Controller
     public function __construct(
             \Cv\Service\AuthService $auth,
             \Cv\Service\AppointmentService $appointment,
-            \Cv\Service\ChatroomService $chatroom
+            \Cv\Service\ChatroomService $chatroom,
+            \Cv\Service\TransactionService $transaction
         )
     {
         $this->auth = $auth;
         $this->appointment = $appointment;
         $this->chatroom = $chatroom;
+        $this->transaction = $transaction;
     }
 
     /**
@@ -121,7 +123,9 @@ class AppointmentController extends Controller
             $redirectTo = null;
             $met = $request->get("met");
             if($met == Appointment::MET_YES) {
-                $this->appointment->met($id, $met);    
+                $appointment = $this->appointment->met($id, $met);    
+
+                $this->transaction->makeAppointmentReceiveTransaction(Config::get("appointment.cost"), $appointment);
             }else {
                 
                 $userIds = $this->appointment->getUsersIdInAppointment($id);

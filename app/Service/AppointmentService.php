@@ -65,12 +65,18 @@ class AppointmentService {
         $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
         $now = (int)date('YmdHi');
         
-        if($now <= ($meetingTime + 30)) {
-            // throw new Cv\Exceptions\MistakeBusinessLogicException;
+        if(!$appointment->paid) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
+        }
+
+        if($appointment->met) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;   
         }
 
         $appointment->met = $met;
         $appointment->save();
+
+        return $appointment;
     }
 
     public function delete($id) 
@@ -87,9 +93,9 @@ class AppointmentService {
         $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
         $now = (int)date('YmdHi');
 
-        if($now >= ($meetingTime - 30)) {
+        if($now < $meetingTime) {
             // delete are not allow to be occured once user have answer and before 30 minutes of meetingTime
-            // throw new Cv\Exceptions\MistakeBusinessLogicException;
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
         $appointment->delete();
@@ -111,13 +117,20 @@ class AppointmentService {
 
     public function answer($appointmentId, $userId, $answer)
     {
-        $appointment = AppointmentUser::where("user_id","=",$userId)
+        $appointment = AppointmentUser::with("appointment")->where("user_id","=",$userId)
             ->where("appointment_id","=",$appointmentId)
             ->first()
         ;
 
         if(is_null($appointment)) {
             throw new Cv\Exceptions\MissingModelException;
+        }
+
+        $meetingTime = (int)$appointment->appointment->meeting_time->format('YmdHi');
+        $now = (int)date('YmdHi');
+
+        if($now > $meetingTime) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
 

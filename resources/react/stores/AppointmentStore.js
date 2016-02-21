@@ -89,6 +89,7 @@ class AppointmentStore extends BaseStore {
             var userId = parseInt(res.appointment_users[i].user_id);
 
            if(res.host_user_id === userId) {
+                console.log(userId);
                 res.host        = res.appointment_users[i].user.profile;
                 res.host.answer = res.appointment_users[i].answer;
                 res.host.read   = res.appointment_users[i].read;
@@ -105,6 +106,9 @@ class AppointmentStore extends BaseStore {
     delete(id, cb) {
         this.ajax("delete", ApiPrefix + "/appointment/"+id, (error) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
 
@@ -125,6 +129,9 @@ class AppointmentStore extends BaseStore {
 
         this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
 
@@ -146,6 +153,9 @@ class AppointmentStore extends BaseStore {
 
         this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error, data) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
 
