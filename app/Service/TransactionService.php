@@ -4,6 +4,7 @@ namespace Cv\Service;
 
 use FastPay\FastPay;
 
+use Cv;
 use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
 use Cv\Model\Transaction;
