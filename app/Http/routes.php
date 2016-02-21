@@ -14,7 +14,7 @@
 Route::group(['prefix' => '/api/v1'], function () {
 
     Route::get('auth/logout', 'Auth\AuthController@logout');
-    Route::post('auth/login', 'Auth\AuthController@login');
+    Route::get('auth/login', 'Auth\AuthController@login');
     Route::post('auth/register', 'Auth\AuthController@register');
 
     // for developing purpose
@@ -34,6 +34,8 @@ Route::group(['prefix' => '/api/v1'], function () {
 
         // appointment
         Route::put('appointment/markAsRead', 'AppointmentController@markAsRead');
+        Route::put('appointment/{id}/answer', 'AppointmentController@answer');
+        Route::put('appointment/{id}/met', 'AppointmentController@met');
         Route::resource('appointment', 'AppointmentController');
         
 
@@ -41,7 +43,9 @@ Route::group(['prefix' => '/api/v1'], function () {
         Route::post('chatroom/{id}/upload', 'ChatroomController@upload');
         Route::put('chatroom/{id}/markAsRead', 'ChatroomController@markAsRead');
 
-        Route::get('notification', 'NotificationController@index');
+        Route::post('contact', 'ContactController@send');
+
+        Route::get('test123', 'PaymentController@yahooFastpayCallback');
     });
     
 });
@@ -51,6 +55,12 @@ Route::get('/privacy', function() {
 });
 Route::get('/terms-iframe', function() {
     return view("app.terms-iframe");
+});
+
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('transaction', 'TransactionController@index');
+    Route::post('transaction', 'TransactionController@update');
 });
 
 // Frontend Application 

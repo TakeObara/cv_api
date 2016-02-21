@@ -6,6 +6,7 @@ export default class BaseStore extends EventEmitter{
     
     constructor() {
         super();
+        this.lastUpdateTime = 0;
     }
 
     emitChange() {
@@ -74,7 +75,18 @@ export default class BaseStore extends EventEmitter{
             formData = getParams(data);
         }
 
+        xhr.setRequestHeader('X-CSRF-TOKEN',__token);
+
         xhr.send(formData);
+    }
+
+    updateDataExpireDate() {
+       this.lastUpdateTime = Date.now(); 
+    }
+
+    isDataExpired() {
+        // date is expired every 5 minutes
+        return Date.now() - this.lastUpdateTime > (1000 * 60 * 5);
     }
 
     upload(method, url, file, cb, multiple = false) {

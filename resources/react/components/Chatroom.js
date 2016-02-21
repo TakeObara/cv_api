@@ -86,7 +86,9 @@ export default class Chatroom extends React.Component {
     _onSubmit(e) {
         e.preventDefault();
         
-
+        if(this.state.myText === ""){
+            return;
+        }
         var chatroomId = this.state.chatroom.id;
         var message = this.state.myText.replace(/</g,"&lt;").replace(/>/g,"&gt;");
         NotificationAction.chat( chatroomId, message);

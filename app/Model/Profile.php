@@ -14,6 +14,8 @@ class Profile extends Model
 	protected $table = "profiles";
 
     protected $casts = [
+        'id' => 'integer',
+        'user_id' => 'integer',
         'is_public' => 'boolean',
     ];
     

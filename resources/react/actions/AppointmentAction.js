@@ -31,6 +31,32 @@ class AppointmentAction {
         });
     }
 
+    delete(id, cb) {
+        AppDispatcher.dispatch({
+            type: AppointmentConst.DELETE,
+            id: id,
+            cb: cb
+        });
+    }
+
+    answer(id, answer, cb) {
+        AppDispatcher.dispatch({
+            type: AppointmentConst.ANSWER,
+            id: id,
+            answer: answer,
+            cb: cb,
+        });   
+    }
+
+    met(id, meet, cb) {
+        AppDispatcher.dispatch({
+            type: AppointmentConst.MET,
+            id: id,
+            meet: meet,
+            cb: cb,
+        });   
+    }
+
 }   
 
 export default new AppointmentAction();

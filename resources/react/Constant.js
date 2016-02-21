@@ -24,6 +24,17 @@ var ApiPrefix = '/api/v1',
         LOAD_DATA: 'APPOINTMENT_LOAD_DATA',
         CREATE:    'APPOINTMENT_CREATE',
         MARK_AS_READ: 'APPOINTMENT_MARK_AS_READ',
+        DELETE: 'APPOINTMENT_DELETE',
+        ANSWER: 'APPOINTMENT_ANSWER',
+        MET: 'APPOINTMENT_MET',
+        
+        ANSWER_NOT_YET: __config.APPOINTMENT_ANSWER_NOT_YET,
+        ANSWER_NO_GOING: __config.APPOINTMENT_ANSWER_NO_GOING,
+        ANSWER_YES_GOING: __config.APPOINTMENT_ANSWER_YES_GOING,
+        MET_UNKNOWN: __config.APPOINTMENT_MET_UNKNOWN,
+        MET_NO: __config.APPOINTMENT_MET_NO,
+        MET_YES: __config.APPOINTMENT_MET_YES,
+        
     },
 
     MessageConst = {
@@ -56,6 +67,10 @@ var ApiPrefix = '/api/v1',
         TYPE_MESSAGE       : 1,
         TYPE_APPOINTMENT   : 2,
         TYPE_SYSTEM        : 3,
+    },
+
+    ContactConst = {
+        SEND:      'CONTACT_SEND',
     }
 ;
 
@@ -69,5 +84,6 @@ export {
     ChatroomListConst, 
     ChatroomConst, 
     ToastConst, 
-    NotificationConst
+    NotificationConst,
+    ContactConst
 };

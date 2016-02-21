@@ -24,17 +24,24 @@ class AppointmentStore extends BaseStore {
                 case AppointmentConst.MARK_AS_READ:
                     this.markAsRead();
                 break;
+                case AppointmentConst.DELETE:
+                    this.delete(action.id, action.cb);
+                break;
+                case AppointmentConst.ANSWER:
+                    this.answer(action.id, action.answer, action.cb);
+                break;
+                case AppointmentConst.MET:
+                    this.met(action.id, action.meet, action.cb);
+                break;
             }
         });
     }
 
 
     loadAll(forceFlag) {
-        if(!forceFlag) {
-            if(typeof this.data !== 'undefined') {
-                this.emitChange();
-                return;
-            }
+
+        if(!forceFlag && !this.isDataExpired()) {
+            return;
         }
 
         this.ajax("get", ApiPrefix + "/appointment", (error, data) => {
@@ -48,8 +55,7 @@ class AppointmentStore extends BaseStore {
                 this.appointment[appo.id] = appo;
             }
             
-
-            this.data = data;
+            this.updateDataExpireDate();
             this.emitChange();
         });
     }
@@ -61,6 +67,9 @@ class AppointmentStore extends BaseStore {
 
         this.ajax("post", ApiPrefix + "/appointment", (error, data) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
             this.loadAll(true);
@@ -80,24 +89,107 @@ class AppointmentStore extends BaseStore {
             var userId = parseInt(res.appointment_users[i].user_id);
 
            if(res.host_user_id === userId) {
-                res.host = res.appointment_users[i].user.profile;
+                console.log(userId);
+                res.host        = res.appointment_users[i].user.profile;
+                res.host.answer = res.appointment_users[i].answer;
+                res.host.read   = res.appointment_users[i].read;
             }else {
-                res.opponent = res.appointment_users[i].user.profile;
+                res.opponent        = res.appointment_users[i].user.profile;
+                res.opponent.answer = res.appointment_users[i].answer;
+                res.opponent.read   = res.appointment_users[i].read;
             }
         }
 
         return res;
     }
 
-    getAll() {
-        var dummyData = [];
+    delete(id, cb) {
+        this.ajax("delete", ApiPrefix + "/appointment/"+id, (error) => {
+            if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
+                return;
+            }
 
-        return this.data || dummyData;
+            delete this.appointment[id];
+            if(typeof cb === 'function') {
+                cb();
+            }
+
+            this.emitChange();
+        });
+    }
+
+    answer(id, answer, cb) {
+
+        var formData = {
+            answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.ANSWER_NO_GOING,
+        };
+
+        this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {
+            if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
+                return;
+            }
+
+            if(typeof cb === 'function') {
+                cb();
+            }
+
+            this.appointment[id].opponent.answer = formData.answer;
+
+            this.emitChange();
+        }, formData);
+    }
+
+    met(id, met, cb) {
+
+        var formData = {
+            met: met ? AppointmentConst.MET_YES : AppointmentConst.MET_NO,
+        };
+
+        this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error, data) => {
+            if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
+                return;
+            }
+
+            if(typeof cb === 'function') {
+                cb(data);
+            }
+
+            if(!met) {
+                return;
+            }
+
+            this.appointment[id].met = formData.met;
+
+            this.emitChange();
+        }, formData);
+    }
+
+    getAll() {
+        var data = [];
+
+        for(var key in this.appointment) {
+            data.push(this.appointment[key]);
+        }
+
+        return data;
     }
 
     get(id) {
         var dummyData = {id:0,host: {}, opponent: {}};
         return this.appointment[id] || dummyData;
+    }
+
+    isAfterMeetingTime(meeting_time) {
+        return Date.parse(meeting_time) < Date.now();
     }
 
     markAsRead() {
