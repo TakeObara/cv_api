@@ -70,7 +70,7 @@ class TransactionService {
             throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
-        $this->addUserMoney($opponenet->user_id, $amount);
+        $this->addUserMoney($host->user_id, $amount);
 
         $invoiceNumber = $this->generateUniqueInvoiceNumber();
 

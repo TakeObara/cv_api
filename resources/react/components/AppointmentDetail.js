@@ -109,9 +109,8 @@ export default class AppointmentDetail extends React.Component {
         var _opponentPanel = null;
 
         if(this.state.loadFlag) {
-
             var afterMeetingTimeFlag = AppointmentStore.isAfterMeetingTime(appo.meeting_time);
-            
+
             if(isHost) {
 
                 if(afterMeetingTimeFlag) {

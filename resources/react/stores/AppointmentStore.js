@@ -189,7 +189,9 @@ class AppointmentStore extends BaseStore {
     }
 
     isAfterMeetingTime(meeting_time) {
-        return Date.parse(meeting_time) < Date.now();
+        var a = meeting_time.split(/[^0-9]/);
+        var d = new Date (a[0],a[1]-1,a[2],a[3],a[4],a[5] );
+        return d.getTime() < Date.now();
     }
 
     markAsRead() {
