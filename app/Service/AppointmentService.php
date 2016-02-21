@@ -5,6 +5,7 @@ namespace Cv\Service;
 use Auth;
 use Validator;
 
+use Cv;
 use Cv\Model\User;
 use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
