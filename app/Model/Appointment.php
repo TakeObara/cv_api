@@ -16,6 +16,8 @@ class Appointment extends Model
 	protected $table = "appointments";
 
     protected $casts = [
+        'host_user_id' => 'integer',
+        'met' => 'integer',
         'paid' => 'boolean',
     ];
 

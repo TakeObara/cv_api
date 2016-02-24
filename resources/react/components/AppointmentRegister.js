@@ -17,6 +17,7 @@ export default class AppointmentRegister extends React.Component {
         super();
 
         var now = new Date();
+        now.setTime(now.getTime() + (2 * 3600 * 1000));
 
         this.state = { 
             appointment: {
@@ -96,7 +97,18 @@ export default class AppointmentRegister extends React.Component {
         });
     }
 
-    _submitCallback(data) {
+    _submitCallback(data, error) {
+
+        if(error) {
+            if(data.place) {
+                ToastAction.show("error","場所を入力してください。");    
+            }else if(data.wrong_meeting_time) {
+                ToastAction.show("error","ミーティングタイムは1日前に設定してください。");    
+            }else {
+                ToastAction.show("error","エラー発生。");    
+            }            
+            return;
+        }
 
         browserHistory.push({
             pathname: '/appointment/'+data.id

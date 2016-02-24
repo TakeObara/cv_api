@@ -16,6 +16,7 @@ var facebookLoginUrl = <?= json_encode($facebookLoginUrl) ?>;
 var twitterLoginUrl = <?= json_encode($twitterLoginUrl) ?>;
 var prefectureList = <?= json_encode(Lang::get("location")) ?>;
 var myNotification = <?= json_encode($myNotification) ?>;
+var __token = "{{ csrf_token() }}";
 var __config = {
     APPOINTMENT_ANSWER_NOT_YET: {{{   \Cv\Model\AppointmentUser::ANSWER_NOT_YET }}},
     APPOINTMENT_ANSWER_NO_GOING: {{{  \Cv\Model\AppointmentUser::ANSWER_NO_GOING }}},

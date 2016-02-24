@@ -1,5 +1,6 @@
 import ContactForm from "./ContactForm";
 import TermPrivacy from "./TermPrivacy";
+import Transaction from "./Transaction";
 
 var Link = ReactRouter.Link;
 
@@ -39,6 +40,9 @@ export default class Configuration extends React.Component {
                         </li>
                         <li>
                             { this._buildLink('問い合わせ','contact', (<ContactForm />)) }
+                        </li>
+                        <li>
+                            <a className="item-label" href="/transaction">ペイメント</a>
                         </li>
                     </ul>
                 </div>

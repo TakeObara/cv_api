@@ -7,21 +7,24 @@ use Illuminate\Http\Request;
 use Cv\Http\Requests;
 use Cv\Http\Controllers\Controller;
 
-use Cv\Model;
+use Cv\Model\Appointment;
+
+use Config;
 
 class AppointmentController extends Controller
 {
 
-    public $auth;
-    public $appointment;
-
     public function __construct(
             \Cv\Service\AuthService $auth,
-            \Cv\Service\AppointmentService $appointment
+            \Cv\Service\AppointmentService $appointment,
+            \Cv\Service\ChatroomService $chatroom,
+            \Cv\Service\TransactionService $transaction
         )
     {
         $this->auth = $auth;
         $this->appointment = $appointment;
+        $this->chatroom = $chatroom;
+        $this->transaction = $transaction;
     }
 
     /**
@@ -56,6 +59,10 @@ class AppointmentController extends Controller
         $validator = $this->appointment->validate($request->all());
         if($validator->fails()) {
             return response()->json($validator->messages(), 401);
+        }
+
+        if(!$this->appointment->isMeetingTimeCorrect($meetingTime)) {
+            return response()->json(["wrong_meeting_time" => "ミーティングタイムは1日前に設定してください。"], 401);
         }
 
         $appointment = $this->appointment->create($userId, $me->id, $guest, $place, $meetingTime);
@@ -105,7 +112,7 @@ class AppointmentController extends Controller
     {
         $me = $this->auth->getLoginedUser();
 
-        $this->appointment->answer($id, $me->id, $request->get("answer"));
+        $this->appointment->reject($id, $me->id);
 
         return response()->json("", 200);
     }
@@ -113,9 +120,25 @@ class AppointmentController extends Controller
     public function met($id, Request $request)
     {
         try {
-            $this->appointment->met($id, $request->get("met"));
+            $redirectTo = null;
+            $met = $request->get("met");
+            if($met == Appointment::MET_YES) {
+                $appointment = $this->appointment->met($id, $met);    
 
-            return response()->json("",200);
+                $this->transaction->makeAppointmentReceiveTransaction(Config::get("appointment.cost"), $appointment);
+            }else {
+                
+                $userIds = $this->appointment->getUsersIdInAppointment($id);
+
+                $chatroom = $this->chatroom->getByUserIds($userIds);
+                if(is_null($chatroom)) {
+                    throw new Cv\Exceptions\MissingModelException;
+                }
+
+                $redirectTo = "/chatroom/" . $chatroom->id;
+            }
+
+            return response()->json(["redirectTo" => $redirectTo],200);
 
         } catch (\Cv\Exceptions\MissingModelException $e) {
             return response()->json("model missing", 404);

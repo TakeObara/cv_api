@@ -57,6 +57,12 @@ Route::get('/terms-iframe', function() {
     return view("app.terms-iframe");
 });
 
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('transaction', 'TransactionController@index');
+    Route::post('transaction', 'TransactionController@update');
+});
+
 // Frontend Application 
 Route::controller('/', 'AppController');
 

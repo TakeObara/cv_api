@@ -31,7 +31,7 @@ class AppointmentStore extends BaseStore {
                     this.answer(action.id, action.answer, action.cb);
                 break;
                 case AppointmentConst.MET:
-                    this.met(action.id, action.met, action.cb);
+                    this.met(action.id, action.meet, action.cb);
                 break;
             }
         });
@@ -67,6 +67,9 @@ class AppointmentStore extends BaseStore {
 
         this.ajax("post", ApiPrefix + "/appointment", (error, data) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
             this.loadAll(true);
@@ -86,9 +89,14 @@ class AppointmentStore extends BaseStore {
             var userId = parseInt(res.appointment_users[i].user_id);
 
            if(res.host_user_id === userId) {
-                res.host = res.appointment_users[i].user.profile;
+                console.log(userId);
+                res.host        = res.appointment_users[i].user.profile;
+                res.host.answer = res.appointment_users[i].answer;
+                res.host.read   = res.appointment_users[i].read;
             }else {
-                res.opponent = res.appointment_users[i].user.profile;
+                res.opponent        = res.appointment_users[i].user.profile;
+                res.opponent.answer = res.appointment_users[i].answer;
+                res.opponent.read   = res.appointment_users[i].read;
             }
         }
 
@@ -98,6 +106,9 @@ class AppointmentStore extends BaseStore {
     delete(id, cb) {
         this.ajax("delete", ApiPrefix + "/appointment/"+id, (error) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
 
@@ -113,11 +124,14 @@ class AppointmentStore extends BaseStore {
     answer(id, answer, cb) {
 
         var formData = {
-            answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.APPOINTMENT_ANSWER_NO_GOING,
+            answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.ANSWER_NO_GOING,
         };
 
         this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
 
@@ -137,13 +151,20 @@ class AppointmentStore extends BaseStore {
             met: met ? AppointmentConst.MET_YES : AppointmentConst.MET_NO,
         };
 
-        this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error) => {
+        this.ajax("put", ApiPrefix + "/appointment/"+id+"/met", (error, data) => {
             if(error) {
+                if(typeof cb === 'function') {
+                    cb(data, error);
+                }
                 return;
             }
 
             if(typeof cb === 'function') {
-                cb();
+                cb(data);
+            }
+
+            if(!met) {
+                return;
             }
 
             this.appointment[id].met = formData.met;
@@ -165,6 +186,12 @@ class AppointmentStore extends BaseStore {
     get(id) {
         var dummyData = {id:0,host: {}, opponent: {}};
         return this.appointment[id] || dummyData;
+    }
+
+    isAfterMeetingTime(meeting_time) {
+        var a = meeting_time.split(/[^0-9]/);
+        var d = new Date (a[0],a[1]-1,a[2],a[3],a[4],a[5] );
+        return d.getTime() < Date.now();
     }
 
     markAsRead() {

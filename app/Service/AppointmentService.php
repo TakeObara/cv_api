@@ -5,9 +5,12 @@ namespace Cv\Service;
 use Auth;
 use Validator;
 
+use Cv;
 use Cv\Model\User;
 use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
+
+use Carbon\Carbon;
 
 class AppointmentService {
 
@@ -44,6 +47,11 @@ class AppointmentService {
         return $appointment;
     }
 
+    public function getUsersIdInAppointment($id) 
+    {
+        return AppointmentUser::where("appointment_id","=",$id)->lists("user_id");
+    }
+
     public function met($id, $met)
     {
         $appointment = Appointment::find($id);
@@ -51,19 +59,25 @@ class AppointmentService {
             throw new Cv\Exceptions\MissingModelException;
         }
 
-        if(!$this->haveModifyPermission($appointment)) {
-            throw new Cv\Exceptions\NoPermissionModel;
-        }
+        // if(!$this->haveModifyPermission($appointment)) {
+        //     throw new Cv\Exceptions\NoPermissionModel;
+        // }
 
         $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
         $now = (int)date('YmdHi');
         
-        if($now <= ($meetingTime + 30)) {
+        if(!$appointment->paid) {
             throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
-        $appointment->met = (bool)$met;
+        if($appointment->met) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;   
+        }
+
+        $appointment->met = $met;
         $appointment->save();
+
+        return $appointment;
     }
 
     public function delete($id) 
@@ -80,7 +94,7 @@ class AppointmentService {
         $meetingTime = (int)$appointment->meeting_time->format('YmdHi');
         $now = (int)date('YmdHi');
 
-        if($now >= ($meetingTime - 30)) {
+        if($now < $meetingTime) {
             // delete are not allow to be occured once user have answer and before 30 minutes of meetingTime
             throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
@@ -96,15 +110,28 @@ class AppointmentService {
         return $appointment->host_user_id === $me->id;
     }
 
+    // 被紹介者がアポイントに参加しないと答えました
+    public function reject($appointmentId, $userId)
+    {
+        $this->answer($appointmentId, $userId, AppointmentUser::ANSWER_NO_GOING);
+    }
+
     public function answer($appointmentId, $userId, $answer)
     {
-        $appointment = AppointmentUser::where("user_id","=",$userId)
+        $appointment = AppointmentUser::with("appointment")->where("user_id","=",$userId)
             ->where("appointment_id","=",$appointmentId)
             ->first()
         ;
 
         if(is_null($appointment)) {
             throw new Cv\Exceptions\MissingModelException;
+        }
+
+        $meetingTime = (int)$appointment->appointment->meeting_time->format('YmdHi');
+        $now = (int)date('YmdHi');
+
+        if($now > $meetingTime) {
+            throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
 
@@ -130,6 +157,16 @@ class AppointmentService {
         }
     }
 
+    public function isMeetingTimeCorrect($meetingTimeInStr) 
+    {
+        $meetingTime =  preg_replace("/[\?\-\s:]/", "", $meetingTimeInStr);
+        $now = Carbon::now()->format("YmdHi");
+        
+        // DEVELOPMENT PURPOSE: 
+        // 本番では、100 （１時間前）=> 10000（１日前） 
+        return $meetingTime > $now + 100;
+    }
+
     public function create($userId, $hostId, $guest,$place, $meetingTime){
 
         if($this->haveMissingUser([$userId])){
@@ -140,7 +177,7 @@ class AppointmentService {
         $appointment->host_user_id = $hostId;
         $appointment->guest        = $guest;
         $appointment->place        = $place;
-        $appointment->meeting_time = $meetingTime;
+        $appointment->meeting_time = $meetingTime .":00";
     	$appointment->save();
 
         // create appointmetUser

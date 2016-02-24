@@ -75,6 +75,8 @@ export default class BaseStore extends EventEmitter{
             formData = getParams(data);
         }
 
+        xhr.setRequestHeader('X-CSRF-TOKEN',__token);
+
         xhr.send(formData);
     }
 

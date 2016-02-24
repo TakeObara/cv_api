@@ -440,11 +440,11 @@ header {
             margin-top: 20px;
         }
 
-        $bubbleTriangleLength: 15px;
+        $bubbleTriangleLength: 7px;
 
         p {
             position: relative;
-            margin: 0 0 0 10px;
+            margin: 20px 0 0 10px;
             color: black;
             display: inline-block;
             padding: 7px;
@@ -1069,6 +1069,10 @@ header {
         margin-right:7%; 
         margin-left:7%;
 
+        &:active, &:visited {
+            color: white;
+        }
+
         .profileImg {
             margin: 10px;
             width: 50px;
@@ -1083,6 +1087,7 @@ header {
 
             p {
                 margin: 0;
+                color: white;
             }
 
             .profileMetaLeft {
@@ -1131,6 +1136,42 @@ header {
         .large {
             font-size: 25px;
         }
+    }
+
+    .form-btn {
+        display: block;
+
+        .orange {
+            background-color: #f19149;
+        }
+
+        .green {
+            background-color: #33cc99;
+        }
+
+
+        button {
+            display: block;
+            float: right;
+            width: 180px;
+            height: 40px;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+    }
+
+    .status-label {
+        font-size: 9px;
+        background-color: $orange;
+        display: inline-block;
+        padding: 5px;
+        line-height: 9px;
+        position: relative;
+        color: white;
+        top: -12px;
+        margin-right: 9px;
     }
 }
 
