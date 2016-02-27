@@ -37,6 +37,9 @@ Route::group(['prefix' => '/api/v1'], function () {
         Route::put('appointment/{id}/answer', 'AppointmentController@answer');
         Route::put('appointment/{id}/met', 'AppointmentController@met');
         Route::resource('appointment', 'AppointmentController');
+
+        // ペイメント機能が審査中だから、ペイメントなしの認証（暫定）
+        Route::put('appointment/{id}/answer-fake', 'AppointmentController@answerFake');
         
 
         Route::resource('chatroom', 'ChatroomController', ['except' => 'create']);

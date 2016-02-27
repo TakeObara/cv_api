@@ -127,6 +127,32 @@ class AppointmentStore extends BaseStore {
             answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.ANSWER_NO_GOING,
         };
 
+                // BEGIN: TEMP PAYMENT
+                if(answer) {
+
+                    this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer-fake", (error) => {
+                        if(error) {
+                            if(typeof cb === 'function') {
+                                cb(data, error);
+                            }
+                            return;
+                        }
+
+                        if(typeof cb === 'function') {
+                            cb();
+                        }
+
+                        this.appointment[id].paid = true;
+                        this.appointment[id].opponent.answer = formData.answer;
+
+                        this.emitChange();
+                    }, formData);
+
+                    return;
+                }
+
+                // END: TEMP PAYMENT
+
         this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {
             if(error) {
                 if(typeof cb === 'function') {

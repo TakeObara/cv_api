@@ -75,9 +75,14 @@ export default class AppointmentDetail extends React.Component {
 
     _onPayment(e) {
         e.preventDefault();
-        var host = "http://localhost:8000";
-        // redirect to payment system
-        window.location.href = "https://fastpay.yahoo.co.jp/checkout?key=dj0zaiZpPTdZejV3ZUFNM2dVaiZzPWNvbnN1bWVyc2VjcmV0Jng9YjQ-&amount=3000&redirect_url="+encodeURIComponent(host+"/api/v1/test123?action=appointment&id="+this.props.params.id+"&");
+
+        AppointmentAction.answer(this.props.params.id, true, () => {
+            location.reload();
+        }); 
+
+        // var host = "http://localhost:8000";
+        // // redirect to payment system
+        // window.location.href = "https://fastpay.yahoo.co.jp/checkout?key=dj0zaiZpPTdZejV3ZUFNM2dVaiZzPWNvbnN1bWVyc2VjcmV0Jng9YjQ-&amount=3000&redirect_url="+encodeURIComponent(host+"/api/v1/test123?action=appointment&id="+this.props.params.id+"&");
     }
 
     _onMeetNo(e) {

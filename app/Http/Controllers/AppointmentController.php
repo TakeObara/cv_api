@@ -117,6 +117,22 @@ class AppointmentController extends Controller
         return response()->json("", 200);
     }
 
+    public function answerFake($id, Request $request)
+    {
+        $me = $this->auth->getLoginedUser();
+
+        $appointment = $this->appointment->get( $id ,$me);
+        if(is_null($appointment)) {
+            return response()->json("",403);
+        }
+
+        $this->appointment->answer($appointment->id, $me->id, \Cv\Model\AppointmentUser::ANSWER_YES_GOING);
+        $appointment->paid = true;
+        $appointment->save();
+
+        return response()->json("", 200);
+    }
+
     public function met($id, Request $request)
     {
         try {
@@ -125,7 +141,8 @@ class AppointmentController extends Controller
             if($met == Appointment::MET_YES) {
                 $appointment = $this->appointment->met($id, $met);    
 
-                $this->transaction->makeAppointmentReceiveTransaction(Config::get("appointment.cost"), $appointment);
+                // REVIVE this action when payment is ready
+                // $this->transaction->makeAppointmentReceiveTransaction(Config::get("appointment.cost"), $appointment);
             }else {
                 
                 $userIds = $this->appointment->getUsersIdInAppointment($id);
