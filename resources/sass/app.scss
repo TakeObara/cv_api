@@ -284,7 +284,7 @@ header {
             margin-top: 15px;
             margin-right: 7%;
             margin-left: 7%;
-            background: rgba(0,0,0,0.3);
+            background-color: #686869;
             position: relative;
 
             .profileImg {
@@ -305,17 +305,19 @@ header {
 
                 p {
                     padding-left: 15px;
-                    margin: 8px 0;
+                    margin: 10px 0;
 
                     &.profileWanted, &.profileIntroduce {
                         border: 2px solid;
                         margin: 0;
+                        background-color: black;
                     }
 
                     &.profileWanted {
                         border-color: $orange;
-                        .label {
+                        .labelWant {
                             color: $orange;
+                            word-spacing: -0.2em;
                         }
                     }
 
@@ -323,6 +325,7 @@ header {
                         border-color: $blue;
                         .label {
                             color: $blue;
+                            word-spacing: 0.1em;
                         }
                     } 
                 }
@@ -335,6 +338,7 @@ header {
                 display: block;
                 height: 30px;
                 width: 30px;
+                margin-top: 4px;
                 
                 &:hover {
                     cursor: pointer;
@@ -392,7 +396,7 @@ header {
             font-size: 13px;
             padding: 7px;
             border-radius: 5px;
-            margin: -23px 10px 15px;
+            margin: -26px 10px 15px;
 
             > img {
                 width: 30px;
@@ -675,7 +679,7 @@ header {
                     width: 98%;
                     color: white;
                     font-size: 12px;
-                    border: inset 2px #ff9966;
+                    border: solid 2px #ffa500;
                     
                 }
                 .resource2 {
@@ -685,7 +689,7 @@ header {
                     width: 98%;
                     color: white;
                     font-size: 12px;
-                    border: inset 2px #3399cc;
+                    border: solid 2px #42aafa;
                     
                 }
 
@@ -1068,6 +1072,9 @@ header {
         position: relative;
         margin-right:7%; 
         margin-left:7%;
+        border-color: white;
+        border-width: 1px;
+        border-style: solid;;
 
         &:active, &:visited {
             color: white;

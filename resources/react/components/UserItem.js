@@ -66,7 +66,7 @@ export default class UserItem extends React.Component{
                 spans.push(<div className="resource2" key={2}><span className="blue">I :</span>{userMeta.resource_introduce}</div>);
             }
 
-            line = ( <div className="line">{spans}</div> );
+            line = ( <div align="left" className="line">{spans}</div> );
         }
 
         return (
