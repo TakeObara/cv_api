@@ -41,8 +41,8 @@ export default class FavouriteItem extends React.Component{
                 <img className="profileImg" src={profile.profile_image_url}/>
                 <div className="profileMeta">
                     <p>{profile.name}</p>
-                    <p className="profileWanted"><span className="label">W :</span>{profile.resource_needed}</p>
-                    <p className="profileIntroduce"><span className="label">I :</span>{profile.resource_introduce}</p>
+                    <p className="profileWanted"><span className="labelWant">W :</span>{profile.resource_needed}</p>
+                    <p className="profileIntroduce"><span className="label">&nbsp;I :</span>{profile.resource_introduce}</p>
                     <p className="profileDesc">{profile.description}</p>
                 </div>
                 <img className="favouriteBtn favouriteSpeak" src="/assets/imgs/ic_bubble_w.png" onClick={this._onSpeakClick.bind(this)} />
