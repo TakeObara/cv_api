@@ -127,6 +127,32 @@ class AppointmentStore extends BaseStore {
             answer: answer ? AppointmentConst.ANSWER_YES_GOING : AppointmentConst.ANSWER_NO_GOING,
         };
 
+                // BEGIN: TEMP PAYMENT
+                if(answer) {
+
+                    this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer-fake", (error) => {
+                        if(error) {
+                            if(typeof cb === 'function') {
+                                cb(data, error);
+                            }
+                            return;
+                        }
+
+                        if(typeof cb === 'function') {
+                            cb();
+                        }
+
+                        this.appointment[id].paid = true;
+                        this.appointment[id].opponent.answer = formData.answer;
+
+                        this.emitChange();
+                    }, formData);
+
+                    return;
+                }
+
+                // END: TEMP PAYMENT
+
         this.ajax("put", ApiPrefix + "/appointment/"+id+"/answer", (error) => {
             if(error) {
                 if(typeof cb === 'function') {
@@ -189,7 +215,9 @@ class AppointmentStore extends BaseStore {
     }
 
     isAfterMeetingTime(meeting_time) {
-        return Date.parse(meeting_time) < Date.now();
+        var a = meeting_time.split(/[^0-9]/);
+        var d = new Date (a[0],a[1]-1,a[2],a[3],a[4],a[5] );
+        return d.getTime() < Date.now();
     }
 
     markAsRead() {

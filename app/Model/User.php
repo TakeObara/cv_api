@@ -18,6 +18,10 @@ class User extends Model implements AuthenticatableContract
     protected $hidden = array('google_id','password', 'remember_token');
     public $timestamps = true;
 
+    protected $casts = [
+        'amount' => 'integer',
+    ];
+
     public function profile(){
        return $this->hasOne('Cv\Model\Profile');
     }

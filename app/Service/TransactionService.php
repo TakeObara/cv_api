@@ -4,6 +4,7 @@ namespace Cv\Service;
 
 use FastPay\FastPay;
 
+use Cv;
 use Cv\Model\AppointmentUser;
 use Cv\Model\Appointment;
 use Cv\Model\Transaction;
@@ -69,7 +70,7 @@ class TransactionService {
             throw new Cv\Exceptions\MistakeBusinessLogicException;
         }
 
-        $this->addUserMoney($opponenet->user_id, $amount);
+        $this->addUserMoney($host->user_id, $amount);
 
         $invoiceNumber = $this->generateUniqueInvoiceNumber();
 
