@@ -33,9 +33,17 @@ export default class Profile extends React.Component{
         if(e.target.type === 'checkbox') {
             this.state.me[attr] = e.target.checked;
         }else {
-            this.state.me[attr] = e.target.value;    
+            this.state.me[attr] = e.target.value;
         }
-        
+
+        if(this.state.me[attr].length > 15 && attr === 'name') {
+            this.state.me[attr] = this.state.me[attr].substr(0, 15);
+        }
+
+        if(this.state.me[attr].length > 14 && (attr === 'resource_needed' || attr === 'resource_introduce')) {
+            this.state.me[attr] = this.state.me[attr].substr(0, 14);
+        }
+
         this.setState({me: this.state.me});
     }
 
