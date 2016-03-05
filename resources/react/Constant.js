@@ -71,6 +71,10 @@ var ApiPrefix = '/api/v1',
 
     ContactConst = {
         SEND:      'CONTACT_SEND',
+    },
+
+    ProfileConst = {
+        SHOW: 'PROFILE_SHOW'
     }
 ;
 
