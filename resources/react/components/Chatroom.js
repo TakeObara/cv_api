@@ -24,11 +24,13 @@ export default class Chatroom extends React.Component {
 
         this._onChange = this._onChange.bind(this);
         this._onMessage = this._onMessage.bind(this);
+        this._onScrollBottom = this._onScrollBottom.bind(this);
     }
 
     componentDidMount() {
         
-        NotificationStore.addNotifiedListener(this._onMessage)
+        NotificationStore.addNotifiedListener(this._onMessage);
+        NotificationStore.addNotifiedListener(this._onScrollBottom);
         ChatroomStore.addChangeListener(this._onChange);
 
         // if there is updated in data, _onChange will be fired and data will be updated
@@ -106,11 +108,15 @@ export default class Chatroom extends React.Component {
         ChatroomStore.upload(chatroomId, userId, file);
     }
 
+    _onScrollBottom() {
+        var node = ReactDOM.findDOMNode(this.refs.messages);
+        node.scrollTop = node.scrollHeight;
+    }
+
     render() {
         var list = [];
 
         var messages = this.state.chatroom.message;
-
 
         for(var i = 0; i < messages.length; i++) {
             var _msg = messages[i];
@@ -144,7 +150,7 @@ export default class Chatroom extends React.Component {
                             </Link>
                         </div>
                     </div>
-                    <div className="chatroomMessage scrollable">
+                    <div className="chatroomMessage scrollable" ref="messages">
                         {list}
                     </div>
                     <div className="chatBox clearfix">
