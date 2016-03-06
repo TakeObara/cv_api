@@ -117,11 +117,13 @@ export default class Chatroom extends React.Component {
             list.push(<Message key={i} message={_msg} />);
         }
 
+        var clip = null;
         var button = null;
         if(this.state.myText && this.state.myText.length > 0) {
-            button = (<button className="btnSubmit" type="submit">送信</button>);
+            button = (<button className="btnSubmit" type="submit">SEND</button>);
         }else {
-            button = (<input className="btnSubmit btnUpload" type="file" onChange={this._fileOnChange.bind(this)} />);
+            clip = (<div className="btnSubmit"><img src="/assets/imgs/ic_clip.png" /></div>);
+            button = (<input className="btnUpload" type="file" onChange={this._fileOnChange.bind(this)} />);
         }
 
         var opponent = this.state.opponent;
@@ -150,11 +152,10 @@ export default class Chatroom extends React.Component {
                     <div className="chatBox clearfix">
                         <form onSubmit={this._onSubmit.bind(this)}>
 
-                            <input className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
+                            <textarea className="formText" value={this.state.myText} onChange={this._chatBoxOnChange.bind(this)} />
 
-                            <button type="submit" className="btn-clip">
-                                <img src="/assets/imgs/ic_clip.png" />
-                            </button>
+                            {clip}
+                            {button}
                         </form>
                     </div>
                 </div>
