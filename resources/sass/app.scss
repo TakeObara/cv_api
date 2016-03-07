@@ -408,18 +408,26 @@ header {
 
     .btn-clip{
         display: block;
-        width: 30px;
+        width: 45px;
+        height: 10px;
         background-color: #99ccff;
-        line-height: 1.5;
         color: white;
         font-size: 13px;
         padding: 7px;
         border-radius: 5px;
         margin: 0;
 
+        top: 58px;
+        right: 7px;
+        position: absolute;
+
         > img {
             width: 15px;
             display: inline-block;
+
+            top: -3px;
+            left: 15px;
+            position: relative;
         }
     }
 
@@ -428,7 +436,7 @@ header {
         padding: 20px;
         display: block;
         width: 100%;
-        height: calc(100% - 140px);
+        height: calc(100% - 175px);
         box-sizing: border-box;
     }
 
@@ -490,29 +498,55 @@ header {
         left: 0;
         position: absolute;
         width: 100%;
-        background-color: #006699;
-        height: 50px;
+        background-color: #3399cc;
+        height: 90px;
 
         .btnUpload {
             float: left;
+            opacity: 0;
+            width: 26px;
+            height: 7px;
+
+            top: 61px;
+            left: 87%;
+            position: absolute;
         }
 
         .formText {
             display: block;
             float: left;
-            margin: 7px;
-            width: calc(100% - 90px);
+            margin: 12px;
+            width: calc(100% - 110px);
+            height: 55px;
+            color: black;
+            font-size: 15px;
+            resize: none;
+            background-color: white;
         }
 
         .btnSubmit {
             padding: 0;
             border: 0;
-            background-color: #6699cc;
+            background-color: #8dc7e9;
             display: block;
             float: left;
             margin-top: 7px;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 20px;
+            color: white;
+            font-size: 14px;
+            border-radius: 5px;
+
+            top: 55px;
+            position: relative;
+
+            >img{
+                width: 15px;
+
+                top: 2px;
+                left: 17px;
+                position: relative;
+            }
         }
     }
 }
